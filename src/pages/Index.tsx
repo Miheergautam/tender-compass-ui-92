@@ -21,6 +21,12 @@ const Index = () => {
     setCurrentPage('dashboard');
   };
 
+  const handleNavigate = (page: string) => {
+    if (page === 'dashboard') {
+      setCurrentPage('dashboard');
+    }
+  };
+
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'login':
@@ -34,7 +40,7 @@ const Index = () => {
     }
   };
 
-  return <div className="w-full">{renderCurrentPage()}</div>;
+  return <div className="w-full min-h-screen">{renderCurrentPage()}</div>;
 };
 
 export default Index;
