@@ -11,19 +11,22 @@ const CompatibilityScore: React.FC<CompatibilityScoreProps> = ({ score, showTool
   const getScoreColor = (score: number) => {
     if (score >= 80) return { 
       color: 'text-green-600', 
-      bg: 'from-green-400 to-green-600',
+      gradientStart: '#4ade80',
+      gradientEnd: '#059669',
       icon: TrendingUp,
       label: 'Excellent Match'
     };
     if (score >= 50) return { 
       color: 'text-yellow-600', 
-      bg: 'from-yellow-400 to-orange-500',
+      gradientStart: '#fbbf24',
+      gradientEnd: '#f97316',
       icon: Target,
       label: 'Good Match'
     };
     return { 
       color: 'text-red-600', 
-      bg: 'from-red-400 to-red-600',
+      gradientStart: '#f87171',
+      gradientEnd: '#dc2626',
       icon: AlertTriangle,
       label: 'Poor Match'
     };
@@ -62,8 +65,8 @@ const CompatibilityScore: React.FC<CompatibilityScoreProps> = ({ score, showTool
           />
           <defs>
             <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" className={`${scoreData.bg.split(' ')[0].replace('from-', 'stop-')}`} />
-              <stop offset="100%" className={`${scoreData.bg.split(' ')[2].replace('to-', 'stop-')}`} />
+              <stop offset="0%" stopColor={scoreData.gradientStart} />
+              <stop offset="100%" stopColor={scoreData.gradientEnd} />
             </linearGradient>
           </defs>
         </svg>
