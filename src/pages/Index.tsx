@@ -21,6 +21,10 @@ const Index = () => {
     setCurrentPage('dashboard');
   };
 
+  const handleLogout = () => {
+    setCurrentPage('login');
+  };
+
   const handleNavigate = (page: string) => {
     if (page === 'dashboard') {
       setCurrentPage('dashboard');
@@ -32,7 +36,7 @@ const Index = () => {
       case 'login':
         return <LoginPage onLogin={handleLogin} />;
       case 'dashboard':
-        return <Dashboard onAnalyze={handleAnalyze} />;
+        return <Dashboard onAnalyze={handleAnalyze} onLogout={handleLogout} />;
       case 'analysis':
         return <AnalysisPage onBack={handleBackToDashboard} />;
       default:

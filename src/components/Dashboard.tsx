@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,11 +17,14 @@ import {
   Filter,
   Download,
   Trash2,
-  Clock
+  Clock,
+  Brain
 } from 'lucide-react';
+import SmartSearch from './SmartSearch';
 
 interface DashboardProps {
   onAnalyze: () => void;
+  onLogout: () => void;
 }
 
 interface Document {
@@ -34,7 +36,7 @@ interface Document {
   type: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onAnalyze }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onAnalyze, onLogout }) => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -42,6 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAnalyze }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [dragActive, setDragActive] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const [documents] = useState<Document[]>([
     { 
@@ -121,11 +124,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onAnalyze }) => {
   });
 
   const sidebarItems = [
-    { icon: BarChart3, label: 'Dashboard', active: true },
-    { icon: FileText, label: 'Documents' },
-    { icon: History, label: 'History' },
-    { icon: User, label: 'Profile' },
-    { icon: Settings, label: 'Settings' },
+    { icon: BarChart3, label: 'Dashboard', key: 'dashboard' },
+    { icon: Brain, label: 'Smart Search', key: 'smart-search' },
+    { icon: FileText, label: 'Documents', key: 'documents' },
+    { icon: History, label: 'History', key: 'history' },
+    { icon: User, label: 'Profile', key: 'profile' },
+    { icon: Settings, label: 'Settings', key: 'settings' },
   ];
 
   const getStatusColor = (status: string) => {
@@ -137,50 +141,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onAnalyze }) => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-xl border-r border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-lg">TB</span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                tenderBharat
-              </h1>
-              <p className="text-xs text-gray-500">Smart Analysis Platform</p>
-            </div>
-          </div>
-        </div>
-        
-        <nav className="mt-6">
-          {sidebarItems.map((item, index) => (
-            <button
-              key={index}
-              className={`w-full flex items-center px-6 py-3 text-left hover:bg-teal-50 hover:border-r-2 hover:border-teal-500 transition-all duration-200 ${
-                item.active 
-                  ? 'bg-teal-50 text-teal-700 border-r-2 border-teal-600 font-medium' 
-                  : 'text-gray-600 hover:text-teal-700'
-              }`}
-            >
-              <item.icon className="w-5 h-5 mr-3" />
-              {item.label}
-            </button>
-          ))}
-        </nav>
-        
-        <div className="absolute bottom-4 left-4 right-4">
-          <button className="w-full flex items-center px-6 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 rounded-xl">
-            <LogOut className="w-5 h-5 mr-3" />
-            Logout
-          </button>
-        </div>
-      </div>
+  const renderContent = () => {
+    if (activeTab === 'smart-search') {
+      return <SmartSearch onAnalyze={onAnalyze} />;
+    }
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 lg:p-8 overflow-y-auto">
+    return (
+      <div className="p-6 lg:p-8 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Upload & Analyze Tender</h2>
@@ -372,6 +339,59 @@ const Dashboard: React.FC<DashboardProps> = ({ onAnalyze }) => {
             </CardContent>
           </Card>
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-xl border-r border-gray-200">
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-lg">TB</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                tenderBharat
+              </h1>
+              <p className="text-xs text-gray-500">Smart Analysis Platform</p>
+            </div>
+          </div>
+        </div>
+        
+        <nav className="mt-6">
+          {sidebarItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveTab(item.key)}
+              className={`w-full flex items-center px-6 py-3 text-left hover:bg-teal-50 hover:border-r-2 hover:border-teal-500 transition-all duration-200 ${
+                activeTab === item.key
+                  ? 'bg-teal-50 text-teal-700 border-r-2 border-teal-600 font-medium' 
+                  : 'text-gray-600 hover:text-teal-700'
+              }`}
+            >
+              <item.icon className="w-5 h-5 mr-3" />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+        
+        <div className="absolute bottom-4 left-4 right-4">
+          <button 
+            onClick={onLogout}
+            className="w-full flex items-center px-6 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 rounded-xl"
+          >
+            <LogOut className="w-5 h-5 mr-3" />
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1">
+        {renderContent()}
       </div>
     </div>
   );
