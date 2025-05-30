@@ -23,10 +23,9 @@ const Analysis = () => {
 
   // Mock data for tender bio
   const tenderBio = {
-    projectName: "Mumbai-Pune Highway Development Project - Phase 2",
     brief: "Construction of 14 km highway stretch with advanced drainage systems, major bridges, and comprehensive safety infrastructure including 5-year maintenance contract.",
-    location: "Kunigal, Karnataka",
-    estimatedValue: "₹2,339.1 Crores",
+    location: "Kargil",
+    estimatedValue: "₹250 Crores",
     estimatedCost: "₹2,339.1 Cr",
     emd: "₹23.39 Cr",
     length: "14 km",
@@ -37,7 +36,7 @@ const Analysis = () => {
     organisationId: "2025_NHAI_223232-_1",
     website: "https://nhai.gov.in",
     tenderDate: "15th March 2024",
-    submissionDeadline: "3rd June 2025",
+    submissionDeadline: "3 June",
     compatibilityScore: 87
   };
 
@@ -322,15 +321,10 @@ const Analysis = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-500 mb-1">Brief</p>
+                <div className="mb-3">
                   <p className="text-gray-700 text-sm leading-relaxed">{tenderBio.brief}</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 mb-1">Project Name</p>
-                    <p className="font-semibold text-gray-900 text-sm">{tenderBio.projectName}</p>
-                  </div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Location</p>
                     <p className="font-medium text-gray-700 text-sm">{tenderBio.location}</p>
@@ -356,6 +350,10 @@ const Analysis = () => {
                     <p className="font-medium text-gray-700 text-sm">{tenderBio.type}</p>
                   </div>
                   <div>
+                    <p className="text-sm font-medium text-gray-500 mb-1">Duration</p>
+                    <p className="font-medium text-gray-700 text-sm">{tenderBio.duration}</p>
+                  </div>
+                  <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Organisation</p>
                     <p className="font-medium text-gray-700 text-sm">{tenderBio.organisation}</p>
                   </div>
@@ -372,15 +370,6 @@ const Analysis = () => {
                       className="font-medium text-blue-600 hover:text-blue-800 text-sm flex items-center"
                     >
                       Visit Website <ExternalLink className="w-3 h-3 ml-1" />
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 mb-1">Download Documents</p>
-                    <a 
-                      href="#" 
-                      className="font-medium text-blue-600 hover:text-blue-800 text-sm flex items-center"
-                    >
-                      Download <ExternalLink className="w-3 h-3 ml-1" />
                     </a>
                   </div>
                 </div>
