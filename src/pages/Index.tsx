@@ -52,7 +52,7 @@ const Index = () => {
       case 'company-profile':
         return <CompanyProfileTab />;
       case 'compare-tenders':
-        return <CompareTendersTab savedTenders={savedTenders} />;
+        return <CompareTendersTab />;
       case 'feedback':
         return <FeedbackTab />;
       case 'language':
