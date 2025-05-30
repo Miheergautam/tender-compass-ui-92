@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppSidebar from '../components/AppSidebar';
 import Dashboard from '../components/Dashboard';
@@ -16,8 +16,18 @@ const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [savedTenders, setSavedTenders] = useState<Tender[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simple auth state
+
+  useEffect(() => {
+    // Check if user is authenticated (you can implement proper auth logic here)
+    const authStatus = localStorage.getItem('isAuthenticated');
+    if (!authStatus) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
     navigate('/login');
   };
 

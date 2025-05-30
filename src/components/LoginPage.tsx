@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +30,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         return;
       }
       setIsLoading(false);
+      localStorage.setItem('isAuthenticated', 'true');
       onLogin();
     }, 1500);
   };
@@ -49,6 +49,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
+      localStorage.setItem('isAuthenticated', 'true');
       onLogin();
     }, 1500);
   };
