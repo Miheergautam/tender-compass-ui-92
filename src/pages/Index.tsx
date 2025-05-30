@@ -25,12 +25,6 @@ const Index = () => {
     setCurrentPage('login');
   };
 
-  const handleNavigate = (page: string) => {
-    if (page === 'dashboard') {
-      setCurrentPage('dashboard');
-    }
-  };
-
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'login':
