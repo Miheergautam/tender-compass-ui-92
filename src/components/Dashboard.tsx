@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import React, { useState, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Upload, FileText, Search, BarChart3, Users, Building2, Calendar, TrendingUp, MapPin, Clock } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Upload, FileText, Search, BarChart3, Users, Building2, Calendar, TrendingUp, MapPin, Clock, X, CheckCircle, Target, IndianRupee } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 
 interface DashboardProps {
   onNavigate: (page: string) => void;
