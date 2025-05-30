@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Search, SortAsc, SortDesc } from 'lucide-react';
+import { ArrowLeft, Search, SortAsc, SortDesc, Hammer } from 'lucide-react';
 import CompatibilityScore from './CompatibilityScore';
 import ImageGallery from './ImageGallery';
 import Navbar from './Navbar';

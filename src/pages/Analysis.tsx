@@ -30,7 +30,7 @@ const Analysis = () => {
     emd: "₹23.39 Cr",
     length: "14 km",
     type: "EPC with 5 year maintenance",
-    duration: "36 Months",
+    downloadDocuments: "#", // Replace duration with download link
     authority: "Maharashtra State Road Development Corporation (MSRDC)",
     organisation: "BRO",
     organisationId: "2025_NHAI_223232-_1",
@@ -350,8 +350,15 @@ const Analysis = () => {
                     <p className="font-medium text-gray-700 text-sm">{tenderBio.type}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 mb-1">Duration</p>
-                    <p className="font-medium text-gray-700 text-sm">{tenderBio.duration}</p>
+                    <p className="text-sm font-medium text-gray-500 mb-1">Download Documents</p>
+                    <a 
+                      href={tenderBio.downloadDocuments} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="font-medium text-blue-600 hover:text-blue-800 text-sm flex items-center"
+                    >
+                      Download <ExternalLink className="w-3 h-3 ml-1" />
+                    </a>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Organisation</p>

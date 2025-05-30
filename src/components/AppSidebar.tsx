@@ -6,13 +6,12 @@ import {
   FileText, 
   Folder,
   Building2,
-  TrendingUp,
   GitCompare,
   Bell,
-  Globe,
   Settings,
   LogOut,
-  MessageSquare
+  MessageSquare,
+  Hammer
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -25,7 +24,6 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ activeTab, setActiveTab, onLogo
   const sidebarItems = [
     { icon: BarChart3, label: 'Dashboard', key: 'dashboard' },
     { icon: Search, label: 'Smart Search', key: 'smart-search' },
-    { icon: TrendingUp, label: 'Insights', key: 'insights' },
     { icon: Folder, label: 'My Tenders', key: 'my-tenders' },
     { icon: Building2, label: 'Company Profile', key: 'company-profile' },
     { icon: GitCompare, label: 'Compare Tenders', key: 'compare-tenders' },
@@ -33,7 +31,6 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ activeTab, setActiveTab, onLogo
   ];
 
   const bottomItems = [
-    { icon: Globe, label: 'Language (EN/HI)', key: 'language' },
     { icon: Bell, label: 'Notifications', key: 'notifications' },
     { icon: Settings, label: 'Settings', key: 'settings' },
   ];
@@ -42,19 +39,12 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ activeTab, setActiveTab, onLogo
     <div className="w-64 h-full bg-white shadow-xl border-r border-gray-200 flex flex-col">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 relative">
-            <img 
-              src="/lovable-uploads/735852d5-e29e-48ef-a822-b28fa7cef90e.png" 
-              alt="TenderBharat Logo"
-              className="w-full h-full object-contain filter"
-              style={{
-                filter: 'sepia(1) saturate(2) hue-rotate(160deg) brightness(1.2)'
-              }}
-            />
+          <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+            <Hammer className="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              tenderBharat
+              TenderBharat
             </h1>
             <p className="text-xs text-gray-500">Find Your Perfect Tender</p>
           </div>

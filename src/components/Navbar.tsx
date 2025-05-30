@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Bell, Settings, LogOut, Upload, FileText, HelpCircle } from 'lucide-react';
+import { Search, Bell, Settings, LogOut, Upload, FileText, HelpCircle, Hammer } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: string;
@@ -16,11 +16,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
           {/* Logo */}
           <div className="flex items-center space-x-8">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">TB</span>
+              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+                <Hammer className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                tenderBharat
+                TenderBharat
               </span>
             </div>
 
