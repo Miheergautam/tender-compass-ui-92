@@ -1,10 +1,11 @@
+
 import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, MapPin, Calendar, IndianRupee, SlidersHorizontal, Save, Check } from 'lucide-react';
+import { Search, MapPin, Calendar, IndianRupee, SlidersHorizontal, Save, Check, Building2 } from 'lucide-react';
 import CompatibilityScore from './CompatibilityScore';
 import { Tender } from '../types/tender';
 
@@ -16,7 +17,11 @@ interface SmartSearchTabProps {
 const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrganisation, setSelectedOrganisation] = useState('all');
-  const [amountRange, setAmountRange] = useState([0, 4000]);
+  const [selectedOrgType, setSelectedOrgType] = useState('all');
+  const [selectedOwnership, setSelectedOwnership] = useState('all');
+  const [selectedState, setSelectedState] = useState('all');
+  const [amountLowerLimit, setAmountLowerLimit] = useState('');
+  const [amountUpperLimit, setAmountUpperLimit] = useState('');
   const [sortBy, setSortBy] = useState('score');
   const [showFilters, setShowFilters] = useState(true);
   const [savedTenders, setSavedTenders] = useState<Set<string>>(new Set());
@@ -46,6 +51,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
   ];
 
   const organisations = Array.from(new Set(mockTenders.map(t => t.organisation)));
+  const organisationTypes = ['Government', 'PSU', 'Private', 'Autonomous Body', 'Corporation'];
+  const ownershipTypes = ['Central', 'State', 'Municipal', 'Private', 'Joint Venture'];
+  const states = ['Himachal Pradesh', 'Delhi', 'Maharashtra', 'Karnataka', 'Tamil Nadu', 'Rajasthan', 'Kerala', 'Haryana', 'Uttar Pradesh', 'West Bengal', 'Telangana', 'Andhra Pradesh', 'Gujarat', 'Bihar', 'Odisha', 'Assam', 'Madhya Pradesh'];
 
   const filteredAndSortedTenders = useMemo(() => {
     let filtered = mockTenders.filter(tender => {
@@ -53,7 +61,15 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
                            tender.organisation.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            tender.location.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesOrg = selectedOrganisation === 'all' || tender.organisation === selectedOrganisation;
-      const matchesAmount = tender.amount >= amountRange[0] && tender.amount <= amountRange[1];
+      
+      // Amount filtering with lower and upper limits
+      let matchesAmount = true;
+      if (amountLowerLimit && !isNaN(Number(amountLowerLimit))) {
+        matchesAmount = matchesAmount && tender.amount >= Number(amountLowerLimit);
+      }
+      if (amountUpperLimit && !isNaN(Number(amountUpperLimit))) {
+        matchesAmount = matchesAmount && tender.amount <= Number(amountUpperLimit);
+      }
       
       return matchesSearch && matchesOrg && matchesAmount;
     });
@@ -72,7 +88,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
     });
 
     return filtered;
-  }, [searchTerm, selectedOrganisation, amountRange, sortBy]);
+  }, [searchTerm, selectedOrganisation, amountLowerLimit, amountUpperLimit, sortBy]);
 
   const formatAmount = (amount: number) => {
     if (amount >= 100) {
@@ -131,7 +147,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
 
         {showFilters && (
           <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Organisation</label>
                 <Select value={selectedOrganisation} onValueChange={setSelectedOrganisation}>
@@ -148,16 +164,68 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Amount Range: ₹{amountRange[0]} - ₹{amountRange[1]} Cr.
-                </label>
-                <Slider
-                  value={amountRange}
-                  onValueChange={setAmountRange}
-                  max={4000}
-                  step={50}
-                  className="mt-2"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-2">Organisation Type</label>
+                <Select value={selectedOrgType} onValueChange={setSelectedOrgType}>
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder="All Types" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    {organisationTypes.map(type => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Ownership</label>
+                <Select value={selectedOwnership} onValueChange={setSelectedOwnership}>
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder="All Ownership" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Ownership</SelectItem>
+                    {ownershipTypes.map(ownership => (
+                      <SelectItem key={ownership} value={ownership}>{ownership}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
+                <Select value={selectedState} onValueChange={setSelectedState}>
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder="All States" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All States</SelectItem>
+                    {states.map(state => (
+                      <SelectItem key={state} value={state}>{state}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Amount Range (₹ Cr.)</label>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Min"
+                    value={amountLowerLimit}
+                    onChange={(e) => setAmountLowerLimit(e.target.value)}
+                    className="rounded-lg"
+                    type="number"
+                  />
+                  <Input
+                    placeholder="Max"
+                    value={amountUpperLimit}
+                    onChange={(e) => setAmountUpperLimit(e.target.value)}
+                    className="rounded-lg"
+                    type="number"
+                  />
+                </div>
               </div>
 
               <div>
