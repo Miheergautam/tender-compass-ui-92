@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, Search, SortAsc, SortDesc, MapPin, Calendar, ZoomIn, X, Target, TrendingUp, AlertTriangle, Filter, ExternalLink } from 'lucide-react';
-import ChatWidget from '@/components/ChatWidget';
 
 const Analysis = () => {
   const navigate = useNavigate();
@@ -310,9 +309,9 @@ const Analysis = () => {
           {/* Tender Bio & Compatibility Score */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <Card className="lg:col-span-3 shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
-              <CardHeader className="pb-3">
+              <CardHeader>
                 <div className="flex items-start justify-between">
-                  <CardTitle className="text-xl font-semibold text-gray-900 mb-2">Tender Biography</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Tender Biography</CardTitle>
                   <div className="text-right">
                     <div className={`text-lg font-bold ${daysLeft > 30 ? 'text-green-600' : daysLeft > 7 ? 'text-yellow-600' : 'text-red-600'}`}>
                       {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
@@ -320,9 +319,11 @@ const Analysis = () => {
                     <div className="text-sm text-gray-500">to submit</div>
                   </div>
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed font-semibold">{tenderBio.brief}</p>
               </CardHeader>
               <CardContent>
+                <div className="mb-3">
+                  <p className="text-gray-700 text-sm leading-relaxed">{tenderBio.brief}</p>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Location</p>
@@ -673,9 +674,6 @@ const Analysis = () => {
           </Card>
         </div>
       </div>
-      
-      {/* Chat Widget */}
-      <ChatWidget />
     </div>
   );
 };

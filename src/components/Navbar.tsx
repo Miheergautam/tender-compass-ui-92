@@ -1,7 +1,6 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Search, Bell, Settings, LogOut, Upload, FileText, HelpCircle, Hammer } from 'lucide-react';
 
 interface NavbarProps {
@@ -49,6 +48,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 <FileText className="w-4 h-4" />
                 <span>My Documents</span>
               </button>
+              <button className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-teal-600 hover:bg-teal-50 transition-all duration-200">
+                <HelpCircle className="w-4 h-4" />
+                <span>Help</span>
+              </button>
             </div>
           </div>
 
@@ -74,34 +77,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             <Button variant="ghost" size="sm" className="rounded-lg">
               <Settings className="w-5 h-5" />
             </Button>
-
-            {/* Help Icon */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="rounded-lg">
-                  <HelpCircle className="w-5 h-5" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 bg-white border border-gray-200 shadow-lg rounded-lg z-[100]">
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-3">Need Help?</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-gray-600">📞 Mobile:</span>
-                      <a href="tel:+919876543210" className="text-sm text-teal-600 hover:text-teal-800 font-medium">
-                        +91 98765 43210
-                      </a>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-gray-600">✉️ Email:</span>
-                      <a href="mailto:help@tenderbharat.com" className="text-sm text-teal-600 hover:text-teal-800 font-medium">
-                        help@tenderbharat.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
 
             {/* User Avatar */}
             <div className="flex items-center space-x-3">
