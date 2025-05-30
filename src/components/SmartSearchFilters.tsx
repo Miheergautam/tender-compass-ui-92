@@ -7,7 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
-const SmartSearchFilters: React.FC = () => {
+interface SmartSearchFiltersProps {
+  onNavigate?: (page: string) => void;
+}
+
+const SmartSearchFilters: React.FC<SmartSearchFiltersProps> = ({ onNavigate }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     state: '',
