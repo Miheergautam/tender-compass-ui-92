@@ -121,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   };
 
   const analyzeFile = (fileId: string) => {
-    onNavigate('/analysis');
+    onNavigate('analysis');
   };
 
   return (

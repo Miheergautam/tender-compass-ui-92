@@ -3,13 +3,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Dashboard from "@/components/Dashboard";
 import AnalysisPage from "@/components/AnalysisPage";
-import Navbar from "@/components/Navbar";
+import AppSidebar from "@/components/AppSidebar";
 import SmartSearchFilters from "@/components/SmartSearchFilters";
-import { HardHat } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const Index = () => {
     if (page === 'analysis') {
       navigate('/analysis');
     } else {
-      setCurrentPage(page);
+      setActiveTab(page);
     }
   };
 
@@ -39,29 +38,27 @@ const Index = () => {
   }
 
   const renderContent = () => {
-    switch (currentPage) {
+    switch (activeTab) {
       case 'dashboard':
         return <Dashboard onNavigate={handleNavigation} />;
       case 'smart-search':
-        return <SmartSearchFilters />;
+        return <SmartSearchFilters onNavigate={handleNavigation} />;
       case 'analysis':
-        return <AnalysisPage onBack={() => setCurrentPage('dashboard')} />;
+        return <AnalysisPage onNavigate={handleNavigation} />;
       default:
         return <Dashboard onNavigate={handleNavigation} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <Navbar 
-        currentPage={currentPage} 
-        onNavigate={handleNavigation}
-        onLogout={handleLogout}
-        logo={<HardHat className="w-8 h-8 text-white" />}
-        appName="TenderBharat"
+    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      <AppSidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        onLogout={handleLogout} 
       />
       
-      <div className="pt-16">
+      <div className="flex-1 overflow-auto">
         {renderContent()}
       </div>
     </div>
