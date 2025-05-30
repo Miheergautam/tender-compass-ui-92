@@ -54,6 +54,18 @@ const Analysis = () => {
           { item: 'RCC Pipes 1200mm dia', quantity: '280 RM', rate: '₹1,450', amount: '₹4,06,000' },
           { item: 'Bedding & Surrounds', quantity: '220 cum', rate: '₹950', amount: '₹2,09,000' },
           { item: 'Headwall construction', quantity: '8 Nos', rate: '₹35,000', amount: '₹2,80,000' }
+        ],
+        'Side Drains': [
+          { item: 'Concrete Side Drains', quantity: '2,500 RM', rate: '₹850', amount: '₹21,25,000' },
+          { item: 'Stone Lining', quantity: '1,800 sqm', rate: '₹520', amount: '₹9,36,000' }
+        ],
+        'Catch Pits': [
+          { item: 'RCC Catch Pits', quantity: '45 Nos', rate: '₹12,000', amount: '₹5,40,000' },
+          { item: 'Grating & Covers', quantity: '45 Nos', rate: '₹3,500', amount: '₹1,57,500' }
+        ],
+        'Storm Water Drains': [
+          { item: 'Major Storm Drains', quantity: '1,200 RM', rate: '₹2,200', amount: '₹26,40,000' },
+          { item: 'Inlet Structures', quantity: '28 Nos', rate: '₹18,000', amount: '₹5,04,000' }
         ]
       }
     },
@@ -70,6 +82,18 @@ const Analysis = () => {
           { item: 'Abutment Work', quantity: '580 cum', rate: '₹5,400', amount: '₹31,32,000' },
           { item: 'Deck Slab Construction', quantity: '420 cum', rate: '₹5,800', amount: '₹24,36,000' },
           { item: 'Approach Slab', quantity: '180 cum', rate: '₹4,200', amount: '₹7,56,000' }
+        ],
+        'ROB/RUB': [
+          { item: 'Foundation for ROB', quantity: '850 cum', rate: '₹6,500', amount: '₹55,25,000' },
+          { item: 'Superstructure Girders', quantity: '120 cum', rate: '₹9,200', amount: '₹11,04,000' }
+        ],
+        'Retaining Wall': [
+          { item: 'Mass Concrete Retaining Wall', quantity: '650 cum', rate: '₹4,800', amount: '₹31,20,000' },
+          { item: 'Stone Masonry Wall', quantity: '480 cum', rate: '₹3,600', amount: '₹17,28,000' }
+        ],
+        'Abutments': [
+          { item: 'RCC Abutment Construction', quantity: '320 cum', rate: '₹6,800', amount: '₹21,76,000' },
+          { item: 'Wing Wall Construction', quantity: '180 cum', rate: '₹5,200', amount: '₹9,36,000' }
         ]
       }
     },
@@ -84,6 +108,18 @@ const Analysis = () => {
         'Toe Wall': [
           { item: 'Mass Concrete M15', quantity: '650 cum', rate: '₹4,200', amount: '₹27,30,000' },
           { item: 'Stone Masonry', quantity: '420 cum', rate: '₹3,800', amount: '₹15,96,000' }
+        ],
+        'Breast Wall': [
+          { item: 'RCC Breast Wall', quantity: '450 cum', rate: '₹5,800', amount: '₹26,10,000' },
+          { item: 'Drainage Behind Wall', quantity: '280 sqm', rate: '₹680', amount: '₹1,90,400' }
+        ],
+        'Stone Pitching': [
+          { item: 'Random Rubble Stone Pitching', quantity: '2,800 sqm', rate: '₹720', amount: '₹20,16,000' },
+          { item: 'Bedding Material', quantity: '420 cum', rate: '₹1,200', amount: '₹5,04,000' }
+        ],
+        'Gabion Work': [
+          { item: 'Gabion Boxes', quantity: '180 cum', rate: '₹2,800', amount: '₹5,04,000' },
+          { item: 'Stone Filling', quantity: '180 cum', rate: '₹1,500', amount: '₹2,70,000' }
         ]
       }
     },
@@ -98,6 +134,18 @@ const Analysis = () => {
         'Granular Base': [
           { item: 'WMM Grade-II', quantity: '8,500 cum', rate: '₹2,200', amount: '₹1,87,00,000' },
           { item: 'GSB (Granular Sub Base)', quantity: '12,000 cum', rate: '₹1,850', amount: '₹2,22,00,000' }
+        ],
+        'Sub Base': [
+          { item: 'Granular Sub Base Course', quantity: '15,000 cum', rate: '₹1,650', amount: '₹2,47,50,000' },
+          { item: 'Compaction & Finishing', quantity: '18,500 sqm', rate: '₹45', amount: '₹8,32,500' }
+        ],
+        'Prime Coat': [
+          { item: 'Bituminous Prime Coat', quantity: '18,500 sqm', rate: '₹28', amount: '₹5,18,000' },
+          { item: 'Curing & Protection', quantity: '18,500 sqm', rate: '₹12', amount: '₹2,22,000' }
+        ],
+        'Tack Coat': [
+          { item: 'Bituminous Tack Coat', quantity: '18,500 sqm', rate: '₹18', amount: '₹3,33,000' },
+          { item: 'Surface Preparation', quantity: '18,500 sqm', rate: '₹8', amount: '₹1,48,000' }
         ]
       }
     }
