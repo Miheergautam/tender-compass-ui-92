@@ -38,6 +38,14 @@ const Analysis = () => {
     { title: "Critique of Fuel/Cement Access", content: "Excellent fuel access via highway. Cement supply secured through nearby plants." }
   ];
 
+  // Define the work item type
+  type WorkItem = {
+    item: string;
+    quantity: string;
+    rate: string;
+    amount: string;
+  };
+
   // Nature of work data
   const workCategories = {
     'roadside-drainage': {
@@ -49,24 +57,24 @@ const Analysis = () => {
           { item: 'RCC M25 grade', quantity: '650 cum', rate: '₹5,200', amount: '₹33,80,000' },
           { item: 'Steel reinforcement', quantity: '32 MT', rate: '₹68,000', amount: '₹21,76,000' },
           { item: 'Formwork', quantity: '890 sqm', rate: '₹420', amount: '₹3,73,800' }
-        ],
+        ] as WorkItem[],
         'Pipe Culverts': [
           { item: 'RCC Pipes 1200mm dia', quantity: '280 RM', rate: '₹1,450', amount: '₹4,06,000' },
           { item: 'Bedding & Surrounds', quantity: '220 cum', rate: '₹950', amount: '₹2,09,000' },
           { item: 'Headwall construction', quantity: '8 Nos', rate: '₹35,000', amount: '₹2,80,000' }
-        ],
+        ] as WorkItem[],
         'Side Drains': [
           { item: 'Concrete Side Drains', quantity: '2,500 RM', rate: '₹850', amount: '₹21,25,000' },
           { item: 'Stone Lining', quantity: '1,800 sqm', rate: '₹520', amount: '₹9,36,000' }
-        ],
+        ] as WorkItem[],
         'Catch Pits': [
           { item: 'RCC Catch Pits', quantity: '45 Nos', rate: '₹12,000', amount: '₹5,40,000' },
           { item: 'Grating & Covers', quantity: '45 Nos', rate: '₹3,500', amount: '₹1,57,500' }
-        ],
+        ] as WorkItem[],
         'Storm Water Drains': [
           { item: 'Major Storm Drains', quantity: '1,200 RM', rate: '₹2,200', amount: '₹26,40,000' },
           { item: 'Inlet Structures', quantity: '28 Nos', rate: '₹18,000', amount: '₹5,04,000' }
-        ]
+        ] as WorkItem[]
       }
     },
     'structures-work': {
@@ -77,24 +85,24 @@ const Analysis = () => {
           { item: 'Pier Construction', quantity: '850 cum', rate: '₹7,200', amount: '₹61,20,000' },
           { item: 'Superstructure PSC', quantity: '1,800 cum', rate: '₹8,500', amount: '₹1,53,00,000' },
           { item: 'Deck Slab', quantity: '920 cum', rate: '₹6,200', amount: '₹57,04,000' }
-        ],
+        ] as WorkItem[],
         'Minor Bridge': [
           { item: 'Abutment Work', quantity: '580 cum', rate: '₹5,400', amount: '₹31,32,000' },
           { item: 'Deck Slab Construction', quantity: '420 cum', rate: '₹5,800', amount: '₹24,36,000' },
           { item: 'Approach Slab', quantity: '180 cum', rate: '₹4,200', amount: '₹7,56,000' }
-        ],
+        ] as WorkItem[],
         'ROB/RUB': [
           { item: 'Foundation for ROB', quantity: '850 cum', rate: '₹6,500', amount: '₹55,25,000' },
           { item: 'Superstructure Girders', quantity: '120 cum', rate: '₹9,200', amount: '₹11,04,000' }
-        ],
+        ] as WorkItem[],
         'Retaining Wall': [
           { item: 'Mass Concrete Retaining Wall', quantity: '650 cum', rate: '₹4,800', amount: '₹31,20,000' },
           { item: 'Stone Masonry Wall', quantity: '480 cum', rate: '₹3,600', amount: '₹17,28,000' }
-        ],
+        ] as WorkItem[],
         'Abutments': [
           { item: 'RCC Abutment Construction', quantity: '320 cum', rate: '₹6,800', amount: '₹21,76,000' },
           { item: 'Wing Wall Construction', quantity: '180 cum', rate: '₹5,200', amount: '₹9,36,000' }
-        ]
+        ] as WorkItem[]
       }
     },
     'protection-work': {
@@ -104,23 +112,23 @@ const Analysis = () => {
           { item: 'Stone Pitching 300mm thick', quantity: '3,200 sqm', rate: '₹680', amount: '₹21,76,000' },
           { item: 'Filter Layer', quantity: '1,100 cum', rate: '₹1,450', amount: '₹15,95,000' },
           { item: 'Weep holes', quantity: '180 Nos', rate: '₹850', amount: '₹1,53,000' }
-        ],
+        ] as WorkItem[],
         'Toe Wall': [
           { item: 'Mass Concrete M15', quantity: '650 cum', rate: '₹4,200', amount: '₹27,30,000' },
           { item: 'Stone Masonry', quantity: '420 cum', rate: '₹3,800', amount: '₹15,96,000' }
-        ],
+        ] as WorkItem[],
         'Breast Wall': [
           { item: 'RCC Breast Wall', quantity: '450 cum', rate: '₹5,800', amount: '₹26,10,000' },
           { item: 'Drainage Behind Wall', quantity: '280 sqm', rate: '₹680', amount: '₹1,90,400' }
-        ],
+        ] as WorkItem[],
         'Stone Pitching': [
           { item: 'Random Rubble Stone Pitching', quantity: '2,800 sqm', rate: '₹720', amount: '₹20,16,000' },
           { item: 'Bedding Material', quantity: '420 cum', rate: '₹1,200', amount: '₹5,04,000' }
-        ],
+        ] as WorkItem[],
         'Gabion Work': [
           { item: 'Gabion Boxes', quantity: '180 cum', rate: '₹2,800', amount: '₹5,04,000' },
           { item: 'Stone Filling', quantity: '180 cum', rate: '₹1,500', amount: '₹2,70,000' }
-        ]
+        ] as WorkItem[]
       }
     },
     'tcs-layer': {
@@ -130,23 +138,23 @@ const Analysis = () => {
           { item: 'DBM (Dense Bituminous Mix)', quantity: '18,500 sqm', rate: '₹195', amount: '₹36,07,500' },
           { item: 'BC (Bituminous Concrete)', quantity: '18,500 sqm', rate: '₹145', amount: '₹26,82,500' },
           { item: 'SDBC (Semi Dense Bituminous)', quantity: '12,000 sqm', rate: '₹165', amount: '₹19,80,000' }
-        ],
+        ] as WorkItem[],
         'Granular Base': [
           { item: 'WMM Grade-II', quantity: '8,500 cum', rate: '₹2,200', amount: '₹1,87,00,000' },
           { item: 'GSB (Granular Sub Base)', quantity: '12,000 cum', rate: '₹1,850', amount: '₹2,22,00,000' }
-        ],
+        ] as WorkItem[],
         'Sub Base': [
           { item: 'Granular Sub Base Course', quantity: '15,000 cum', rate: '₹1,650', amount: '₹2,47,50,000' },
           { item: 'Compaction & Finishing', quantity: '18,500 sqm', rate: '₹45', amount: '₹8,32,500' }
-        ],
+        ] as WorkItem[],
         'Prime Coat': [
           { item: 'Bituminous Prime Coat', quantity: '18,500 sqm', rate: '₹28', amount: '₹5,18,000' },
           { item: 'Curing & Protection', quantity: '18,500 sqm', rate: '₹12', amount: '₹2,22,000' }
-        ],
+        ] as WorkItem[],
         'Tack Coat': [
           { item: 'Bituminous Tack Coat', quantity: '18,500 sqm', rate: '₹18', amount: '₹3,33,000' },
           { item: 'Surface Preparation', quantity: '18,500 sqm', rate: '₹8', amount: '₹1,48,000' }
-        ]
+        ] as WorkItem[]
       }
     }
   };
@@ -214,9 +222,13 @@ const Analysis = () => {
     );
     
     const categoryData = workCategories[activeTab as keyof typeof workCategories];
-    const tableData = categoryData?.data[hoveredButton as keyof typeof categoryData.data];
+    let tableData: WorkItem[] = [];
     
-    if (!tableData) return (
+    if (categoryData && categoryData.data[hoveredButton as keyof typeof categoryData.data]) {
+      tableData = categoryData.data[hoveredButton as keyof typeof categoryData.data];
+    }
+    
+    if (!tableData || tableData.length === 0) return (
       <div className="flex items-center justify-center h-64 text-gray-500">
         <p>No data available for this selection</p>
       </div>
