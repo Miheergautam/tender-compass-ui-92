@@ -10,6 +10,7 @@ import CompanyProfileTab from '../components/CompanyProfileTab';
 import CompareTendersTab from '../components/CompareTendersTab';
 import FeedbackTab from '../components/FeedbackTab';
 import LanguageNotificationsTab from '../components/LanguageNotificationsTab';
+import ChatWidget from '../components/ChatWidget';
 import { Tender } from '../types/tender';
 
 const Index = () => {
@@ -91,6 +92,9 @@ const Index = () => {
           {renderActiveTab()}
         </div>
       </div>
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
