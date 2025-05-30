@@ -1,24 +1,12 @@
-
 import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, MapPin, Calendar, IndianRupee, SlidersHorizontal, Heart, Save } from 'lucide-react';
+import { Search, MapPin, Calendar, IndianRupee, SlidersHorizontal, Save, Check } from 'lucide-react';
 import CompatibilityScore from './CompatibilityScore';
-
-interface Tender {
-  id: string;
-  name: string;
-  organisation: string;
-  amount: number;
-  compatibilityScore: number;
-  location: string;
-  deadline: string;
-  category: string;
-  workTypes: string[];
-}
+import { Tender } from '../types/tender';
 
 interface SmartSearchTabProps {
   onAnalyze: () => void;
@@ -31,6 +19,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
   const [amountRange, setAmountRange] = useState([0, 4000]);
   const [sortBy, setSortBy] = useState('score');
   const [showFilters, setShowFilters] = useState(true);
+  const [savedTenders, setSavedTenders] = useState<Set<string>>(new Set());
 
   // 20 mock tenders with realistic variations
   const mockTenders: Tender[] = [
@@ -93,163 +82,198 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({ onAnalyze, onSaveTender
     }
   };
 
+  const handleSaveTender = (tender: Tender) => {
+    const tenderWithSaveDate = {
+      ...tender,
+      savedDate: new Date().toISOString().split('T')[0]
+    };
+    onSaveTender(tenderWithSaveDate);
+    setSavedTenders(prev => new Set([...prev, tender.id]));
+    
+    // Remove from saved state after 2 seconds to allow re-saving
+    setTimeout(() => {
+      setSavedTenders(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(tender.id);
+        return newSet;
+      });
+    }, 2000);
+  };
+
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">📄 Smart Search</h2>
-          <p className="text-gray-600">Discover and analyze relevant tenders</p>
+    <div className="h-full flex flex-col">
+      <div className="flex-shrink-0 p-6 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Smart Search</h2>
+            <p className="text-gray-600">Discover and analyze relevant tenders</p>
+          </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+          </Button>
         </div>
-        
-        <Button
-          variant="outline"
-          onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2"
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
-        </Button>
-      </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        <Input
-          placeholder="Search tenders by name, organisation, or location..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 rounded-xl border-2 border-gray-200 focus:border-teal-400"
-        />
-      </div>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="AI search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 rounded-xl border-2 border-gray-200 focus:border-teal-400"
+          />
+        </div>
 
-      {showFilters && (
-        <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Organisation</label>
-              <Select value={selectedOrganisation} onValueChange={setSelectedOrganisation}>
-                <SelectTrigger className="rounded-lg">
-                  <SelectValue placeholder="All Organisations" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Organisations</SelectItem>
-                  {organisations.map(org => (
-                    <SelectItem key={org} value={org}>{org}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+        {showFilters && (
+          <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Organisation</label>
+                <Select value={selectedOrganisation} onValueChange={setSelectedOrganisation}>
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder="All Organisations" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Organisations</SelectItem>
+                    {organisations.map(org => (
+                      <SelectItem key={org} value={org}>{org}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Amount Range: ₹{amountRange[0]} - ₹{amountRange[1]} Cr.
-              </label>
-              <Slider
-                value={amountRange}
-                onValueChange={setAmountRange}
-                max={4000}
-                step={50}
-                className="mt-2"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Amount Range: ₹{amountRange[0]} - ₹{amountRange[1]} Cr.
+                </label>
+                <Slider
+                  value={amountRange}
+                  onValueChange={setAmountRange}
+                  max={4000}
+                  step={50}
+                  className="mt-2"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="rounded-lg">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="score">Compatibility Score</SelectItem>
-                  <SelectItem value="amount">Tender Amount</SelectItem>
-                  <SelectItem value="date">Deadline</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="score">Compatibility Score</SelectItem>
+                    <SelectItem value="amount">Tender Amount</SelectItem>
+                    <SelectItem value="date">Deadline</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Results</label>
-              <div className="text-sm text-gray-600 bg-white rounded-lg p-2 border">
-                {filteredAndSortedTenders.length} of {mockTenders.length} tenders
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Results</label>
+                <div className="text-sm text-gray-600 bg-white rounded-lg p-2 border">
+                  {filteredAndSortedTenders.length} of {mockTenders.length} tenders
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
-      )}
+          </Card>
+        )}
+      </div>
 
-      <div className="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto pr-2">
-        {filteredAndSortedTenders.map((tender) => (
-          <Card key={tender.id} className="group hover:shadow-lg transition-all duration-200 border-0 rounded-xl bg-white shadow-md">
-            <CardContent className="p-6">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1 pr-4">
-                      <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">
-                        {tender.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">{tender.organisation}</p>
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {tender.workTypes.slice(0, 3).map((workType, index) => (
-                          <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                            {workType}
-                          </span>
-                        ))}
+      <div className="flex-1 px-6 pb-6 overflow-hidden">
+        <div className="h-full overflow-y-auto space-y-4 pr-2">
+          {filteredAndSortedTenders.map((tender) => (
+            <Card key={tender.id} className="group hover:shadow-lg transition-all duration-200 border-0 rounded-xl bg-white shadow-md">
+              <CardContent className="p-6">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1 pr-4">
+                        <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">
+                          {tender.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-2">{tender.organisation}</p>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {tender.workTypes.slice(0, 3).map((workType, index) => (
+                            <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                              {workType}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-shrink-0">
+                        <CompatibilityScore score={tender.compatibilityScore} showTooltip={false} />
                       </div>
                     </div>
-                    
-                    <div className="flex-shrink-0">
-                      <CompatibilityScore score={tender.compatibilityScore} showTooltip={false} />
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <IndianRupee className="w-4 h-4 mr-2" />
+                        <span className="font-medium">{formatAmount(tender.amount)}</span>
+                      </div>
+                      
+                      <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        <span>{tender.location}</span>
+                      </div>
+                      
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span>Deadline: {tender.deadline}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <IndianRupee className="w-4 h-4 mr-2" />
-                      <span className="font-medium">{formatAmount(tender.amount)}</span>
-                    </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={onAnalyze}
+                      className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white rounded-lg transition-all duration-200"
+                    >
+                      Analyse
+                    </Button>
                     
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <span>{tender.location}</span>
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      <span>Deadline: {tender.deadline}</span>
-                    </div>
+                    <Button
+                      onClick={() => handleSaveTender(tender)}
+                      variant="outline"
+                      className={`border-teal-200 rounded-lg transition-all duration-200 ${
+                        savedTenders.has(tender.id) 
+                          ? 'bg-green-50 text-green-700 border-green-200' 
+                          : 'text-teal-700 hover:bg-teal-50'
+                      }`}
+                    >
+                      {savedTenders.has(tender.id) ? (
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          Saved
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Save
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          ))}
 
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={onAnalyze}
-                    className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white rounded-lg transition-all duration-200"
-                  >
-                    Analyse
-                  </Button>
-                  
-                  <Button
-                    onClick={() => onSaveTender(tender)}
-                    variant="outline"
-                    className="border-teal-200 text-teal-700 hover:bg-teal-50 rounded-lg transition-all duration-200"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {filteredAndSortedTenders.length === 0 && (
-        <div className="text-center py-12">
-          <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No tenders found</h3>
-          <p className="text-gray-500">Try adjusting your search criteria or filters</p>
+          {filteredAndSortedTenders.length === 0 && (
+            <div className="text-center py-12">
+              <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No tenders found</h3>
+              <p className="text-gray-500">Try adjusting your search criteria or filters</p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
