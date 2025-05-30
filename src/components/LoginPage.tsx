@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, User, Eye, EyeOff, Github } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Smartphone, HardHat } from 'lucide-react';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -59,10 +59,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       <Card className="w-full max-w-md shadow-2xl border-0 rounded-xl bg-white/80 backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
           <div className="mx-auto w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
-            <span className="text-white font-bold text-xl">TB</span>
+            <HardHat className="text-white w-8 h-8" />
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-            tenderBharat
+            TenderBharat
           </CardTitle>
           <CardDescription className="text-gray-600 text-base">Smart Tender Analysis Platform</CardDescription>
         </CardHeader>
@@ -151,8 +151,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     Google
                   </Button>
                   <Button variant="outline" className="rounded-xl border-2 hover:bg-gray-50 transition-all duration-200">
-                    <Github className="w-5 h-5 mr-2" />
-                    GitHub
+                    <Smartphone className="w-5 h-5 mr-2" />
+                    Mobile No.
                   </Button>
                 </div>
               </form>
