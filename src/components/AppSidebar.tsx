@@ -39,7 +39,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ activeTab, setActiveTab, onLogo
   ];
 
   return (
-    <div className="w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col">
+    <div className="w-64 h-full bg-white shadow-xl border-r border-gray-200 flex flex-col">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 relative">

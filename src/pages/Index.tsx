@@ -66,8 +66,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex w-full bg-gray-50">
-      {/* Fixed Sidebar */}
-      <div className="fixed left-0 top-0 h-full z-10">
+      {/* Fixed Sidebar - spans entire page height */}
+      <div className="fixed left-0 top-0 bottom-0 h-screen z-10">
         <AppSidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab} 
