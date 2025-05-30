@@ -44,7 +44,7 @@ const Index = () => {
       case 'smart-search':
         return <SmartSearchFilters onNavigate={handleNavigation} />;
       case 'analysis':
-        return <AnalysisPage onNavigate={handleNavigation} />;
+        return <AnalysisPage onNavigate={handleNavigation} onBack={() => setActiveTab('dashboard')} />;
       default:
         return <Dashboard onNavigate={handleNavigation} />;
     }
