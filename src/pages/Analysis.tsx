@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Search, SortAsc, SortDesc, MapPin, Calendar, ZoomIn, X, Target, TrendingUp, AlertTriangle, Filter, ExternalLink, Download } from 'lucide-react';
+import { ArrowLeft, Search, SortAsc, SortDesc, MapPin, Calendar, ZoomIn, X, Target, TrendingUp, AlertTriangle, Filter } from 'lucide-react';
 
 const Analysis = () => {
   const navigate = useNavigate();
@@ -15,46 +16,26 @@ const Analysis = () => {
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('roadside-drainage');
 
-  // Calculate days left until submission deadline
-  const calculateDaysLeft = (deadline: string) => {
-    const today = new Date();
-    const submissionDate = new Date(deadline);
-    const timeDiff = submissionDate.getTime() - today.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    return daysLeft;
-  };
-
-  // Mock data for tender bio with additional fields
+  // Mock data for tender bio
   const tenderBio = {
     projectName: "Mumbai-Pune Highway Development Project - Phase 2",
-    brief: "Construction of 4-lane highway with advanced drainage systems, major bridge construction, and comprehensive road safety measures.",
-    location: "Kunigal, Karnataka",
-    estimatedValue: "₹2,339.1 Crores",
-    estimatedCost: "₹2,339.1 Cr",
-    emd: "₹23.39 Cr",
-    length: "14 km",
-    type: "EPC with 5 year maintenance",
-    organisation: "BRO",
-    organisationId: "2025_NHAI_223232-_1",
+    location: "Maharashtra State Highway 21, Km 45-78",
+    estimatedValue: "₹2,450 Crores",
     duration: "36 Months",
-    authority: "Border Roads Organisation (BRO)",
-    tenderDate: "3rd June 2025",
-    submissionDeadline: "25th June 2025",
-    website: "https://eprocure.gov.in/eprocure/app",
-    documentsLink: "https://eprocure.gov.in/tender/documents",
+    authority: "Maharashtra State Road Development Corporation (MSRDC)",
+    tenderDate: "15th March 2024",
+    submissionDeadline: "25th April 2024",
     compatibilityScore: 87
   };
 
-  const daysLeft = calculateDaysLeft(tenderBio.submissionDeadline);
-
   // Location insights data
   const locationInsights = [
-    { title: "Terrain", content: "Mixed terrain with 60% plains and 40% hilly sections. Moderate elevation changes with challenging rocky outcrops." },
-    { title: "Climate", content: "Tropical monsoon climate. Optimal working: Oct-May. Monsoon restrictions: Jun-Sep with heavy rainfall." },
-    { title: "Logistics", content: "Medium difficulty. Good rail/road connectivity. 15km from nearest cement plant. Adequate fuel supply." },
-    { title: "Safety", content: "Low risk zone. No recent security incidents. Standard security protocols sufficient. Local police cooperation available." },
-    { title: "Soil Type", content: "Black cotton soil (65%), laterite (35%). Good bearing capacity. Local stone quarries within 25km radius." },
-    { title: "Material Availability", content: "Excellent cement access via highway. Steel supply from nearby industrial belt. Aggregate readily available." }
+    { title: "Current Terrain Type", content: "Mixed terrain with 60% plains and 40% hilly sections. Moderate elevation changes." },
+    { title: "Climate Zone & Working Season", content: "Tropical monsoon climate. Optimal working: Oct-May. Monsoon restrictions: Jun-Sep." },
+    { title: "Logistical Difficulty", content: "Medium difficulty. Good rail/road connectivity. 15km from nearest cement plant." },
+    { title: "Human Threat & Terrorism", content: "Low risk zone. No recent security incidents. Standard security protocols sufficient." },
+    { title: "Soil Type & Rock Availability", content: "Black cotton soil (65%), laterite (35%). Local stone quarries within 25km radius." },
+    { title: "Critique of Fuel/Cement Access", content: "Excellent fuel access via highway. Cement supply secured through nearby plants." }
   ];
 
   // Define the work item type
@@ -317,16 +298,7 @@ const Analysis = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <Card className="lg:col-span-3 shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl font-semibold text-gray-900">Tender Biography</CardTitle>
-                  <div className="text-right">
-                    <div className={`text-lg font-bold ${daysLeft > 7 ? 'text-green-600' : daysLeft > 3 ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
-                    </div>
-                    <div className="text-sm text-gray-500">to submit</div>
-                  </div>
-                </div>
-                <p className="text-gray-600 text-sm mt-2">{tenderBio.brief}</p>
+                <CardTitle className="text-xl font-semibold text-gray-900">Tender Biography</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -340,52 +312,22 @@ const Analysis = () => {
                       <p className="font-medium text-gray-700">{tenderBio.location}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Estimated Cost</p>
-                      <p className="font-semibold text-teal-700 text-lg">{tenderBio.estimatedCost}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">EMD</p>
-                      <p className="font-medium text-gray-700">{tenderBio.emd}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Length</p>
-                      <p className="font-medium text-gray-700">{tenderBio.length}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Website</p>
-                      <a href={tenderBio.website} target="_blank" rel="noopener noreferrer" className="flex items-center text-teal-600 hover:text-teal-700 transition-colors">
-                        <span className="mr-1">eProcurement Portal</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
+                      <p className="text-sm font-medium text-gray-500 mb-1">Estimated Value</p>
+                      <p className="font-semibold text-teal-700 text-lg">{tenderBio.estimatedValue}</p>
                     </div>
                   </div>
                   <div className="space-y-4">
                     <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Type</p>
-                      <p className="font-medium text-gray-700">{tenderBio.type}</p>
+                      <p className="text-sm font-medium text-gray-500 mb-1">Duration</p>
+                      <p className="font-medium text-gray-700">{tenderBio.duration}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Organisation</p>
-                      <p className="font-medium text-gray-700">{tenderBio.organisation}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Organisation ID</p>
-                      <p className="font-medium text-gray-700 font-mono text-sm">{tenderBio.organisationId}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Submission Date</p>
-                      <p className="font-medium text-gray-700">{tenderBio.tenderDate}</p>
+                      <p className="text-sm font-medium text-gray-500 mb-1">Authority</p>
+                      <p className="font-medium text-gray-700">{tenderBio.authority}</p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500 mb-1">Submission Deadline</p>
                       <p className="font-medium text-red-600">{tenderBio.submissionDeadline}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Download Documents</p>
-                      <a href={tenderBio.documentsLink} target="_blank" rel="noopener noreferrer" className="flex items-center text-teal-600 hover:text-teal-700 transition-colors">
-                        <Download className="w-4 h-4 mr-1" />
-                        <span>Tender Documents</span>
-                      </a>
                     </div>
                   </div>
                 </div>

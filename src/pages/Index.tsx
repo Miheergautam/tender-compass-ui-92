@@ -1,65 +1,95 @@
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Dashboard from "@/components/Dashboard";
-import AnalysisPage from "@/components/AnalysisPage";
-import AppSidebar from "@/components/AppSidebar";
-import SmartSearchFilters from "@/components/SmartSearchFilters";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppSidebar from '../components/AppSidebar';
+import Dashboard from '../components/Dashboard';
+import SmartSearchTab from '../components/SmartSearchTab';
+import InsightsTab from '../components/InsightsTab';
+import MyTendersTab from '../components/MyTendersTab';
+import CompanyProfileTab from '../components/CompanyProfileTab';
+import CompareTendersTab from '../components/CompareTendersTab';
+import FeedbackTab from '../components/FeedbackTab';
+import LanguageNotificationsTab from '../components/LanguageNotificationsTab';
+import { Tender } from '../types/tender';
 
 const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [savedTenders, setSavedTenders] = useState<Tender[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simple auth state
 
   useEffect(() => {
+    // Check if user is authenticated (you can implement proper auth logic here)
     const authStatus = localStorage.getItem('isAuthenticated');
     if (!authStatus) {
       navigate('/login');
-    } else {
-      setIsAuthenticated(true);
     }
   }, [navigate]);
-
-  const handleNavigation = (page: string) => {
-    if (page === 'analysis') {
-      navigate('/analysis');
-    } else {
-      setActiveTab(page);
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     navigate('/login');
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  const handleAnalyze = () => {
+    navigate('/analysis');
+  };
 
-  const renderContent = () => {
+  const handleSaveTender = (tender: Tender) => {
+    setSavedTenders(prev => {
+      const exists = prev.find(t => t.id === tender.id);
+      if (!exists) {
+        return [...prev, tender];
+      }
+      return prev;
+    });
+  };
+
+  const handleRemoveTender = (tenderId: string) => {
+    setSavedTenders(prev => prev.filter(t => t.id !== tenderId));
+  };
+
+  const renderActiveTab = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard onNavigate={handleNavigation} />;
+        return <Dashboard />;
       case 'smart-search':
-        return <SmartSearchFilters onNavigate={handleNavigation} />;
-      case 'analysis':
-        return <AnalysisPage onNavigate={handleNavigation} onBack={() => setActiveTab('dashboard')} />;
+        return <SmartSearchTab onAnalyze={handleAnalyze} onSaveTender={handleSaveTender} />;
+      case 'insights':
+        return <InsightsTab />;
+      case 'my-tenders':
+        return <MyTendersTab savedTenders={savedTenders} onAnalyze={handleAnalyze} onRemoveTender={handleRemoveTender} />;
+      case 'company-profile':
+        return <CompanyProfileTab />;
+      case 'compare-tenders':
+        return <CompareTendersTab />;
+      case 'feedback':
+        return <FeedbackTab />;
+      case 'language':
+      case 'notifications':
+      case 'settings':
+        return <LanguageNotificationsTab />;
       default:
-        return <Dashboard onNavigate={handleNavigation} />;
+        return <Dashboard />;
     }
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <AppSidebar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        onLogout={handleLogout} 
-      />
+    <div className="min-h-screen flex w-full bg-gray-50">
+      {/* Fixed Sidebar - spans entire page height */}
+      <div className="fixed left-0 top-0 bottom-0 h-screen z-10">
+        <AppSidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          onLogout={handleLogout} 
+        />
+      </div>
       
-      <div className="flex-1 overflow-auto">
-        {renderContent()}
+      {/* Main Content with left margin to account for fixed sidebar */}
+      <div className="flex-1 ml-64">
+        <div className="h-screen overflow-y-auto">
+          {renderActiveTab()}
+        </div>
       </div>
     </div>
   );

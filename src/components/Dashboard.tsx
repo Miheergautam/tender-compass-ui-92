@@ -1,15 +1,14 @@
+
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Upload, FileText, Search, BarChart3, Users, Building2, Calendar, TrendingUp, MapPin, Clock, X, CheckCircle, Target, IndianRupee } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { TrendingUp, FileText, Clock, Target, IndianRupee, Upload, X, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface DashboardProps {
-  onNavigate: (page: string) => void;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
+const Dashboard = () => {
+  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<Array<{id: string, name: string, progress: number, isComplete: boolean}>>([]);
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -121,7 +120,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   };
 
   const analyzeFile = (fileId: string) => {
-    onNavigate('analysis');
+    navigate('/analysis');
   };
 
   return (
