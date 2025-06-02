@@ -29,7 +29,7 @@ const Index = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
-    navigate('/login');
+    navigate('/');
   };
 
   const handleAnalyze = () => {
