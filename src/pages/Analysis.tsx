@@ -517,7 +517,7 @@ const Analysis = () => {
                 {Object.entries(workCategories).map(([category, content]) => (
                   <TabsContent key={category} value={category} className="mt-0">
                     <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                      <ScrollArea className="h-64 p-6">
+                      <ScrollArea className="h-96 p-6">
                         <MarkdownRenderer content={content} />
                       </ScrollArea>
                     </div>
@@ -534,7 +534,7 @@ const Analysis = () => {
             </CardHeader>
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <ScrollArea className="h-64 p-6">
+                <ScrollArea className="h-96 p-6">
                   <MarkdownRenderer content={paymentWeightageContent} />
                 </ScrollArea>
               </div>
