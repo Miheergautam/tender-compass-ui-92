@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -32,20 +31,6 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({ savedTenders, onAnalyze, on
     savedDate: new Date().toISOString().split('T')[0]
   };
 
-  // New high-value tenders from provided data
-  const newHighValueTenders: Tender[] = [
-    { id: 'nh60-nashik-1', name: 'Upgrad Of Exist Road To 4/6 Lane With 2lane Service Road On Both Sides And Const. Of 8lane Ef At Tier1 On Single Pier Sec Frm Nashik Phata To Alandi Phata Pkgi Of Nh60', organisation: 'NHAI', amount: 4256.67, compatibilityScore: 92, location: 'Maharashtra', deadline: '30-08-2025', category: 'Highway', workTypes: ['Highway', 'Elevated Flyover', '8-Lane'], savedDate: '2024-01-25' },
-    { id: 'nh4b-maharashtra-2', name: 'Const. Of 6lane Gf Starting From Its Junc With Nh4b(New Nh348)Near Pagote Till Its Junc On Nh48 At Chowk In Maharashtra To Be Executed On Bot Mode', organisation: 'NHAI', amount: 3653.09, compatibilityScore: 89, location: 'Maharashtra', deadline: '30-08-2025', category: 'Highway', workTypes: ['6-Lane', 'BOT Mode', 'Greenfield'], savedDate: '2024-01-24' },
-    { id: 'nh60-alandi-3', name: 'Upgrad Of Exist Road To 4/6 Lane With 2lane Service Road On Both Sides And Const. Of 8lane Elevated Flyover At Tier1 On Single Pier Sect From Alandi Phata To Khed', organisation: 'NHAI', amount: 3177.66, compatibilityScore: 91, location: 'Maharashtra', deadline: '30-08-2025', category: 'Highway', workTypes: ['Elevated Flyover', '8-Lane', 'Service Road'], savedDate: '2024-01-23' },
-    { id: 'nh948a-karnataka-4', name: 'Const. Of Strr(West Side) Nh948a Kunigal (Ramanagara Taluk) To S Mudugadapalli (Hosur Taluk) From Km 79 To Km 144.25 Dc Phaseii In Karnataka On Ham', organisation: 'NHAI', amount: 2779.17, compatibilityScore: 86, location: 'Karnataka', deadline: '12-06-2025', category: 'Highway', workTypes: ['STRR', 'HAM', 'Phase II'], savedDate: '2024-01-22' },
-    { id: 'nh948a-obalapura-5', name: 'Const. Of Strr (West Side) Nh948a Obalapura (Nelamangala Taluk) To Kunigal(Ramanagara Taluk) From Km 0 To Km 79 Dc Phasei In Karnataka On Ham', organisation: 'NHAI', amount: 2642.40, compatibilityScore: 85, location: 'Karnataka', deadline: '12-06-2025', category: 'Highway', workTypes: ['STRR', 'HAM', 'Phase I'], savedDate: '2024-01-21' },
-    { id: 'ec20-hassan-6', name: '4lane With Paved Shoulders From Ranganathpura (Hassan) To Keresooragondanahalli In Hassan-Hiriyur Section Of Ec-20 In Karnataka On Ham', organisation: 'NHAI', amount: 2626.32, compatibilityScore: 88, location: 'Karnataka', deadline: '23-06-2025', category: 'Highway', workTypes: ['4-Lane', 'Paved Shoulders', 'HAM'], savedDate: '2024-01-20' },
-    { id: 'nh744-rajapalayam-7', name: '4 Laning Of Rajapalayam To Shenkottai Section Of Nh-744 From Km 71.600 To Km 139900 In Tamil Nadu On Hybrid Annuity Mode', organisation: 'NHAI', amount: 2361.08, compatibilityScore: 87, location: 'Tamil Nadu', deadline: '26-06-2025', category: 'Highway', workTypes: ['4-Lane', 'Hybrid Annuity', '68.3km'], savedDate: '2024-01-19' },
-    { id: 'hyderabad-expressway-8', name: 'Development Of 4 Lane Ac Greenfield Regional Expressway On Northern Side Of Hyderabad From Pragnapur Vill To Rayagiri Vill For A Design Length Of 43.000 Km', organisation: 'NHAI', amount: 1728.22, compatibilityScore: 84, location: 'Telangana', deadline: '18-06-2025', category: 'Expressway', workTypes: ['4-Lane', 'Greenfield', 'Expressway'], savedDate: '2024-01-18' },
-    { id: 'hyderabad-rayagiri-9', name: 'Development Of 4-Lane Access Controlled Gf Regional Expressway On Northern Side Of Hyderabad From Rayagiri Village To Tangad Palle Village', organisation: 'NHAI', amount: 1547.04, compatibilityScore: 83, location: 'Telangana', deadline: '18-06-2025', category: 'Expressway', workTypes: ['Access Controlled', 'Greenfield', 'Regional'], savedDate: '2024-01-17' },
-    { id: 'hyderabad-girmapur-10', name: 'Development Of 4-Lane Access Controlled Gf Regional Expressway On Northern Side Of Hyderabad From Girmapur Village To Reddipalle Village', organisation: 'NHAI', amount: 1529.19, compatibilityScore: 82, location: 'Telangana', deadline: '18-06-2025', category: 'Expressway', workTypes: ['Access Controlled', '4-Lane', 'Regional'], savedDate: '2024-01-16' }
-  ];
-
   // Generate additional mock tenders to reach 40+ total
   const additionalMockTenders: Tender[] = [
     { id: 'saved-1', name: 'Green Building Construction with LEED Certification Standards', organisation: 'Green Building Council', amount: 1200, compatibilityScore: 87, location: 'Pune, MH', deadline: '15-07-2025', category: 'Green Building', workTypes: ['Green Construction', 'LEED', 'Sustainable'], savedDate: '2024-01-20' },
@@ -75,8 +60,8 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({ savedTenders, onAnalyze, on
     { id: 'saved-25', name: 'Mining Safety and Environmental Monitoring System', organisation: 'Mining Department', amount: 480, compatibilityScore: 76, location: 'Jharia, JH', deadline: '19-10-2025', category: 'Mining', workTypes: ['Mining Safety', 'Environmental Monitoring', 'System'], savedDate: '2023-12-26' }
   ];
 
-  // Place Sikkim tender first, then new high-value tenders, then existing saved tenders, then additional mock tenders
-  const allTenders = [sikkimTender, ...newHighValueTenders, ...savedTenders, ...additionalMockTenders];
+  // Place Sikkim tender first, then existing saved tenders, then additional mock tenders
+  const allTenders = [sikkimTender, ...savedTenders, ...additionalMockTenders];
 
   const filteredAndSortedTenders = React.useMemo(() => {
     let filtered = allTenders.filter(tender =>
@@ -230,4 +215,3 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({ savedTenders, onAnalyze, on
 };
 
 export default MyTendersTab;
-
