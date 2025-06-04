@@ -17,6 +17,20 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({ savedTenders, onAnalyze, on
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('saved-date');
 
+  // New Sikkim tender card to be displayed first
+  const sikkimTender: Tender = {
+    id: 'sikkim-road-2025',
+    name: 'Construction Improvement of Rishi Rongli Kupup Road from KM 53 to KM 70',
+    organisation: 'Border Roads Organization',
+    amount: 223.69,
+    compatibilityScore: 67,
+    location: 'Sikkim',
+    deadline: '19-06-2025',
+    category: 'Road Construction',
+    workTypes: ['Road Construction', 'EPC Contract', 'Mountain Terrain'],
+    savedDate: new Date().toISOString().split('T')[0]
+  };
+
   // Generate additional mock tenders to reach 40+ total
   const additionalMockTenders: Tender[] = [
     { id: 'saved-1', name: 'Green Building Construction with LEED Certification Standards', organisation: 'Green Building Council', amount: 1200, compatibilityScore: 87, location: 'Pune, MH', deadline: '15-07-2025', category: 'Green Building', workTypes: ['Green Construction', 'LEED', 'Sustainable'], savedDate: '2024-01-20' },
@@ -46,7 +60,8 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({ savedTenders, onAnalyze, on
     { id: 'saved-25', name: 'Mining Safety and Environmental Monitoring System', organisation: 'Mining Department', amount: 480, compatibilityScore: 76, location: 'Jharia, JH', deadline: '19-10-2025', category: 'Mining', workTypes: ['Mining Safety', 'Environmental Monitoring', 'System'], savedDate: '2023-12-26' }
   ];
 
-  const allTenders = [...savedTenders, ...additionalMockTenders];
+  // Place Sikkim tender first, then existing saved tenders, then additional mock tenders
+  const allTenders = [sikkimTender, ...savedTenders, ...additionalMockTenders];
 
   const filteredAndSortedTenders = React.useMemo(() => {
     let filtered = allTenders.filter(tender =>
