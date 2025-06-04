@@ -64,17 +64,229 @@ const Analysis = () => {
 
   // Nature of work content
   const workCategories = {
-    'roadside-drainage': 'Here are the extracted details for **Roadside Drainage** work from the provided pages:\n\n---\n\n### **Roadside Drainage Details**  \n\n#### **1. Drain Types & Quantities**  \n\n| S.No | Drain Type                          | Minimum Length (m) | Material Specification       |\n|------|-------------------------------------|--------------------|------------------------------|\n| 1    | V-Shape drains                      | 23,655.00          | PCC (M15 grade concrete)     |\n|      | *or equivalent as per site conditions* |                    |                              |\n\n**Total Length:** **23,655 meters** (indicative minimum)  \n\n---\n\n#### **2. Key Specifications**  \n1. **Built-up Areas:**  \n   - **RCC covered drains cum footpaths** shall be provided.  \n   - **RCC covers** must have **locking arrangements** to prevent sliding.  \n   - **Invert levels** to match ground slopes of adjoining properties.  \n\n2. **Traffic Load Consideration:**  \n   - **RCC covers** over drains must be designed to withstand traffic loads at property access points.  \n\n3. **Cutting Portions:**  \n   - **Lined drains** of suitable size (to be finalized in consultation with the Authority Engineer).  \n\n4. **Hydraulic Design:**  \n   - **RCC drain sections** must accommodate runoff from:  \n     - Carriageway  \n     - Adjoining areas  \n\n---\n\n#### **3. Contractor's Responsibilities**  \n- Final **length, type, size, and invert levels** of drains to be determined by the contractor based on:  \n  - Site drainage requirements  \n  - Approval from the Authority's Engineer  \n- **No additional payment** for increases in drain length beyond the specified minimum.  \n\n---\n\n### **Notes**  \n- **Compliance Standards:** IRC:SP:48-2023 (Chapter 2 & Para 5.12).  \n- **Flexibility:** Contractor may propose equivalent drain types if site conditions demand.  \n\n--- \n\nLet me know if you need further breakdowns (e.g., cross-section details, reinforcement specs).',
+    'roadside-drainage': `Here are the extracted details for **Roadside Drainage** work from the provided pages:
+
+---
+
+### **Roadside Drainage Details**  
+
+#### **1. Drain Types & Quantities**  
+
+| S.No | Drain Type                          | Minimum Length (m) | Material Specification       |
+|------|-------------------------------------|--------------------|------------------------------|
+| 1    | V-Shape drains                      | 23,655.00          | PCC (M15 grade concrete)     |
+|      | *or equivalent as per site conditions* |                    |                              |
+
+**Total Length:** **23,655 meters** (indicative minimum)  
+
+---
+
+#### **2. Key Specifications**  
+1. **Built-up Areas:**  
+   - **RCC covered drains cum footpaths** shall be provided.  
+   - **RCC covers** must have **locking arrangements** to prevent sliding.  
+   - **Invert levels** to match ground slopes of adjoining properties.  
+
+2. **Traffic Load Consideration:**  
+   - **RCC covers** over drains must be designed to withstand traffic loads at property access points.  
+
+3. **Cutting Portions:**  
+   - **Lined drains** of suitable size (to be finalized in consultation with the Authority Engineer).  
+
+4. **Hydraulic Design:**  
+   - **RCC drain sections** must accommodate runoff from:  
+     - Carriageway  
+     - Adjoining areas  
+
+---
+
+#### **3. Contractor's Responsibilities**  
+- Final **length, type, size, and invert levels** of drains to be determined by the contractor based on:  
+  - Site drainage requirements  
+  - Approval from the Authority's Engineer  
+- **No additional payment** for increases in drain length beyond the specified minimum.  
+
+---
+
+### **Notes**  
+- **Compliance Standards:** IRC:SP:48-2023 (Chapter 2 & Para 5.12).  
+- **Flexibility:** Contractor may propose equivalent drain types if site conditions demand.  
+
+--- 
+
+Let me know if you need further breakdowns (e.g., cross-section details, reinforcement specs).`,
     
-    'structures-work': "Here's the compiled list of all structures (culverts and bridges) with their design details, excluding NIL entries:\n\n### 1. Culverts to be Reconstructed (Slab Type)\n| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |\n|------|----------------------|------|---------------------------|---------------------|\n| 1    | 55+580               | SLAB | 1 x 2.0                   | 8.80                |\n| 2    | 55+700               | SLAB | 1 x 2.0                   | 8.80                |\n| 3    | 55+890               | SLAB | 1 x 2.0                   | 8.80                |\n\n### 2. Additional New Culverts (Slab Type with Catch Pit)\n(126 locations from chainage 55+775 to 74+340 - showing first 10 and last 5 for brevity)\n\n| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |\n|------|----------------------|------|---------------------------|---------------------|\n| 1    | 55+775               | SLAB | 1 x 6.0                   | 8.80                |\n| 2    | 55+970               | SLAB | 1 x 3.0                   | 8.80                |\n| ...  | ...                  | ...  | ...                       | ...                 |\n| 122  | 73+360               | SLAB | 1 x 2.0                   | 8.80                |\n| 123  | 73+640               | SLAB | 1 x 2.0                   | 8.80                |\n| 124  | 73+730               | SLAB | 1 x 2.0                   | 8.80                |\n| 125  | 74+160               | SLAB | 1 x 2.0                   | 8.80                |\n| 126  | 74+340               | SLAB | 1 x 2.0                   | 8.80                |\n\n**Span Variants**: 2.0m (most common), 3.0m, 4.0m, 6.0m  \n**Total Culverts**: 129 (3 reconstructed + 126 new)  \n**Standard Width**: 8.80m for all culverts  \n\n### 3. New Minor Bridges (MNB)\n| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Width (m) |\n|------|----------------------|------|---------------------------|-----------|\n| 1    | 56+925               | MNB  | 1 x 10.0                  | 14.50     |\n| 2    | 65+755               | MNB  | 1 x 10.0                  | 14.50     |\n| 3    | 66+530               | MNB  | 1 x 8.0                   | 14.50     |\n| 4    | 68+140               | MNB  | 1 x 10.0                  | 14.50     |\n\n**Key Features**:\n- All high-level bridges with footpaths\n- Designed to carry utility services (OFC/telephone)\n- Standard width: 14.5m\n- GAD drawings provided in tender documents\n\n### 4. Pipe Culverts at Junctions\n- HP culverts to be constructed as per site requirements\n- Balancing pipe culverts if needed\n- As per Schedule 'D' standards\n\n### General Specifications:\n1. **Design Codes**: IRC:SP:73-2018 (Section 7)  \n2. **Protection Works**:  \n   - Floor protection as per IRC codes  \n   - Railing/parapet repairs where required  \n3. **Drainage**:  \n   - Catch pits for all new culverts  \n   - Bridge deck drainage as per manual  \n\n*Note: All quantities are minimum specified; actual may increase based on site conditions without constituting Change of Scope.*",
+    'structures-work': `Here's the compiled list of all structures (culverts and bridges) with their design details, excluding NIL entries:
+
+### 1. Culverts to be Reconstructed (Slab Type)
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |
+|------|----------------------|------|---------------------------|---------------------|
+| 1    | 55+580               | SLAB | 1 x 2.0                   | 8.80                |
+| 2    | 55+700               | SLAB | 1 x 2.0                   | 8.80                |
+| 3    | 55+890               | SLAB | 1 x 2.0                   | 8.80                |
+
+### 2. Additional New Culverts (Slab Type with Catch Pit)
+(126 locations from chainage 55+775 to 74+340 - showing first 10 and last 5 for brevity)
+
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |
+|------|----------------------|------|---------------------------|---------------------|
+| 1    | 55+775               | SLAB | 1 x 6.0                   | 8.80                |
+| 2    | 55+970               | SLAB | 1 x 3.0                   | 8.80                |
+| ...  | ...                  | ...  | ...                       | ...                 |
+| 122  | 73+360               | SLAB | 1 x 2.0                   | 8.80                |
+| 123  | 73+640               | SLAB | 1 x 2.0                   | 8.80                |
+| 124  | 73+730               | SLAB | 1 x 2.0                   | 8.80                |
+| 125  | 74+160               | SLAB | 1 x 2.0                   | 8.80                |
+| 126  | 74+340               | SLAB | 1 x 2.0                   | 8.80                |
+
+**Span Variants**: 2.0m (most common), 3.0m, 4.0m, 6.0m  
+**Total Culverts**: 129 (3 reconstructed + 126 new)  
+**Standard Width**: 8.80m for all culverts  
+
+### 3. New Minor Bridges (MNB)
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Width (m) |
+|------|----------------------|------|---------------------------|-----------|
+| 1    | 56+925               | MNB  | 1 x 10.0                  | 14.50     |
+| 2    | 65+755               | MNB  | 1 x 10.0                  | 14.50     |
+| 3    | 66+530               | MNB  | 1 x 8.0                   | 14.50     |
+| 4    | 68+140               | MNB  | 1 x 10.0                  | 14.50     |
+
+**Key Features**:
+- All high-level bridges with footpaths
+- Designed to carry utility services (OFC/telephone)
+- Standard width: 14.5m
+- GAD drawings provided in tender documents
+
+### 4. Pipe Culverts at Junctions
+- HP culverts to be constructed as per site requirements
+- Balancing pipe culverts if needed
+- As per Schedule 'D' standards
+
+### General Specifications:
+1. **Design Codes**: IRC:SP:73-2018 (Section 7)  
+2. **Protection Works**:  
+   - Floor protection as per IRC codes  
+   - Railing/parapet repairs where required  
+3. **Drainage**:  
+   - Catch pits for all new culverts  
+   - Bridge deck drainage as per manual  
+
+*Note: All quantities are minimum specified; actual may increase based on site conditions without constituting Change of Scope.*`,
     
-    'protection-work': 'Here are the extracted protection work details from Page 165, presented in structured markdown tables:\n\n### Protection Works Summary\n| **Type**           | **Total Length (m)** | **Side** | **Combined Features**               |\n|--------------------|----------------------|----------|-------------------------------------|\n| Breast Wall        | 10,650               | LHS/RHS  | With drains/pavement                |\n| Retaining Wall     | 3,890                | LHS/RHS  | With drains/breast walls            |\n| Gabion Wall        | 60                   | LHS      | With stone pitching                 |\n| Stone Pitching     | 60                   | RHS      | With gabion wall                    |\n\n---\n\n### Detailed Protection Works Breakdown\n\n#### 1. Breast Walls\n| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |\n|-----------|-------------|----------------|-------------------------------------|\n| 4         | BHS         | 1,520          | Flexible pavement + BHS drain       |\n| 5         | LHS         | 1,860          | Flexible pavement + BHS drain       |\n| 6         | LHS         | 3,945          | Flexible pavement + drain           |\n| 9         | RHS         | 1,025          | Retaining wall + drain              |\n| 10        | RHS         | 960            | Flexible pavement + BHS drain       |\n| 11        | RHS         | 3,310          | Flexible pavement + drain           |\n| 13        | LHS         | 1,390          | Retaining wall + drain              |\n\n#### 2. Retaining Walls\n| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |\n|-----------|-------------|----------------|-------------------------------------|\n| 8         | LHS         | 985            | Flexible pavement + RHS drain       |\n| 9         | LHS         | 1,025          | RHS breast wall + drain             |\n| 12        | RHS         | 1,490          | Flexible pavement + LHS drain       |\n| 13        | RHS         | 1,390          | LHS breast wall + drain             |\n\n#### 3. Gabion Wall & Stone Pitching\n| **Sr.No** | **Type**       | **Location** | **Length (m)** | **Combined Features**               |\n|-----------|---------------|-------------|----------------|-------------------------------------|\n| 7         | Gabion Wall   | LHS         | 60             | Flexible pavement + RHS stone pitching |\n| 7         | Stone Pitching| RHS         | 60             | Flexible pavement + LHS gabion wall |\n\n---\n\n### Notes:\n1. **Total Project Length**: 19,135 m (all protection works are part of flexible pavement construction).\n2. **Side Abbreviations**: \n   - **LHS**: Left Hand Side \n   - **RHS**: Right Hand Side \n   - **BHS**: Both Hand Sides\n3. **Design Compliance**: All works conform to IRC: SP: 73-2018 and IRC: SP: 48-2023 standards.\n4. **Variability**: Lengths may adjust during execution based on site conditions (per Note 1 on Page 165).\n\nLet me know if you need further breakdowns or additional details from other sections.',
+    'protection-work': `Here are the extracted protection work details from Page 165, presented in structured markdown tables:
+
+### Protection Works Summary
+| **Type**           | **Total Length (m)** | **Side** | **Combined Features**               |
+|--------------------|----------------------|----------|-------------------------------------|
+| Breast Wall        | 10,650               | LHS/RHS  | With drains/pavement                |
+| Retaining Wall     | 3,890                | LHS/RHS  | With drains/breast walls            |
+| Gabion Wall        | 60                   | LHS      | With stone pitching                 |
+| Stone Pitching     | 60                   | RHS      | With gabion wall                    |
+
+---
+
+### Detailed Protection Works Breakdown
+
+#### 1. Breast Walls
+| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|-------------|----------------|-------------------------------------|
+| 4         | BHS         | 1,520          | Flexible pavement + BHS drain       |
+| 5         | LHS         | 1,860          | Flexible pavement + BHS drain       |
+| 6         | LHS         | 3,945          | Flexible pavement + drain           |
+| 9         | RHS         | 1,025          | Retaining wall + drain              |
+| 10        | RHS         | 960            | Flexible pavement + BHS drain       |
+| 11        | RHS         | 3,310          | Flexible pavement + drain           |
+| 13        | LHS         | 1,390          | Retaining wall + drain              |
+
+#### 2. Retaining Walls
+| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|-------------|----------------|-------------------------------------|
+| 8         | LHS         | 985            | Flexible pavement + RHS drain       |
+| 9         | LHS         | 1,025          | RHS breast wall + drain             |
+| 12        | RHS         | 1,490          | Flexible pavement + LHS drain       |
+| 13        | RHS         | 1,390          | LHS breast wall + drain             |
+
+#### 3. Gabion Wall & Stone Pitching
+| **Sr.No** | **Type**       | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|---------------|-------------|----------------|-------------------------------------|
+| 7         | Gabion Wall   | LHS         | 60             | Flexible pavement + RHS stone pitching |
+| 7         | Stone Pitching| RHS         | 60             | Flexible pavement + LHS gabion wall |
+
+---
+
+### Notes:
+1. **Total Project Length**: 19,135 m (all protection works are part of flexible pavement construction).
+2. **Side Abbreviations**: 
+   - **LHS**: Left Hand Side 
+   - **RHS**: Right Hand Side 
+   - **BHS**: Both Hand Sides
+3. **Design Compliance**: All works conform to IRC: SP: 73-2018 and IRC: SP: 48-2023 standards.
+4. **Variability**: Lengths may adjust during execution based on site conditions (per Note 1 on Page 165).
+
+Let me know if you need further breakdowns or additional details from other sections.`,
     
-    'road-composition': "Based on the provided pages, I can summarize the TCS (Typical Cross Section) types and their applications, but the document doesn't contain specific details about pavement layer thicknesses or materials. Here's the structured information available:\n\n### TCS Types and Their Applications\n\n| TCS Type | Application Description | Length (m) |\n|----------|------------------------|------------|\n| TCS-I | New construction of flexible pavement & BHS drain | 240 |\n| TCS-II | New construction of flexible pavement & LHS drain | 1,295 |\n| TCS-III | New construction of flexible pavement & RHS drain | 1,055 |\n| TCS-IV | New construction of flexible pavement, BHS breast wall & BHS drain | 1,520 |\n| TCS-V | New construction of flexible pavement, LHS breast wall & BHS drain | 1,860 |\n| TCS-VI | New construction of flexible pavement, LHS breast wall & drain | 3,945 |\n| TCS-VII | New construction of flexible pavement, LHS gabion wall & RHS stone pitching | 60 |\n| TCS-VIII | New construction of flexible pavement, LHS retaining wall & RHS drain | 985 |\n| TCS-IX | New construction of flexible pavement, LHS retaining wall, RHS breast wall & drain | 1,025 |\n| TCS-X | New construction of flexible pavement, RHS breast wall & BHS drain | 960 |\n| TCS-XI | New construction of flexible pavement, RHS breast wall & drain | 3,310 |\n| TCS-XII | New construction of flexible pavement, RHS retaining wall & LHS drain | 1,490 |\n| TCS-XIII | New construction of flexible pavement, RHS retaining wall, LHS breast wall & drain | 1,390 |\n\n**Total Length:** 19,135 meters\n\n### Key Notes:\n1. All TCS types involve flexible pavement construction with various combinations of:\n   - Drainage systems (BHS/LHS/RHS)\n   - Retaining structures (breast walls, gabion walls, retaining walls)\n   - Stone pitching\n\n2. The document references that detailed cross-sections are in Annex-III of Schedule-A, which would contain the actual layer details (thickness, materials, etc.)\n\n3. The TCS schedule is indicative and subject to site conditions and authority approval\n\nFor complete pavement layer details (bituminous layers, granular sub-base, etc.), we would need to see:\n1. Annex-III of Schedule-A as referenced on page 158\n2. The actual typical cross-section drawings for each TCS type\n3. The pavement design specifications from the project documents\n\nWould you like me to suggest a typical flexible pavement composition that might be used in such projects (based on standard Indian road specifications)?"
+    'road-composition': `Based on the provided pages, I can summarize the TCS (Typical Cross Section) types and their applications, but the document doesn't contain specific details about pavement layer thicknesses or materials. Here's the structured information available:
+
+### TCS Types and Their Applications
+
+| TCS Type | Application Description | Length (m) |
+|----------|------------------------|------------|
+| TCS-I | New construction of flexible pavement & BHS drain | 240 |
+| TCS-II | New construction of flexible pavement & LHS drain | 1,295 |
+| TCS-III | New construction of flexible pavement & RHS drain | 1,055 |
+| TCS-IV | New construction of flexible pavement, BHS breast wall & BHS drain | 1,520 |
+| TCS-V | New construction of flexible pavement, LHS breast wall & BHS drain | 1,860 |
+| TCS-VI | New construction of flexible pavement, LHS breast wall & drain | 3,945 |
+| TCS-VII | New construction of flexible pavement, LHS gabion wall & RHS stone pitching | 60 |
+| TCS-VIII | New construction of flexible pavement, LHS retaining wall & RHS drain | 985 |
+| TCS-IX | New construction of flexible pavement, LHS retaining wall, RHS breast wall & drain | 1,025 |
+| TCS-X | New construction of flexible pavement, RHS breast wall & BHS drain | 960 |
+| TCS-XI | New construction of flexible pavement, RHS breast wall & drain | 3,310 |
+| TCS-XII | New construction of flexible pavement, RHS retaining wall & LHS drain | 1,490 |
+| TCS-XIII | New construction of flexible pavement, RHS retaining wall, LHS breast wall & drain | 1,390 |
+
+**Total Length:** 19,135 meters
+
+### Key Notes:
+1. All TCS types involve flexible pavement construction with various combinations of:
+   - Drainage systems (BHS/LHS/RHS)
+   - Retaining structures (breast walls, gabion walls, retaining walls)
+   - Stone pitching
+
+2. The document references that detailed cross-sections are in Annex-III of Schedule-A, which would contain the actual layer details (thickness, materials, etc.)
+
+3. The TCS schedule is indicative and subject to site conditions and authority approval
+
+For complete pavement layer details (bituminous layers, granular sub-base, etc.), we would need to see:
+1. Annex-III of Schedule-A as referenced on page 158
+2. The actual typical cross-section drawings for each TCS type
+3. The pavement design specifications from the project documents
+
+Would you like me to suggest a typical flexible pavement composition that might be used in such projects (based on standard Indian road specifications)?`
   };
 
   // Payment weightage content
-  const paymentWeightageContent = "Here's the consolidated Payment Weightage table with only non-zero percentage entries:\n\n### I. Road Works (41.794% of Contract Price)\n| Sub-Work | Stage for Payment | Weightage % |\n|----------|-------------------|-------------|\n| **B.1 - Reconstruction/New realignment/bypass (Flexible pavement)** | | |\n| | (1) Earthwork up to top of embankment | 22.70% |\n| | (2) Sub-Grade | 0.68% |\n| | (3) Sub Base Course | 12.11% |\n| | (4) Non-Bituminous Base Course | 12.76% |\n| | (5) Bituminous Base Course | 12.76% |\n| | (6) Wearing Coat | 7.69% |\n| **D - Culverts** | Culverts (length < 6m) | 31.30% |\n\n### II. Minor Bridges/Underpasses/Overpasses (1.950% of Contract Price)\n| Sub-Work | Stage for Payment | Weightage % |\n|----------|-------------------|-------------|\n| **A.2 - New Minor Bridges** | | |\n| | (1) Foundation | 27.42% |\n| | (2) Sub-structure | 35.27% |\n| | (3) Super-structure | 25.28% |\n| | (4) Miscellaneous Works | 6.35% |\n| | (5) Approaches | 5.68% |\n\n### IV. Other Works (56.256% of Contract Price)\n| Sub-Work | Stage for Payment | Weightage % |\n|----------|-------------------|-------------|\n| **(ii) Road side Drain** | | |\n| | (a) PCC Drain | 2.69% |\n| | (c) Unlined surface drains | 0.10% |\n| **(iii) Road signs, markings, km stones** | | 3.18% |\n| **(iv) Overhead gantry signs** | | 0.06% |\n| **(v) Junction improvement** | | 0.21% |\n| **(vi) Project facilities** | (a) Bus Bays, (b) Truck lay-byes | 0.22% |\n| **(viii) Protection works** | | |\n| | (a) Crash Barrier | 0.45% |\n| | (b) Retaining Wall | 25.12% |\n| | (c) Breast Wall | 59.32% |\n| | (d) Parapet | 3.15% |\n| | (e) Hydro seeding for Erosion control | 2.24% |\n| **(ix) Safety management** | | 0.18% |\n| **(x) Utility Ducts** | | 2.89% |\n| **(xi) Helipad** | | 0.19% |\n\n*Note: All 0% weightage entries and inactive work stages (e.g., rigid pavement sections) have been excluded.*";
+  const paymentWeightageContent = `### IV. Other Works (56.256% of Contract Price)
+| Sub-Work | Stage for Payment | Weightage % |
+|----------|-------------------|-------------|
+| **(ii) Road side Drain** | | |
+| | (a) PCC Drain | 2.69% |
+| | (c) Unlined surface drains | 0.10% |
+| **(iii) Road signs, markings, km stones** | | 3.18% |
+| **(iv) Overhead gantry signs** | | 0.06% |
+| **(v) Junction improvement** | | 0.21% |
+| **(vi) Project facilities** | (a) Bus Bays, (b) Truck lay-byes | 0.22% |
+| **(viii) Protection works** | | |
+| | (a) Crash Barrier | 0.45% |
+| | (b) Retaining Wall | 25.12% |
+| | (c) Breast Wall | 59.32% |
+| | (d) Parapet | 3.15% |
+| | (e) Hydro seeding for Erosion control | 2.24% |
+| **(ix) Safety management** | | 0.18% |
+| **(x) Utility Ducts** | | 2.89% |
+| **(xi) Helipad** | | 0.19% |
+
+*Note: All 0% weightage entries and inactive work stages (e.g., rigid pavement sections) have been excluded.*`;
 
   // Site images from provided URLs
   const siteImages = [
@@ -336,7 +548,7 @@ const Analysis = () => {
                 {Object.entries(workCategories).map(([category, content]) => (
                   <TabsContent key={category} value={category} className="mt-0">
                     <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                      <ScrollArea className="h-96 p-6">
+                      <ScrollArea className="h-80 p-6">
                         <MarkdownRenderer content={content} />
                       </ScrollArea>
                     </div>
@@ -353,7 +565,7 @@ const Analysis = () => {
             </CardHeader>
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <ScrollArea className="h-96 p-6">
+                <ScrollArea className="h-80 p-6">
                   <MarkdownRenderer content={paymentWeightageContent} />
                 </ScrollArea>
               </div>
