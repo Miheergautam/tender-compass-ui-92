@@ -1,193 +1,307 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Search, SortAsc, SortDesc, MapPin, Calendar, ZoomIn, X, Target, TrendingUp, AlertTriangle, Filter, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Search, SortAsc, SortDesc, MapPin, Calendar, ZoomIn, X, Target, TrendingUp, AlertTriangle, ExternalLink } from 'lucide-react';
 
 const Analysis = () => {
   const navigate = useNavigate();
-  const [selectedWorkType, setSelectedWorkType] = useState('');
-  const [hoveredButton, setHoveredButton] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState('roadside-drainage');
 
   // Calculate days left
-  const submissionDate = new Date('2025-06-03');
+  const submissionDate = new Date('2025-06-19');
   const today = new Date();
   const timeDiff = submissionDate.getTime() - today.getTime();
   const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-  // Mock data for tender bio
+  // Tender bio data
   const tenderBio = {
-    brief: "Construction of 14 km highway stretch with advanced drainage systems, major bridges, and comprehensive safety infrastructure including 5-year maintenance contract.",
-    location: "Kargil",
-    estimatedValue: "₹250 Crores",
-    estimatedCost: "₹2,339.1 Cr",
-    emd: "₹23.39 Cr",
-    length: "14 km",
-    type: "EPC with 5 year maintenance",
-    downloadDocuments: "#", // Replace duration with download link
-    authority: "Maharashtra State Road Development Corporation (MSRDC)",
-    organisation: "BRO",
-    organisationId: "2025_NHAI_223232-_1",
-    website: "https://nhai.gov.in",
-    tenderDate: "15th March 2024",
-    submissionDeadline: "3 June",
+    brief: "construction improvement of rishi rongli kupup from km 53 design chainage km 55.44 to km 70 design chainage km 74.575 net design length 19.135 km from existing cl 9 to nhdl specifications through epc mode in sikkim under project swastik",
+    location: "Sikkim",
+    estimatedCost: "223.69 Cr.",
+    emd: "4.46 Cr.",
+    length: "19.135 km",
+    type: "EPC Contract",
+    downloadDocuments: "https://defproc.gov.in/nicgep/app",
+    organisation: "Border Roads Organization",
+    organisationId: "2025_BRO_706797_1",
+    website: "https://defproc.gov.in/nicgep/app",
+    submissionDeadline: "19 June 2025",
     compatibilityScore: 87
   };
 
-  // Location insights data - updated categories
+  // Location insights data
   const locationInsights = [
-    { title: "Terrain", content: "Mixed terrain with 60% plains and 40% hilly sections. Moderate elevation changes with some challenging gradients." },
-    { title: "Climate", content: "Tropical monsoon climate. Optimal working: Oct-May. Monsoon restrictions: Jun-Sep with heavy rainfall." },
-    { title: "Logistics", content: "Medium difficulty. Good rail/road connectivity. 15km from nearest cement plant. Adequate transportation infrastructure." },
-    { title: "Safety", content: "Low risk zone. No recent security incidents. Standard safety protocols sufficient. Good emergency access routes." },
-    { title: "Soil Type", content: "Black cotton soil (65%), laterite (35%). Requires special foundation treatment in cotton soil areas." },
-    { title: "Material Availability", content: "Local stone quarries within 25km radius. Excellent cement and fuel access via highway connections." }
+    { title: "Terrain", content: "The terrain along the **Rishi - Rongli - Kupup** road in Sikkim is **high-altitude mountainous terrain**, characterized by steep slopes, deep valleys, and rugged ridges typical of the Eastern Himalayas. The Kupup end, near the India-China border, reaches elevations above 4,000 meters (13,000 ft), featuring alpine conditions." },
+    { title: "Climate", content: "Based on the location in Sikkim (Eastern Himalayas):\n\n*   **Climate Zone:** **Subtropical Highland** (Köppen classification primarily Cwb/Cwc, with alpine conditions at the highest elevations like Kupup).\n*   **Suitable Working Season:** **Dry seasons (October-November & March-May)**. Avoid monsoon (June-September) due to heavy rain, landslides, and winter (December-February) due to snow/ice at higher elevations (especially Kupup).\n\n**Response:**  \n**Climate Type: Subtropical Highland  \nWorking Season: October-November & March-May**" },
+    { title: "Logistics", content: "The logistical difficulty for construction at Rishi-Rongli-Kupup Road in Sikkim is **Extremely High** due to the region's rugged Himalayan terrain, extreme altitude (up to 12,000+ feet), frequent landslides, heavy monsoons, and limited access routes, severely complicating transport and labor deployment." },
+    { title: "Safety", content: "Based on current assessments of the Rishi-Rongli-Kupup road in Sikkim:  \n\n**Risk Level: LOW**  \nSikkim has minimal terrorism-related activity, and this route shows no significant insurgent or extremist threats. However, general travel risks (e.g., landslides, weather) exist due to its remote Himalayan terrain. Always monitor local advisories.  \n\n*Sources: Indian Ministry of Home Affairs and South Asia Terrorism Portal.*" },
+    { title: "Soil Type", content: "Based on the location along the Rishi-Rongli-Kupup road in Sikkim:  \n\n- **Soil Type**: Predominantly brown forest soils and red soils in lower elevations, transitioning to thin, stony mountain soils at higher altitudes (notably near Kupup).  \n- **Rock Availability**: Abundant metamorphic rocks (gneiss, schist) and some igneous formations suitable for aggregates, though extraction is often restricted in ecologically sensitive Himalayan zones.  \n\n*(Note: Site-specific surveys are recommended for precise assessment due to Sikkim's complex terrain and environmental regulations.)*" },
+    { title: "Material Availability", content: "Based on the remote location along the Rishi-Rongli-Kupup road in East Sikkim:  \n**Diesel/petrol pumps** are extremely limited; the nearest reliable options are in Gangtok (~60 km away).  \n**Cement vendors** are unavailable near Kupup; limited suppliers may exist in Rongli or Rangpo.  \n\n*Note: This high-altitude area has sparse infrastructure—stock essential supplies before traveling.*" }
   ];
 
-  // Define the work item type
-  type WorkItem = {
-    item: string;
-    quantity: string;
-    rate: string;
-    amount: string;
-  };
+  // Payment weightage markdown content
+  const paymentWeightageContent = `
+### I. Road Works (41.794% of Contract Price)
+| Sub-Work | Stage for Payment | Weightage % |
+|----------|-------------------|-------------|
+| **B.1 - Reconstruction/New realignment/bypass (Flexible pavement)** | | |
+| | (1) Earthwork up to top of embankment | 22.70% |
+| | (2) Sub-Grade | 0.68% |
+| | (3) Sub Base Course | 12.11% |
+| | (4) Non-Bituminous Base Course | 12.76% |
+| | (5) Bituminous Base Course | 12.76% |
+| | (6) Wearing Coat | 7.69% |
+| **D - Culverts** | Culverts (length < 6m) | 31.30% |
 
-  // Nature of work data
+### II. Minor Bridges/Underpasses/Overpasses (1.950% of Contract Price)
+| Sub-Work | Stage for Payment | Weightage % |
+|----------|-------------------|-------------|
+| **A.2 - New Minor Bridges** | | |
+| | (1) Foundation | 27.42% |
+| | (2) Sub-structure | 35.27% |
+| | (3) Super-structure | 25.28% |
+| | (4) Miscellaneous Works | 6.35% |
+| | (5) Approaches | 5.68% |
+
+### IV. Other Works (56.256% of Contract Price)
+| Sub-Work | Stage for Payment | Weightage % |
+|----------|-------------------|-------------|
+| **(ii) Road side Drain** | | |
+| | (a) PCC Drain | 2.69% |
+| | (c) Unlined surface drains | 0.10% |
+| **(iii) Road signs, markings, km stones** | | 3.18% |
+| **(iv) Overhead gantry signs** | | 0.06% |
+| **(v) Junction improvement** | | 0.21% |
+| **(vi) Project facilities** | (a) Bus Bays, (b) Truck lay-byes | 0.22% |
+| **(viii) Protection works** | | |
+| | (a) Crash Barrier | 0.45% |
+| | (b) Retaining Wall | 25.12% |
+| | (c) Breast Wall | 59.32% |
+| | (d) Parapet | 3.15% |
+| | (e) Hydro seeding for Erosion control | 2.24% |
+| **(ix) Safety management** | | 0.18% |
+| **(x) Utility Ducts** | | 2.89% |
+| **(xi) Helipad** | | 0.19% |
+
+*Note: All 0% weightage entries and inactive work stages (e.g., rigid pavement sections) have been excluded.*
+  `;
+
+  // Nature of work markdown content
   const workCategories = {
-    'roadside-drainage': {
-      buttons: ['Box Culverts', 'Pipe Culverts', 'Side Drains', 'Catch Pits', 'Storm Water Drains'],
-      data: {
-        'Box Culverts': [
-          { item: 'Excavation for foundation', quantity: '1,850 cum', rate: '₹285', amount: '₹5,27,250' },
-          { item: 'PCC M15 grade', quantity: '180 cum', rate: '₹3,800', amount: '₹6,84,000' },
-          { item: 'RCC M25 grade', quantity: '650 cum', rate: '₹5,200', amount: '₹33,80,000' },
-          { item: 'Steel reinforcement', quantity: '32 MT', rate: '₹68,000', amount: '₹21,76,000' },
-          { item: 'Formwork', quantity: '890 sqm', rate: '₹420', amount: '₹3,73,800' }
-        ] as WorkItem[],
-        'Pipe Culverts': [
-          { item: 'RCC Pipes 1200mm dia', quantity: '280 RM', rate: '₹1,450', amount: '₹4,06,000' },
-          { item: 'Bedding & Surrounds', quantity: '220 cum', rate: '₹950', amount: '₹2,09,000' },
-          { item: 'Headwall construction', quantity: '8 Nos', rate: '₹35,000', amount: '₹2,80,000' }
-        ] as WorkItem[],
-        'Side Drains': [
-          { item: 'Concrete Side Drains', quantity: '2,500 RM', rate: '₹850', amount: '₹21,25,000' },
-          { item: 'Stone Lining', quantity: '1,800 sqm', rate: '₹520', amount: '₹9,36,000' }
-        ] as WorkItem[],
-        'Catch Pits': [
-          { item: 'RCC Catch Pits', quantity: '45 Nos', rate: '₹12,000', amount: '₹5,40,000' },
-          { item: 'Grating & Covers', quantity: '45 Nos', rate: '₹3,500', amount: '₹1,57,500' }
-        ] as WorkItem[],
-        'Storm Water Drains': [
-          { item: 'Major Storm Drains', quantity: '1,200 RM', rate: '₹2,200', amount: '₹26,40,000' },
-          { item: 'Inlet Structures', quantity: '28 Nos', rate: '₹18,000', amount: '₹5,04,000' }
-        ] as WorkItem[]
-      }
-    },
-    'structures-work': {
-      buttons: ['Major Bridge', 'Minor Bridge', 'ROB/RUB', 'Retaining Wall', 'Abutments'],
-      data: {
-        'Major Bridge': [
-          { item: 'Foundation Work (Well/Pile)', quantity: '1,200 cum', rate: '₹6,800', amount: '₹81,60,000' },
-          { item: 'Pier Construction', quantity: '850 cum', rate: '₹7,200', amount: '₹61,20,000' },
-          { item: 'Superstructure PSC', quantity: '1,800 cum', rate: '₹8,500', amount: '₹1,53,00,000' },
-          { item: 'Deck Slab', quantity: '920 cum', rate: '₹6,200', amount: '₹57,04,000' }
-        ] as WorkItem[],
-        'Minor Bridge': [
-          { item: 'Abutment Work', quantity: '580 cum', rate: '₹5,400', amount: '₹31,32,000' },
-          { item: 'Deck Slab Construction', quantity: '420 cum', rate: '₹5,800', amount: '₹24,36,000' },
-          { item: 'Approach Slab', quantity: '180 cum', rate: '₹4,200', amount: '₹7,56,000' }
-        ] as WorkItem[],
-        'ROB/RUB': [
-          { item: 'Foundation for ROB', quantity: '850 cum', rate: '₹6,500', amount: '₹55,25,000' },
-          { item: 'Superstructure Girders', quantity: '120 cum', rate: '₹9,200', amount: '₹11,04,000' }
-        ] as WorkItem[],
-        'Retaining Wall': [
-          { item: 'Mass Concrete Retaining Wall', quantity: '650 cum', rate: '₹4,800', amount: '₹31,20,000' },
-          { item: 'Stone Masonry Wall', quantity: '480 cum', rate: '₹3,600', amount: '₹17,28,000' }
-        ] as WorkItem[],
-        'Abutments': [
-          { item: 'RCC Abutment Construction', quantity: '320 cum', rate: '₹6,800', amount: '₹21,76,000' },
-          { item: 'Wing Wall Construction', quantity: '180 cum', rate: '₹5,200', amount: '₹9,36,000' }
-        ] as WorkItem[]
-      }
-    },
-    'protection-work': {
-      buttons: ['Slope Protection', 'Toe Wall', 'Breast Wall', 'Stone Pitching', 'Gabion Work'],
-      data: {
-        'Slope Protection': [
-          { item: 'Stone Pitching 300mm thick', quantity: '3,200 sqm', rate: '₹680', amount: '₹21,76,000' },
-          { item: 'Filter Layer', quantity: '1,100 cum', rate: '₹1,450', amount: '₹15,95,000' },
-          { item: 'Weep holes', quantity: '180 Nos', rate: '₹850', amount: '₹1,53,000' }
-        ] as WorkItem[],
-        'Toe Wall': [
-          { item: 'Mass Concrete M15', quantity: '650 cum', rate: '₹4,200', amount: '₹27,30,000' },
-          { item: 'Stone Masonry', quantity: '420 cum', rate: '₹3,800', amount: '₹15,96,000' }
-        ] as WorkItem[],
-        'Breast Wall': [
-          { item: 'RCC Breast Wall', quantity: '450 cum', rate: '₹5,800', amount: '₹26,10,000' },
-          { item: 'Drainage Behind Wall', quantity: '280 sqm', rate: '₹680', amount: '₹1,90,400' }
-        ] as WorkItem[],
-        'Stone Pitching': [
-          { item: 'Random Rubble Stone Pitching', quantity: '2,800 sqm', rate: '₹720', amount: '₹20,16,000' },
-          { item: 'Bedding Material', quantity: '420 cum', rate: '₹1,200', amount: '₹5,04,000' }
-        ] as WorkItem[],
-        'Gabion Work': [
-          { item: 'Gabion Boxes', quantity: '180 cum', rate: '₹2,800', amount: '₹5,04,000' },
-          { item: 'Stone Filling', quantity: '180 cum', rate: '₹1,500', amount: '₹2,70,000' }
-        ] as WorkItem[]
-      }
-    },
-    'tcs-layer': {
-      buttons: ['Bituminous Work', 'Granular Base', 'Sub Base', 'Prime Coat', 'Tack Coat'],
-      data: {
-        'Bituminous Work': [
-          { item: 'DBM (Dense Bituminous Mix)', quantity: '18,500 sqm', rate: '₹195', amount: '₹36,07,500' },
-          { item: 'BC (Bituminous Concrete)', quantity: '18,500 sqm', rate: '₹145', amount: '₹26,82,500' },
-          { item: 'SDBC (Semi Dense Bituminous)', quantity: '12,000 sqm', rate: '₹165', amount: '₹19,80,000' }
-        ] as WorkItem[],
-        'Granular Base': [
-          { item: 'WMM Grade-II', quantity: '8,500 cum', rate: '₹2,200', amount: '₹1,87,00,000' },
-          { item: 'GSB (Granular Sub Base)', quantity: '12,000 cum', rate: '₹1,850', amount: '₹2,22,00,000' }
-        ] as WorkItem[],
-        'Sub Base': [
-          { item: 'Granular Sub Base Course', quantity: '15,000 cum', rate: '₹1,650', amount: '₹2,47,50,000' },
-          { item: 'Compaction & Finishing', quantity: '18,500 sqm', rate: '₹45', amount: '₹8,32,500' }
-        ] as WorkItem[],
-        'Prime Coat': [
-          { item: 'Bituminous Prime Coat', quantity: '18,500 sqm', rate: '₹28', amount: '₹5,18,000' },
-          { item: 'Curing & Protection', quantity: '18,500 sqm', rate: '₹12', amount: '₹2,22,000' }
-        ] as WorkItem[],
-        'Tack Coat': [
-          { item: 'Bituminous Tack Coat', quantity: '18,500 sqm', rate: '₹18', amount: '₹3,33,000' },
-          { item: 'Surface Preparation', quantity: '18,500 sqm', rate: '₹8', amount: '₹1,48,000' }
-        ] as WorkItem[]
-      }
-    }
+    'roadside-drainage': `
+### Roadside Drainage Details
+
+#### 1. Drain Types & Quantities
+
+| S.No | Drain Type                          | Minimum Length (m) | Material Specification       |
+|------|-------------------------------------|--------------------|------------------------------|
+| 1    | V-Shape drains                      | 23,655.00          | PCC (M15 grade concrete)     |
+|      | *or equivalent as per site conditions* |                    |                              |
+
+**Total Length:** **23,655 meters** (indicative minimum)
+
+#### 2. Key Specifications
+1. **Built-up Areas:**
+   - **RCC covered drains cum footpaths** shall be provided.
+   - **RCC covers** must have **locking arrangements** to prevent sliding.
+   - **Invert levels** to match ground slopes of adjoining properties.
+
+2. **Traffic Load Consideration:**
+   - **RCC covers** over drains must be designed to withstand traffic loads at property access points.
+
+3. **Cutting Portions:**
+   - **Lined drains** of suitable size (to be finalized in consultation with the Authority Engineer).
+
+4. **Hydraulic Design:**
+   - **RCC drain sections** must accommodate runoff from:
+     - Carriageway
+     - Adjoining areas
+
+#### 3. Contractor's Responsibilities
+- Final **length, type, size, and invert levels** of drains to be determined by the contractor based on:
+  - Site drainage requirements
+  - Approval from the Authority's Engineer
+- **No additional payment** for increases in drain length beyond the specified minimum.
+
+### Notes
+- **Compliance Standards:** IRC:SP:48-2023 (Chapter 2 & Para 5.12).
+- **Flexibility:** Contractor may propose equivalent drain types if site conditions demand.
+    `,
+    'structures-work': `
+### Structures Work Details
+
+#### 1. Culverts to be Reconstructed (Slab Type)
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |
+|------|----------------------|------|---------------------------|---------------------|
+| 1    | 55+580               | SLAB | 1 x 2.0                   | 8.80                |
+| 2    | 55+700               | SLAB | 1 x 2.0                   | 8.80                |
+| 3    | 55+890               | SLAB | 1 x 2.0                   | 8.80                |
+
+#### 2. Additional New Culverts (Slab Type with Catch Pit)
+(126 locations from chainage 55+775 to 74+340 - showing first 10 and last 5 for brevity)
+
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Min Clear Width (m) |
+|------|----------------------|------|---------------------------|---------------------|
+| 1    | 55+775               | SLAB | 1 x 6.0                   | 8.80                |
+| 2    | 55+970               | SLAB | 1 x 3.0                   | 8.80                |
+| ...  | ...                  | ...  | ...                       | ...                 |
+| 122  | 73+360               | SLAB | 1 x 2.0                   | 8.80                |
+| 123  | 73+640               | SLAB | 1 x 2.0                   | 8.80                |
+| 124  | 73+730               | SLAB | 1 x 2.0                   | 8.80                |
+| 125  | 74+160               | SLAB | 1 x 2.0                   | 8.80                |
+| 126  | 74+340               | SLAB | 1 x 2.0                   | 8.80                |
+
+**Span Variants**: 2.0m (most common), 3.0m, 4.0m, 6.0m
+**Total Culverts**: 129 (3 reconstructed + 126 new)
+**Standard Width**: 8.80m for all culverts
+
+#### 3. New Minor Bridges (MNB)
+| S.No | Design Chainage (Km) | Type | Span Arrangement (No x m) | Width (m) |
+|------|----------------------|---------------------------|-----------|
+| 1    | 56+925               | MNB  | 1 x 10.0                  | 14.50     |
+| 2    | 65+755               | MNB  | 1 x 10.0                  | 14.50     |
+| 3    | 66+530               | MNB  | 1 x 8.0                   | 14.50     |
+| 4    | 68+140               | MNB  | 1 x 10.0                  | 14.50     |
+
+**Key Features:**
+- All high-level bridges with footpaths
+- Designed to carry utility services (OFC/telephone)
+- Standard width: 14.5m
+- GAD drawings provided in tender documents
+
+#### 4. Pipe Culverts at Junctions
+- HP culverts to be constructed as per site requirements
+- Balancing pipe culverts if needed
+- As per Schedule 'D' standards
+
+### General Specifications:
+1. **Design Codes**: IRC:SP:73-2018 (Section 7)
+2. **Protection Works:**
+   - Floor protection as per IRC codes
+   - Railing/parapet repairs where required
+3. **Drainage:**
+   - Catch pits for all new culverts
+   - Bridge deck drainage as per manual
+
+*Note: All quantities are minimum specified; actual may increase based on site conditions without constituting Change of Scope.*
+    `,
+    'protection-work': `
+### Protection Works Summary
+| **Type**           | **Total Length (m)** | **Side** | **Combined Features**               |
+|--------------------|----------------------|----------|-------------------------------------|
+| Breast Wall        | 10,650               | LHS/RHS  | With drains/pavement                |
+| Retaining Wall     | 3,890                | LHS/RHS  | With drains/breast walls            |
+| Gabion Wall        | 60                   | LHS      | With stone pitching                 |
+| Stone Pitching     | 60                   | RHS      | With gabion wall                    |
+
+#### 1. Breast Walls
+| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|-------------|----------------|-------------------------------------|
+| 4         | BHS         | 1,520          | Flexible pavement + BHS drain       |
+| 5         | LHS         | 1,860          | Flexible pavement + BHS drain       |
+| 6         | LHS         | 3,945          | Flexible pavement + drain           |
+| 9         | RHS         | 1,025          | Retaining wall + drain              |
+| 10        | RHS         | 960            | Flexible pavement + BHS drain       |
+| 11        | RHS         | 3,310          | Flexible pavement + drain           |
+| 13        | LHS         | 1,390          | Retaining wall + drain              |
+
+#### 2. Retaining Walls
+| **Sr.No** | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|-------------|----------------|-------------------------------------|
+| 8         | LHS         | 985            | Flexible pavement + RHS drain       |
+| 9         | LHS         | 1,025          | RHS breast wall + drain             |
+| 12        | RHS         | 1,490          | Flexible pavement + LHS drain       |
+| 13        | RHS         | 1,390          | LHS breast wall + drain             |
+
+#### 3. Gabion Wall & Stone Pitching
+| **Sr.No** | **Type**       | **Location** | **Length (m)** | **Combined Features**               |
+|-----------|---------------|-------------|----------------|-------------------------------------|
+| 7         | Gabion Wall   | LHS         | 60             | Flexible pavement + RHS stone pitching |
+| 7         | Stone Pitching| RHS         | 60             | Flexible pavement + LHS gabion wall |
+
+### Notes:
+1. **Total Project Length**: 19,135 m (all protection works are part of flexible pavement construction).
+2. **Side Abbreviations:**
+   - **LHS**: Left Hand Side
+   - **RHS**: Right Hand Side
+   - **BHS**: Both Hand Sides
+3. **Design Compliance**: All works conform to IRC: SP: 73-2018 and IRC: SP: 48-2023 standards.
+4. **Variability**: Lengths may adjust during execution based on site conditions (per Note 1 on Page 165).
+    `,
+    'road-composition': `
+### TCS Types and Their Applications
+
+| TCS Type | Application Description | Length (m) |
+|----------|------------------------|------------|
+| TCS-I | New construction of flexible pavement & BHS drain | 240 |
+| TCS-II | New construction of flexible pavement & LHS drain | 1,295 |
+| TCS-III | New construction of flexible pavement & RHS drain | 1,055 |
+| TCS-IV | New construction of flexible pavement, BHS breast wall & BHS drain | 1,520 |
+| TCS-V | New construction of flexible pavement, LHS breast wall & BHS drain | 1,860 |
+| TCS-VI | New construction of flexible pavement, LHS breast wall & drain | 3,945 |
+| TCS-VII | New construction of flexible pavement, LHS gabion wall & RHS stone pitching | 60 |
+| TCS-VIII | New construction of flexible pavement, LHS retaining wall & RHS drain | 985 |
+| TCS-IX | New construction of flexible pavement, LHS retaining wall, RHS breast wall & drain | 1,025 |
+| TCS-X | New construction of flexible pavement, RHS breast wall & BHS drain | 960 |
+| TCS-XI | New construction of flexible pavement, RHS breast wall & drain | 3,310 |
+| TCS-XII | New construction of flexible pavement, RHS retaining wall & LHS drain | 1,490 |
+| TCS-XIII | New construction of flexible pavement, RHS retaining wall, LHS breast wall & drain | 1,390 |
+
+**Total Length:** 19,135 meters
+
+### Key Notes:
+1. All TCS types involve flexible pavement construction with various combinations of:
+   - Drainage systems (BHS/LHS/RHS)
+   - Retaining structures (breast walls, gabion walls, retaining walls)
+   - Stone pitching
+
+2. The document references that detailed cross-sections are in Annex-III of Schedule-A, which would contain the actual layer details (thickness, materials, etc.)
+
+3. The TCS schedule is indicative and subject to site conditions and authority approval
+
+For complete pavement layer details (bituminous layers, granular sub-base, etc.), we would need to see:
+1. Annex-III of Schedule-A as referenced on page 158
+2. The actual typical cross-section drawings for each TCS type
+3. The pavement design specifications from the project documents
+    `
   };
 
-  // Payment weightage data
-  const paymentWeightage = [
-    { work: 'Structures Work', subwork: 'Bridges & Major Culverts', percentage: 38 },
-    { work: 'Earthwork', subwork: 'Excavation & Embankment', percentage: 28 },
-    { work: 'Pavement Work', subwork: 'Bituminous Layers', percentage: 22 },
-    { work: 'Protection Work', subwork: 'Slope & Toe Protection', percentage: 8 },
-    { work: 'Drainage Work', subwork: 'Cross Drainage', percentage: 4 }
-  ];
-
-  // Site images data
+  // Site images with working URLs only
   const siteImages = [
-    { id: '1', src: '/placeholder.svg', title: 'Project Site Overview', location: 'Km 45+200', date: '2024-03-15' },
-    { id: '2', src: '/placeholder.svg', title: 'Bridge Construction Area', location: 'Km 52+800', date: '2024-03-14' },
-    { id: '3', src: '/placeholder.svg', title: 'Drainage System Layout', location: 'Km 48+600', date: '2024-03-13' },
-    { id: '4', src: '/placeholder.svg', title: 'Road Alignment Survey', location: 'Km 56+400', date: '2024-03-12' },
-    { id: '5', src: '/placeholder.svg', title: 'Material Storage Area', location: 'Km 50+100', date: '2024-03-11' },
-    { id: '6', src: '/placeholder.svg', title: 'Equipment Staging', location: 'Km 46+750', date: '2024-03-10' }
+    { 
+      id: '1', 
+      src: 'https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3176458044061348240', 
+      title: 'Rishi-Rongli-Kupup Road Overview', 
+      location: 'Sikkim Border Route', 
+      date: '2024-03-15' 
+    },
+    { 
+      id: '2', 
+      src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435211d1690135415t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5847.jpg', 
+      title: 'High Altitude Terrain', 
+      location: 'Kupup Area', 
+      date: '2024-03-14' 
+    },
+    { 
+      id: '3', 
+      src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435202d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5674.jpg', 
+      title: 'Mountain Road Construction', 
+      location: 'Rongli Section', 
+      date: '2024-03-13' 
+    },
+    { 
+      id: '4', 
+      src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435210d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5862.jpg', 
+      title: 'Alpine Conditions', 
+      location: 'High Altitude Section', 
+      date: '2024-03-12' 
+    }
   ];
 
   const getScoreColor = (score: number) => {
@@ -215,76 +329,103 @@ const Analysis = () => {
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = circumference - (tenderBio.compatibilityScore / 100) * circumference;
 
-  const filteredPaymentData = paymentWeightage
-    .filter(item => 
-      item.work.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.subwork.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      return sortOrder === 'asc' ? a.percentage - b.percentage : b.percentage - a.percentage;
+  const renderMarkdownContent = (content: string) => {
+    const lines = content.split('\n');
+    const elements: JSX.Element[] = [];
+    let currentTable: string[] = [];
+    let inTable = false;
+
+    lines.forEach((line, index) => {
+      if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+        if (!inTable) {
+          inTable = true;
+          currentTable = [];
+        }
+        currentTable.push(line);
+      } else {
+        if (inTable && currentTable.length > 0) {
+          // Render table
+          const tableRows = currentTable.filter(row => row.trim() !== '' && !row.includes('---'));
+          if (tableRows.length > 1) {
+            const headers = tableRows[0].split('|').map(h => h.trim()).filter(h => h !== '');
+            const rows = tableRows.slice(1).map(row => 
+              row.split('|').map(cell => cell.trim()).filter(cell => cell !== '')
+            );
+
+            elements.push(
+              <div key={`table-${index}`} className="overflow-x-auto mb-6">
+                <table className="w-full border-collapse border border-gray-300 text-sm">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-teal-50 to-blue-50">
+                      {headers.map((header, i) => (
+                        <th key={i} className="border border-gray-300 p-3 text-left font-semibold text-gray-700">
+                          {header.replace(/\*\*/g, '')}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((row, i) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        {row.map((cell, j) => (
+                          <td key={j} className="border border-gray-300 p-3">
+                            {cell.replace(/\*\*/g, '')}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+          }
+          currentTable = [];
+          inTable = false;
+        }
+
+        if (line.trim()) {
+          if (line.startsWith('### ')) {
+            elements.push(
+              <h3 key={index} className="text-lg font-semibold text-teal-700 mb-3 mt-6">
+                {line.replace('### ', '')}
+              </h3>
+            );
+          } else if (line.startsWith('#### ')) {
+            elements.push(
+              <h4 key={index} className="text-md font-semibold text-gray-800 mb-2 mt-4">
+                {line.replace('#### ', '')}
+              </h4>
+            );
+          } else if (line.startsWith('**') && line.endsWith('**')) {
+            elements.push(
+              <p key={index} className="font-semibold text-gray-800 mb-2">
+                {line.replace(/\*\*/g, '')}
+              </p>
+            );
+          } else if (line.startsWith('*Note:') || line.startsWith('*Sources:')) {
+            elements.push(
+              <p key={index} className="text-sm text-gray-600 italic mb-2">
+                {line.replace(/^\*/, '')}
+              </p>
+            );
+          } else if (line.startsWith('- ')) {
+            elements.push(
+              <li key={index} className="ml-4 mb-1 text-gray-700">
+                {line.replace('- ', '')}
+              </li>
+            );
+          } else if (line.trim() !== '') {
+            elements.push(
+              <p key={index} className="text-gray-700 mb-2 leading-relaxed">
+                {line}
+              </p>
+            );
+          }
+        }
+      }
     });
 
-  const topThreeWorks = paymentWeightage.slice(0, 3);
-
-  const renderWorkTable = () => {
-    if (!hoveredButton) return (
-      <div className="flex items-center justify-center h-64 text-gray-500">
-        <p>Hover over a work type to view details</p>
-      </div>
-    );
-    
-    const categoryData = workCategories[activeTab as keyof typeof workCategories];
-    let tableData: WorkItem[] = [];
-    
-    if (categoryData && categoryData.data[hoveredButton as keyof typeof categoryData.data]) {
-      tableData = categoryData.data[hoveredButton as keyof typeof categoryData.data];
-    }
-    
-    if (!tableData || tableData.length === 0) return (
-      <div className="flex items-center justify-center h-64 text-gray-500">
-        <p>No data available for this selection</p>
-      </div>
-    );
-
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h4 className="font-semibold text-lg text-teal-700">{hoveredButton}</h4>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="rounded-xl">
-              <Filter className="w-4 h-4 mr-1" />
-              Filter
-            </Button>
-            <Button variant="outline" size="sm" className="rounded-xl">
-              <SortAsc className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-        
-        <div className="overflow-auto max-h-80 rounded-xl border border-gray-200 bg-white shadow-sm">
-          <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-gradient-to-r from-teal-50 to-blue-50">
-              <tr>
-                <th className="p-4 text-left font-semibold text-gray-700 border-b">Item Description</th>
-                <th className="p-4 text-left font-semibold text-gray-700 border-b">Quantity</th>
-                <th className="p-4 text-left font-semibold text-gray-700 border-b">Rate</th>
-                <th className="p-4 text-left font-semibold text-gray-700 border-b">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((row, index) => (
-                <tr key={index} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="p-4 border-b border-gray-100 font-medium">{row.item}</td>
-                  <td className="p-4 border-b border-gray-100">{row.quantity}</td>
-                  <td className="p-4 border-b border-gray-100">{row.rate}</td>
-                  <td className="p-4 border-b border-gray-100 font-semibold text-teal-700">{row.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
+    return <div className="prose-sm max-w-none">{elements}</div>;
   };
 
   return (
@@ -335,11 +476,11 @@ const Analysis = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Estimated Cost</p>
-                    <p className="font-semibold text-teal-700 text-sm">{tenderBio.estimatedCost}</p>
+                    <p className="font-semibold text-teal-700 text-sm">₹{tenderBio.estimatedCost}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">EMD</p>
-                    <p className="font-medium text-gray-700 text-sm">{tenderBio.emd}</p>
+                    <p className="font-medium text-gray-700 text-sm">₹{tenderBio.emd}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Length</p>
@@ -442,8 +583,8 @@ const Analysis = () => {
                 {locationInsights.map((insight, index) => (
                   <Card key={index} className="p-4 bg-gradient-to-br from-teal-50 to-blue-50 border-teal-200 rounded-xl hover:shadow-md transition-all duration-300 hover:scale-105">
                     <h4 className="font-semibold text-teal-700 mb-2 text-sm">{insight.title}</h4>
-                    <div className="text-sm text-gray-700 max-h-20 overflow-y-auto">
-                      {insight.content}
+                    <div className="text-sm text-gray-700 max-h-32 overflow-y-auto">
+                      {renderMarkdownContent(insight.content)}
                     </div>
                   </Card>
                 ))}
@@ -457,7 +598,7 @@ const Analysis = () => {
               <CardTitle className="text-xl font-semibold text-gray-900">Nature of Work</CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <Tabs defaultValue="roadside-drainage">
                 <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-6 bg-gray-100 rounded-xl p-1">
                   <TabsTrigger 
                     value="roadside-drainage" 
@@ -478,36 +619,17 @@ const Analysis = () => {
                     Protection Work
                   </TabsTrigger>
                   <TabsTrigger 
-                    value="tcs-layer"
+                    value="road-composition"
                     className="rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
                   >
-                    TCS Layer
+                    Road Composition
                   </TabsTrigger>
                 </TabsList>
                 
-                {Object.keys(workCategories).map((category) => (
+                {Object.entries(workCategories).map(([category, content]) => (
                   <TabsContent key={category} value={category} className="mt-0">
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[400px]">
-                      <div className="space-y-3">
-                        {workCategories[category as keyof typeof workCategories].buttons.map((button) => (
-                          <Button
-                            key={button}
-                            variant="outline"
-                            className={`w-full justify-start rounded-xl border-2 transition-all duration-200 ${
-                              hoveredButton === button
-                                ? 'bg-gradient-to-r from-teal-50 to-blue-50 border-teal-300 text-teal-700 shadow-md'
-                                : 'hover:bg-teal-50 hover:border-teal-200 hover:text-teal-600'
-                            }`}
-                            onMouseEnter={() => setHoveredButton(button)}
-                          >
-                            {button}
-                          </Button>
-                        ))}
-                      </div>
-                      
-                      <div className="lg:col-span-3 bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200">
-                        {renderWorkTable()}
-                      </div>
+                    <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200 min-h-[400px]">
+                      {renderMarkdownContent(content)}
                     </div>
                   </TabsContent>
                 ))}
@@ -518,80 +640,11 @@ const Analysis = () => {
           {/* Payment Weightage Section */}
           <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
             <CardHeader>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <CardTitle className="text-xl font-semibold text-gray-900">Payment Weightage by Work</CardTitle>
-                
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      placeholder="Search work types..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 w-full sm:w-48 rounded-xl border-2"
-                    />
-                  </div>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className="rounded-xl"
-                  >
-                    {sortOrder === 'asc' ? <SortAsc className="w-4 h-4" /> : <SortDesc className="w-4 h-4" />}
-                  </Button>
-                </div>
-              </div>
+              <CardTitle className="text-xl font-semibold text-gray-900">Payment Weightage by Work</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="overflow-auto max-h-80 mb-6 rounded-xl border border-gray-200">
-                <table className="w-full">
-                  <thead className="sticky top-0 bg-gradient-to-r from-teal-50 to-blue-50">
-                    <tr>
-                      <th className="p-4 text-left font-semibold text-gray-700 border-b">Work Type</th>
-                      <th className="p-4 text-left font-semibold text-gray-700 border-b">Sub Work</th>
-                      <th className="p-4 text-left font-semibold text-gray-700 border-b">Percentage</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredPaymentData.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-50 transition-colors duration-200">
-                        <td className="p-4 border-b border-gray-100 font-medium">{item.work}</td>
-                        <td className="p-4 border-b border-gray-100">{item.subwork}</td>
-                        <td className="p-4 border-b border-gray-100">
-                          <div className="flex items-center space-x-3">
-                            <div className="flex-1 bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-gradient-to-r from-teal-500 to-blue-500 h-2 rounded-full transition-all duration-500"
-                                style={{ width: `${(item.percentage / 40) * 100}%` }}
-                              ></div>
-                            </div>
-                            <span className="font-semibold text-teal-700 min-w-[3rem]">{item.percentage}%</span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {topThreeWorks.map((work, index) => (
-                  <Card key={index} className="bg-gradient-to-br from-teal-50 to-blue-50 border-teal-200 rounded-xl hover:shadow-md transition-all duration-300">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                        {work.percentage}%
-                      </div>
-                      <div className="text-sm font-medium text-gray-700">{work.work}</div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-                        <div 
-                          className="bg-gradient-to-r from-teal-500 to-blue-500 h-2 rounded-full transition-all duration-1000"
-                          style={{ width: `${(work.percentage / 40) * 100}%` }}
-                        ></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200">
+                {renderMarkdownContent(paymentWeightageContent)}
               </div>
             </CardContent>
           </Card>
@@ -602,7 +655,7 @@ const Analysis = () => {
               <CardTitle className="text-xl font-semibold text-gray-900">Site Images Gallery</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {siteImages.map((image) => (
                   <div
                     key={image.id}
@@ -614,6 +667,9 @@ const Analysis = () => {
                         src={image.src}
                         alt={image.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
                       />
                     </div>
                     
@@ -647,6 +703,9 @@ const Analysis = () => {
                       src={selectedImage.src}
                       alt={selectedImage.title}
                       className="max-w-full max-h-full object-contain rounded-lg"
+                      onError={(e) => {
+                        e.currentTarget.src = '/placeholder.svg';
+                      }}
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
