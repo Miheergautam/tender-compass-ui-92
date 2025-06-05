@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 export type Tender = {
   _id: string;
@@ -21,6 +27,8 @@ type TenderContextType = {
   tenders: Tender[];
   loading: boolean;
   error: string | null;
+  curTender: Tender | undefined;
+  setCurTender: React.Dispatch<React.SetStateAction<Tender>>;
 };
 
 const TenderContext = createContext<TenderContextType | undefined>(undefined);
@@ -35,6 +43,7 @@ export const useTenderContext = () => {
 
 export const TenderProvider = ({ children }: { children: ReactNode }) => {
   const [tenders, setTenders] = useState<Tender[]>([]);
+  const [curTender, setCurTender] = useState<Tender | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,7 +65,9 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <TenderContext.Provider value={{ tenders, loading, error }}>
+    <TenderContext.Provider
+      value={{ tenders, loading, error, curTender, setCurTender }}
+    >
       {children}
     </TenderContext.Provider>
   );
