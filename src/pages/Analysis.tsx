@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -257,35 +256,39 @@ const Analysis = () => {
 - *Excludes all 0% weightage entries*.  
 - *For culverts, payment is split: 75% on structure completion, 25% on protection works*.`;
 
-  // Site images from provided URLs
+  // Site images from provided URLs with corresponding links
   const siteImages = [
     { 
       id: '1', 
       src: 'https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3176458044061348240', 
       title: 'Rishi-Rongli-Kupup Road Overview', 
       location: 'Sikkim Border Route', 
-      date: '2024-03-15' 
+      date: '2024-03-15',
+      link: 'https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3176458044061348240'
     },
     { 
       id: '2', 
       src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435211d1690135415t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5847.jpg', 
       title: 'High Altitude Terrain', 
       location: 'Kupup Area', 
-      date: '2024-03-14' 
+      date: '2024-03-14',
+      link: 'https://www.team-bhp.com/forum/attachments/travelogues/1435211d1690135415t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5847.jpg'
     },
     { 
       id: '3', 
       src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435202d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5674.jpg', 
       title: 'Mountain Road Construction', 
       location: 'Rongli Section', 
-      date: '2024-03-13' 
+      date: '2024-03-13',
+      link: 'https://www.team-bhp.com/forum/attachments/travelogues/1435202d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5674.jpg'
     },
     { 
       id: '4', 
       src: 'https://www.team-bhp.com/forum/attachments/travelogues/1435210d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5862.jpg', 
       title: 'Alpine Conditions', 
       location: 'High Altitude Section', 
-      date: '2024-03-12' 
+      date: '2024-03-12',
+      link: 'https://www.team-bhp.com/forum/attachments/travelogues/1435210d1690135374t-snarl-old-silk-route-rishi-khola-gnathang-kupup-east-sikkim-icchey-gaon-img_5862.jpg'
     }
   ];
 
@@ -348,7 +351,7 @@ const Analysis = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="mb-3">
+                <div className="mb-4">
                   <p className="text-gray-700 text-sm leading-relaxed">{tenderBio.brief}</p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -552,7 +555,7 @@ const Analysis = () => {
                   <div
                     key={image.id}
                     className="relative group cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
-                    onClick={() => setSelectedImage(image)}
+                    onClick={() => window.open(image.link, '_blank')}
                   >
                     <div className="aspect-square overflow-hidden">
                       <img
@@ -579,48 +582,6 @@ const Analysis = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Lightbox Modal */}
-              {selectedImage && (
-                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-                  <div className="relative max-w-4xl max-h-full">
-                    <button
-                      onClick={() => setSelectedImage(null)}
-                      className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors duration-200 z-10"
-                    >
-                      <X className="w-8 h-8" />
-                    </button>
-
-                    <img
-                      src={selectedImage.src}
-                      alt={selectedImage.title}
-                      className="max-w-full max-h-full object-contain rounded-lg"
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
-                      }}
-                    />
-
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
-                      <h3 className="text-lg font-semibold mb-2">{selectedImage.title}</h3>
-                      <div className="flex items-center space-x-4 text-sm text-gray-200">
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {selectedImage.location}
-                        </div>
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {selectedImage.date}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div 
-                    className="absolute inset-0 -z-10"
-                    onClick={() => setSelectedImage(null)}
-                  ></div>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>
