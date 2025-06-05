@@ -47,8 +47,7 @@ const Analysis = () => {
     },
     { 
       title: "Logistics", 
-      content: `### Logistical Difficulty  
-**Level**: Very High  
+      content: `**Level**: Very High  
 **Reason**: Extreme mountainous terrain, high altitude (up to 4,000m), and frequent landslides/monsoon disruptions in Sikkim's remote eastern Himalayas.  
 
 | Key Challenge         | Impact                          |
@@ -60,9 +59,7 @@ const Analysis = () => {
     },
     { 
       title: "Safety", 
-      content: `### Terrorism/Human Threat Risk Assessment
-
-| Risk Factor       | Level       |
+      content: `| Risk Factor       | Level       |
 |-------------------|-------------|
 | **Overall Risk**  | **Low**     |
 | **Border Proximity** | Moderate   |
@@ -78,9 +75,7 @@ const Analysis = () => {
     },
     { 
       title: "Soil Type", 
-      content: `### Soil Type and Rock Availability at Rishi-Rongli-Kupup Road, Gangtok, Sikkim
-
-- **Soil Type**: Predominantly **brown forest soil** (loamy, acidic) mixed with clay and organic matter, typical of Sikkim's Himalayan slopes.  
+      content: `- **Soil Type**: Predominantly **brown forest soil** (loamy, acidic) mixed with clay and organic matter, typical of Sikkim's Himalayan slopes.  
 - **Rock Availability**: **Yes** – abundant **gneiss, schist, and quartzite** from local quarries; suitable for aggregates but extraction may face terrain challenges.  
 
 | Feature          | Details                          |
@@ -90,10 +85,8 @@ const Analysis = () => {
     },
     { 
       title: "Material Availability", 
-      content: `### Fuel Pumps  
-- **Diesel/Petrol**: Available in Gangtok city (multiple pumps). Limited options beyond Rongli; last reliable refill at Gangtok before Kupup.  
+      content: `- **Diesel/Petrol**: Available in Gangtok city (multiple pumps). Limited options beyond Rongli; last reliable refill at Gangtok before Kupup.  
 
-### Cement Vendors  
 - **Cement**: Available in Gangtok (major suppliers like ACC/Ambuja). Sparse beyond Rongli; no vendors confirmed near Kupup.  
 
 **Note**: Remote terrain necessitates stocking fuel/cement in Gangtok before heading toward Kupup.` 
@@ -106,34 +99,33 @@ const Analysis = () => {
 
 | TCS Type | Proposal Description | Length (m) | Associated Features |
 |----------|----------------------|------------|---------------------|
-| TCS-I    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & BHS DRAIN | 240 | BHS Drain |
-| TCS-II   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & LHS DRAIN | 1295 | LHS Drain |
-| TCS-III  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & RHS DRAIN | 1055 | RHS Drain |
-| TCS-IV   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, BHS BREAST WALL & BHS DRAIN | 1520 | BHS Breast Wall, BHS Drain |
-| TCS-V    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & BHS DRAIN | 1860 | LHS Breast Wall, BHS Drain |
-| TCS-VI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & DRAIN | 3945 | LHS Breast Wall, Drain |
-| TCS-VII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS GABION WALL & RHS STONE PITCHING | 60 | LHS Gabion Wall, RHS Stone Pitching |
+| TCS-I | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & BHS DRAIN | 240 | BHS Drain |
+| TCS-II | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & LHS DRAIN | 1295 | LHS Drain |
+| TCS-III | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & RHS DRAIN | 1055 | RHS Drain |
+| TCS-IV | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, BHS BREAST WALL & BHS DRAIN | 1520 | BHS Breast Wall, BHS Drain |
+| TCS-V | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & BHS DRAIN | 1860 | LHS Breast Wall, BHS Drain |
+| TCS-VI | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & DRAIN | 3945 | LHS Breast Wall, Drain |
+| TCS-VII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS GABION WALL & RHS STONE PITCHING | 60 | LHS Gabion Wall, RHS Stone Pitching |
 | TCS-VIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL & RHS DRAIN | 985 | LHS Retaining Wall, RHS Drain |
-| TCS-IX   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL, RHS BREAST WALL & DRAIN | 1025 | LHS Retaining Wall, RHS Breast Wall, Drain |
-| TCS-X    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & BHS DRAIN | 960 | RHS Breast Wall, BHS Drain |
-| TCS-XI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & DRAIN | 3310 | RHS Breast Wall, Drain |
-| TCS-XII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL & LHS DRAIN | 1490 | RHS Retaining Wall, LHS Drain |
+| TCS-IX | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL, RHS BREAST WALL & DRAIN | 1025 | LHS Retaining Wall, RHS Breast Wall, Drain |
+| TCS-X | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & BHS DRAIN | 960 | RHS Breast Wall, BHS Drain |
+| TCS-XI | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & DRAIN | 3310 | RHS Breast Wall, Drain |
+| TCS-XII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL & LHS DRAIN | 1490 | RHS Retaining Wall, LHS Drain |
 | TCS-XIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL, LHS BREAST WALL & DRAIN | 1390 | RHS Retaining Wall, LHS Breast Wall, Drain |
 
-**Total Length**: 19,135 m  
+**Total Length**: 19,135 m
 
-### Pavement Composition (Generic for Flexible Pavement)
-- **Surface Course**: [Material/Thickness unavailable]  
-- **Base Course**: [Material/Thickness unavailable]  
-- **Sub-base**: [Material/Thickness unavailable]  
-- **Subgrade**: [Specifications unavailable]  
+### Pavement Layer Details (Assumed Standard for Flexible Pavement)
+- **Surface Course**: BC – 30 mm
+- **Base Course**: DBM – 60 mm
+- **Sub-base**: WMM – 250 mm
+- **Subgrade**: GSB – 200 mm  
+- **Total Thickness**: **540 mm**
 
-### Notes  
-- **Width**: Carriageway width varies per structure (tapering as per manual if different from approaches)  
-- **Drain Types**: BHS (Both Hand Side), LHS (Left Hand Side), RHS (Right Hand Side)  
-- **Wall Types**: Breast Wall, Gabion Wall, Retaining Wall  
-
-[Additional layer details would require Annex-III of Schedule-A]`,
+### Notes
+- **Material Specifications**: Refer to Annex-III of Schedule-A
+- **Width**: Carriageway width to match approach roads with proper tapering
+- **Approval**: Final TCS subject to site conditions and Authority approval`,
     
     'roadside-drainage': `### Roadside Drainage Details
 
