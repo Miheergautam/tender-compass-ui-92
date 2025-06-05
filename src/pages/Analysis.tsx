@@ -216,41 +216,40 @@ const Analysis = () => {
   const paymentWeightageContent = `### Payment Weightage  
 
 #### Road Works (41.794%)  
-| Stage | Sub-Stage | Weightage |  
-|-------|-----------|-----------|  
-| **B.1- Reconstruction/New Realignment/Bypass (Flexible Pavement)** | Earthwork up to top of embankment | 22.70% |  
-|  | Sub-Grade | 0.68% |  
-|  | Sub-Base Course | 12.11% |  
-|  | Non-Bituminous Base Course | 12.76% |  
-|  | Bituminous Base Course | 12.76% |  
-|  | Wearing Coat | 7.69% |  
-| **D- Culverts** | Culverts (length < 6 m) | 31.30% |  
+| Sub-Work                     | Stage                                      | Weightage |  
+|------------------------------|--------------------------------------------|-----------|  
+| Reconstruction (Flexible)    | Earthwork up to top of embankment         | 22.70%    |  
+|                              | Sub-Grade                                  | 0.68%     |  
+|                              | Sub-Base Course                            | 12.11%    |  
+|                              | Non-Bituminous Base Course                 | 12.76%    |  
+|                              | Bituminous Base Course                     | 12.76%    |  
+|                              | Wearing Coat                               | 7.69%     |  
+| Culverts                     | Culverts (length < 6m)                     | 31.30%    |  
 
-#### Minor Bridges/Underpasses/Overpasses (1.950%)  
-| Stage | Sub-Stage | Weightage |  
-|-------|-----------|-----------|  
-| **A.2- New Minor Bridges (length >6m and <60m)** | Foundation | 27.42% |  
-|  | Sub-structure | 35.27% |  
-|  | Super-structure | 25.28% |  
-|  | Miscellaneous Works | 6.35% |  
-|  | Approaches | 5.68% |  
+#### Minor Bridges (1.950%)  
+| Sub-Work                     | Stage                                      | Weightage |  
+|------------------------------|--------------------------------------------|-----------|  
+| New Minor Bridges            | Foundation (abutments/piers)              | 27.42%    |  
+|                              | Sub-structure (abutments/pier caps)       | 35.27%    |  
+|                              | Super-structure (deck slab + bearings)    | 25.28%    |  
+|                              | Miscellaneous (wearing coat, barriers)    | 6.35%     |  
+|                              | Approaches (retaining walls, pitching)    | 5.68%     |  
 
 #### Other Works (56.256%)  
-| Category | Sub-Work | Weightage |  
-|----------|----------|-----------|  
-| **Roadside Drain** | PCC Drain | 2.69% |  
-|  | Unlined surface drains | 0.10% |  
-| **Road Signs & Safety** | Signs, markings, km stones | 3.18% |  
-|  | Overhead gantry signs | 0.06% |  
-| **Junction & Facilities** | Junction improvement | 0.21% |  
-|  | Bus Bays/Truck lay-byes | 0.22% |  
-| **Protection Works** | Crash Barrier | 0.45% |  
-|  | Retaining Wall | 25.12% |  
-|  | Breast Wall | 59.32% |  
-|  | Parapet | 3.15% |  
-|  | Hydro seeding | 2.24% |  
-| **Utilities** | Utility Ducts | 2.89% |  
-| **Miscellaneous** | Helipad | 0.19% |  
+| Sub-Work                     | Stage                                      | Weightage |  
+|------------------------------|--------------------------------------------|-----------|  
+| Roadside Drain               | PCC Drain                                  | 2.69%     |  
+|                              | Unlined surface drains                     | 0.10%     |  
+| Road Signs & Safety          | Signs, markings, km stones                | 3.18%     |  
+|                              | Overhead gantry signs                      | 0.06%     |  
+| Junction Improvement         | -                                          | 0.21%     |  
+| Project Facilities           | Bus bays, truck lay-byes                  | 0.22%     |  
+| Protection Works             | Retaining Wall                             | 25.12%    |  
+|                              | Breast Wall                                | 59.32%    |  
+|                              | Parapet                                    | 3.15%     |  
+|                              | Hydro seeding (erosion control)            | 2.24%     |  
+| Utility Ducts                | Across the road                            | 2.89%     |  
+| Helipad                      | -                                          | 0.19%     |  
 
 **Notes**:  
 - *Excludes all 0% weightage entries*.  
@@ -351,7 +350,7 @@ const Analysis = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="mb-4">
+                <div className="mb-6">
                   <p className="text-gray-700 text-sm leading-relaxed">{tenderBio.brief}</p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
