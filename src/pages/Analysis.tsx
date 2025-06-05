@@ -37,45 +37,72 @@ const Analysis = () => {
   const locationInsights = [
     { 
       title: "Terrain", 
-      content: `### Terrain Type  
-- **Description**: Mountainous with steep slopes` 
+      content: `🔹 Terrain:
+**Terrain Type**: Mountainous  
+*This region in the Eastern Himalayas features steep slopes, high altitude, and rugged terrain typical of Sikkim's topography.*` 
     },
     { 
       title: "Climate", 
-      content: `### Climate & Construction Season  
-- **Climate Zone**: Alpine/Temperate (High-altitude region)  
-- **Working Season**: April to October (Dry months, avoiding monsoon/winter)` 
+      content: `🔹 Climate:
+- **Climate Zone**: Alpine (Köppen: ET) at higher elevations (Kupup), Humid Subtropical (Köppen: Cwa) at lower elevations (Gangtok/Rongli)  
+- **Working Season**: March to May (primary dry window), October to November (secondary period for lower segments, avoiding monsoon and extreme cold)` 
     },
     { 
       title: "Logistics", 
-      content: `### Logistical Difficulty  
-- **Road Name**: Rishi - Rongli – Kupup  
-- **Location**: Sikkim  
-- **Difficulty**: High (mountainous terrain, remote access)` 
+      content: `🔹 Logistics:
+### Logistical Difficulty  
+**Level**: Very High  
+**Reason**: Extreme mountainous terrain, high altitude (up to 4,000m), and frequent landslides/monsoon disruptions in Sikkim's remote eastern Himalayas.  
+
+| Key Challenge         | Impact                          |
+|-----------------------|---------------------------------|
+| **Terrain**           | Steep slopes, unstable geology  |
+| **Accessibility**     | Limited roads, narrow passages  |
+| **Weather**           | Heavy snowfall/monsoon delays   |
+| **Transport**         | Machinery/material haulage issues |` 
     },
     { 
       title: "Safety", 
-      content: `### Human Threat/Terrorism Risk  
-- **Risk Level**: Low to Moderate  
-- **Context**: Sikkim generally experiences low terrorism activity, but proximity to borders may pose sporadic risks.  
+      content: `🔹 Safety:
+### Terrorism/Human Threat Risk Assessment
 
-*(Note: Risk assessments may vary based on current geopolitical conditions.)*` 
+| Risk Factor       | Level       |
+|-------------------|-------------|
+| **Overall Risk**  | **Low**     |
+| **Border Proximity** | Moderate   |
+| **Insurgency Activity** | Very Low  |
+
+- **Key Factors**:  
+  - Gangtok and Sikkim have minimal terrorism history; no active insurgencies reported.  
+  - Proximity to China border increases strategic sensitivity but has low civilian threat.  
+- **Current Advisory**:  
+  No travel restrictions; standard border-area vigilance advised.  
+
+*Note: Remote terrain may complicate emergency response, but no specific terror threats exist.*` 
     },
     { 
       title: "Soil Type", 
-      content: `### Soil Type & Rock Availability  
-- **Primary Soil**: Brown forest soils  
-- **Rock Availability**: Suitable for aggregates (granite/basalt likely)  
+      content: `🔹 Soil Type:
+### Soil Type and Rock Availability at Rishi-Rongli-Kupup Road, Gangtok, Sikkim
 
-*Note: Based on typical Sikkim geology; confirm with local testing for exact specifications.*` 
+- **Soil Type**: Predominantly **brown forest soil** (loamy, acidic) mixed with clay and organic matter, typical of Sikkim's Himalayan slopes.  
+- **Rock Availability**: **Yes** – abundant **gneiss, schist, and quartzite** from local quarries; suitable for aggregates but extraction may face terrain challenges.  
+
+| Feature          | Details                          |
+|------------------|----------------------------------|
+| **Soil Type**    | Brown forest soil (loamy-clayey) |
+| **Rock Sources** | Gneiss, schist, quartzite        |` 
     },
     { 
       title: "Material Availability", 
-      content: `### Fuel/Cement Vendor Availability  
-- **Diesel/Petrol Pumps**: Available in Rongli and Kupup (major towns along the route)  
-- **Cement Vendors**: Limited local availability; nearest reliable suppliers in Gangtok (~50km from Rongli)  
+      content: `🔹 Material Availability:
+### Fuel Pumps  
+- **Diesel/Petrol**: Available in Gangtok city (multiple pumps). Limited options beyond Rongli; last reliable refill at Gangtok before Kupup.  
 
-*Note: Remote stretches may require advance procurement planning.*` 
+### Cement Vendors  
+- **Cement**: Available in Gangtok (major suppliers like ACC/Ambuja). Sparse beyond Rongli; no vendors confirmed near Kupup.  
+
+**Note**: Remote terrain necessitates stocking fuel/cement in Gangtok before heading toward Kupup.` 
     }
   ];
 
@@ -213,47 +240,46 @@ const Analysis = () => {
   };
 
   // Payment weightage content
-  const paymentWeightageContent = `### Payment Weightage  
+  const paymentWeightageContent = `🔹 Payment Weightage:
+### Payment Weightage  
 
 #### Road Works (41.794%)  
-| Sub-Work                     | Stage                                      | Weightage |  
-|------------------------------|--------------------------------------------|-----------|  
-| Reconstruction (Flexible)    | Earthwork up to top of embankment         | 22.70%    |  
-|                              | Sub-Grade                                  | 0.68%     |  
-|                              | Sub-Base Course                            | 12.11%    |  
-|                              | Non-Bituminous Base Course                 | 12.76%    |  
-|                              | Bituminous Base Course                     | 12.76%    |  
-|                              | Wearing Coat                               | 7.69%     |  
-| Culverts                     | Culverts (length < 6m)                     | 31.30%    |  
+| Sub-Work | Stage | Weightage |  
+|----------|-------|-----------|  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Earthwork up to top of embankment | 22.70% |  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Sub-Grade | 0.68% |  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Sub Base Course | 12.11% |  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Non-Bituminous Base Course | 12.76% |  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Bituminous Base Course | 12.76% |  
+| Reconstruction/New realignment/bypass (Flexible pavement) | Wearing Coat | 7.69% |  
+| Re-Construction and New culverts | Culverts (length < 6 m) | 31.30% |  
 
-#### Minor Bridges (1.950%)  
-| Sub-Work                     | Stage                                      | Weightage |  
-|------------------------------|--------------------------------------------|-----------|  
-| New Minor Bridges            | Foundation (abutments/piers)              | 27.42%    |  
-|                              | Sub-structure (abutments/pier caps)       | 35.27%    |  
-|                              | Super-structure (deck slab + bearings)    | 25.28%    |  
-|                              | Miscellaneous (wearing coat, barriers)    | 6.35%     |  
-|                              | Approaches (retaining walls, pitching)    | 5.68%     |  
+#### Minor Bridges/Underpasses/Overpasses (1.950%)  
+| Sub-Work | Stage | Weightage |  
+|----------|-------|-----------|  
+| New Minor bridges (length >6 and <60 m) | Foundation: On completion of foundation work of abutments and piers | 27.42% |  
+| New Minor bridges (length >6 and <60 m) | Sub-structure: On completion of abutments and piers with cap | 35.27% |  
+| New Minor bridges (length >6 and <60 m) | Super-structure: Completion up to deck slab including bearings | 25.28% |  
+| New Minor bridges (length >6 and <60 m) | Miscellaneous Works: Wearing coat, expansion joint, crash barrier, railings | 6.35% |  
+| New Minor bridges (length >6 and <60 m) | Approaches: Wing walls, retaining walls, stone pitching | 5.68% |  
 
 #### Other Works (56.256%)  
-| Sub-Work                     | Stage                                      | Weightage |  
-|------------------------------|--------------------------------------------|-----------|  
-| Roadside Drain               | PCC Drain                                  | 2.69%     |  
-|                              | Unlined surface drains                     | 0.10%     |  
-| Road Signs & Safety          | Signs, markings, km stones                | 3.18%     |  
-|                              | Overhead gantry signs                      | 0.06%     |  
-| Junction Improvement         | -                                          | 0.21%     |  
-| Project Facilities           | Bus bays, truck lay-byes                  | 0.22%     |  
-| Protection Works             | Retaining Wall                             | 25.12%    |  
-|                              | Breast Wall                                | 59.32%    |  
-|                              | Parapet                                    | 3.15%     |  
-|                              | Hydro seeding (erosion control)            | 2.24%     |  
-| Utility Ducts                | Across the road                            | 2.89%     |  
-| Helipad                      | -                                          | 0.19%     |  
-
-**Notes**:  
-- *Excludes all 0% weightage entries*.  
-- *For culverts, payment is split: 75% on structure completion, 25% on protection works*.`;
+| Sub-Work | Stage | Weightage |  
+|----------|-------|-----------|  
+| Road side Drain | PCC Drain | 2.69% |  
+| Road side Drain | Unlined surface drains | 0.10% |  
+| Road signs, markings, km stones, safety devices | Road signs, markings, km stones, safety devices | 3.18% |  
+| Overhead gantry mounted signs | Overhead gantry mounted signs | 0.06% |  
+| Junction improvement | Junction improvement | 0.21% |  
+| Project facilities | Bus Bays, Truck lay-byes | 0.22% |  
+| Protection works | Crash Barrier | 0.45% |  
+| Protection works | Retaining Wall | 25.12% |  
+| Protection works | Breast Wall | 59.32% |  
+| Protection works | Parapet | 3.15% |  
+| Protection works | Hydro seeding and mulching for Erosion control | 2.24% |  
+| Safety and traffic management | Safety and traffic management during construction | 0.18% |  
+| Utility Ducts | Utility Ducts across the road | 2.89% |  
+| Helipad | Helipad | 0.19% |`;
 
   // Site images from provided URLs with corresponding links
   const siteImages = [
