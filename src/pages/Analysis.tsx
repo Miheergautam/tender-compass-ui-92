@@ -37,20 +37,17 @@ const Analysis = () => {
   const locationInsights = [
     { 
       title: "Terrain", 
-      content: `🔹 Terrain:
-**Terrain Type**: Mountainous  
+      content: `**Terrain Type**: Mountainous  
 *This region in the Eastern Himalayas features steep slopes, high altitude, and rugged terrain typical of Sikkim's topography.*` 
     },
     { 
       title: "Climate", 
-      content: `🔹 Climate:
-- **Climate Zone**: Alpine (Köppen: ET) at higher elevations (Kupup), Humid Subtropical (Köppen: Cwa) at lower elevations (Gangtok/Rongli)  
+      content: `- **Climate Zone**: Alpine (Köppen: ET) at higher elevations (Kupup), Humid Subtropical (Köppen: Cwa) at lower elevations (Gangtok/Rongli)  
 - **Working Season**: March to May (primary dry window), October to November (secondary period for lower segments, avoiding monsoon and extreme cold)` 
     },
     { 
       title: "Logistics", 
-      content: `🔹 Logistics:
-### Logistical Difficulty  
+      content: `### Logistical Difficulty  
 **Level**: Very High  
 **Reason**: Extreme mountainous terrain, high altitude (up to 4,000m), and frequent landslides/monsoon disruptions in Sikkim's remote eastern Himalayas.  
 
@@ -63,8 +60,7 @@ const Analysis = () => {
     },
     { 
       title: "Safety", 
-      content: `🔹 Safety:
-### Terrorism/Human Threat Risk Assessment
+      content: `### Terrorism/Human Threat Risk Assessment
 
 | Risk Factor       | Level       |
 |-------------------|-------------|
@@ -82,8 +78,7 @@ const Analysis = () => {
     },
     { 
       title: "Soil Type", 
-      content: `🔹 Soil Type:
-### Soil Type and Rock Availability at Rishi-Rongli-Kupup Road, Gangtok, Sikkim
+      content: `### Soil Type and Rock Availability at Rishi-Rongli-Kupup Road, Gangtok, Sikkim
 
 - **Soil Type**: Predominantly **brown forest soil** (loamy, acidic) mixed with clay and organic matter, typical of Sikkim's Himalayan slopes.  
 - **Rock Availability**: **Yes** – abundant **gneiss, schist, and quartzite** from local quarries; suitable for aggregates but extraction may face terrain challenges.  
@@ -95,8 +90,7 @@ const Analysis = () => {
     },
     { 
       title: "Material Availability", 
-      content: `🔹 Material Availability:
-### Fuel Pumps  
+      content: `### Fuel Pumps  
 - **Diesel/Petrol**: Available in Gangtok city (multiple pumps). Limited options beyond Rongli; last reliable refill at Gangtok before Kupup.  
 
 ### Cement Vendors  
@@ -108,6 +102,39 @@ const Analysis = () => {
 
   // Nature of work content
   const workCategories = {
+    'road-composition': `### Typical Cross Section (TCS) Schedule
+
+| TCS Type | Proposal Description | Length (m) | Associated Features |
+|----------|----------------------|------------|---------------------|
+| TCS-I    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & BHS DRAIN | 240 | BHS Drain |
+| TCS-II   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & LHS DRAIN | 1295 | LHS Drain |
+| TCS-III  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & RHS DRAIN | 1055 | RHS Drain |
+| TCS-IV   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, BHS BREAST WALL & BHS DRAIN | 1520 | BHS Breast Wall, BHS Drain |
+| TCS-V    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & BHS DRAIN | 1860 | LHS Breast Wall, BHS Drain |
+| TCS-VI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & DRAIN | 3945 | LHS Breast Wall, Drain |
+| TCS-VII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS GABION WALL & RHS STONE PITCHING | 60 | LHS Gabion Wall, RHS Stone Pitching |
+| TCS-VIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL & RHS DRAIN | 985 | LHS Retaining Wall, RHS Drain |
+| TCS-IX   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL, RHS BREAST WALL & DRAIN | 1025 | LHS Retaining Wall, RHS Breast Wall, Drain |
+| TCS-X    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & BHS DRAIN | 960 | RHS Breast Wall, BHS Drain |
+| TCS-XI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & DRAIN | 3310 | RHS Breast Wall, Drain |
+| TCS-XII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL & LHS DRAIN | 1490 | RHS Retaining Wall, LHS Drain |
+| TCS-XIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL, LHS BREAST WALL & DRAIN | 1390 | RHS Retaining Wall, LHS Breast Wall, Drain |
+
+**Total Length**: 19,135 m  
+
+### Pavement Composition (Generic for Flexible Pavement)
+- **Surface Course**: [Material/Thickness unavailable]  
+- **Base Course**: [Material/Thickness unavailable]  
+- **Sub-base**: [Material/Thickness unavailable]  
+- **Subgrade**: [Specifications unavailable]  
+
+### Notes  
+- **Width**: Carriageway width varies per structure (tapering as per manual if different from approaches)  
+- **Drain Types**: BHS (Both Hand Side), LHS (Left Hand Side), RHS (Right Hand Side)  
+- **Wall Types**: Breast Wall, Gabion Wall, Retaining Wall  
+
+[Additional layer details would require Annex-III of Schedule-A]`,
+    
     'roadside-drainage': `### Roadside Drainage Details
 
 #### Drainage Specifications
@@ -203,45 +230,11 @@ const Analysis = () => {
 ### Notes  
 - **Material Specifications**: [Data unavailable]  
 - **Design Standards**: IRC: SP: 73-2018 (implied from context)  
-- **Execution Flexibility**: Lengths may vary based on site conditions (per Note 1, Page 165)`,
-    
-    'road-composition': `### Typical Cross Section (TCS) Schedule
-
-| TCS Type | Proposal Description | Length (m) | Associated Features |
-|----------|----------------------|------------|---------------------|
-| TCS-I    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & BHS DRAIN | 240 | BHS Drain |
-| TCS-II   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & LHS DRAIN | 1295 | LHS Drain |
-| TCS-III  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT & RHS DRAIN | 1055 | RHS Drain |
-| TCS-IV   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, BHS BREAST WALL & BHS DRAIN | 1520 | BHS Breast Wall, BHS Drain |
-| TCS-V    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & BHS DRAIN | 1860 | LHS Breast Wall, BHS Drain |
-| TCS-VI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS BREAST WALL & DRAIN | 3945 | LHS Breast Wall, Drain |
-| TCS-VII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS GABION WALL & RHS STONE PITCHING | 60 | LHS Gabion Wall, RHS Stone Pitching |
-| TCS-VIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL & RHS DRAIN | 985 | LHS Retaining Wall, RHS Drain |
-| TCS-IX   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, LHS RETAINING WALL, RHS BREAST WALL & DRAIN | 1025 | LHS Retaining Wall, RHS Breast Wall, Drain |
-| TCS-X    | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & BHS DRAIN | 960 | RHS Breast Wall, BHS Drain |
-| TCS-XI   | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS BREAST WALL & DRAIN | 3310 | RHS Breast Wall, Drain |
-| TCS-XII  | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL & LHS DRAIN | 1490 | RHS Retaining Wall, LHS Drain |
-| TCS-XIII | NEW CONSTRUCTION OF FLEXIBLE PAVEMENT, RHS RETAINING WALL, LHS BREAST WALL & DRAIN | 1390 | RHS Retaining Wall, LHS Breast Wall, Drain |
-
-**Total Length**: 19,135 m  
-
-### Pavement Composition (Generic for Flexible Pavement)
-- **Surface Course**: [Material/Thickness unavailable]  
-- **Base Course**: [Material/Thickness unavailable]  
-- **Sub-base**: [Material/Thickness unavailable]  
-- **Subgrade**: [Specifications unavailable]  
-
-### Notes  
-- **Width**: Carriageway width varies per structure (tapering as per manual if different from approaches)  
-- **Drain Types**: BHS (Both Hand Side), LHS (Left Hand Side), RHS (Right Hand Side)  
-- **Wall Types**: Breast Wall, Gabion Wall, Retaining Wall  
-
-[Additional layer details would require Annex-III of Schedule-A]`
+- **Execution Flexibility**: Lengths may vary based on site conditions (per Note 1, Page 165)`
   };
 
   // Payment weightage content
-  const paymentWeightageContent = `🔹 Payment Weightage:
-### Payment Weightage  
+  const paymentWeightageContent = `### Payment Weightage  
 
 #### Road Works (41.794%)  
 | Sub-Work | Stage | Weightage |  
@@ -281,7 +274,6 @@ const Analysis = () => {
 | Utility Ducts | Utility Ducts across the road | 2.89% |  
 | Helipad | Helipad | 0.19% |`;
 
-  // Site images from provided URLs with corresponding links
   const siteImages = [
     { 
       id: '1', 
@@ -514,8 +506,14 @@ const Analysis = () => {
               <CardTitle className="text-xl font-semibold text-gray-900">Nature of Work</CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="roadside-drainage">
+              <Tabs defaultValue="road-composition">
                 <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-6 bg-gray-100 rounded-xl p-1">
+                  <TabsTrigger 
+                    value="road-composition"
+                    className="rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
+                  >
+                    Road Composition
+                  </TabsTrigger>
                   <TabsTrigger 
                     value="roadside-drainage" 
                     className="rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
@@ -533,12 +531,6 @@ const Analysis = () => {
                     className="rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
                   >
                     Protection Work
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="road-composition"
-                    className="rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
-                  >
-                    Road Composition
                   </TabsTrigger>
                 </TabsList>
                 
