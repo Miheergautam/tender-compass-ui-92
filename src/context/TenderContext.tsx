@@ -8,19 +8,21 @@ import React, {
 
 export type Tender = {
   _id: string;
-  id: string;
-  Bio: string;
-  Location: string;
-  SubmissionDate: string;
-  EMD: string;
-  Organization: string;
-  OrganizationTenderID: string;
-  Website: string;
-  DownloadDocuments: string;
-  Length: string;
-  Type: string;
+  bio: string;
+  location: string;
+  submissionDate: string;
+  emd: string;
+  organization: string;
+  organizationTenderId: string;
+  website: string;
+  downloadDocuments: string;
+  length: string;
+  type: string;
   zip_file_id: string;
-  metadata: Record<string, string>; // Could also be strongly typed if needed
+  metadata: Record<string, string>; // You can replace this with a stricter type if needed
+  score: number | null;
+  score_analysis: string | null;
+  estimatedCost: number | null;
 };
 
 type TenderContextType = {

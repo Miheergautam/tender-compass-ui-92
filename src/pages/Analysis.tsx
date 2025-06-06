@@ -133,10 +133,10 @@ const Analysis = () => {
 
   // Nature of work content
   const workCategories = {
-    roadComposition: tender?.metadata?.roadComposition || "Not Available",
-    roadsideDrainage: tender?.metadata?.roadsideDrainage || "Not Available",
-    structuresWork: tender?.metadata?.structuresWork || "Not Available",
-    protectionWork: tender?.metadata?.protectionWork || "Not Available",
+    "road-composition": tender?.metadata?.roadComposition || "Not Available",
+    "roadside-drainage": tender?.metadata?.roadsideDrainage || "Not Available",
+    "structures-work": tender?.metadata?.structuresWork || "Not Available",
+    "protection work": tender?.metadata?.protectionWork || "Not Available",
   };
 
   // Payment weightage content
@@ -534,7 +534,7 @@ const Analysis = () => {
           </Card>
 
           {/* Site Images Gallery */}
-          {tender?.metadata?.["Location Images"]?.length > 0 && (
+          {tender?.metadata?.locationImages?.length > 0 && (
             <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm mt-6">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-gray-900">
@@ -543,7 +543,7 @@ const Analysis = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {tender.metadata["Location Images"].map((image: string) => (
+                  {tender.metadata?.locationImages.map((image: string) => (
                     <div
                       key={image}
                       className="relative group cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
