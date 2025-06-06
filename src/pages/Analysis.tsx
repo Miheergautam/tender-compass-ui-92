@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -91,6 +90,22 @@ const Analysis = () => {
 - **Cement**: Available in Gangtok (major suppliers like ACC/Ambuja). Sparse beyond Rongli; no vendors confirmed near Kupup.  
 
 **Note**: Remote terrain necessitates stocking fuel/cement in Gangtok before heading toward Kupup.` 
+    }
+  ];
+
+  // Citation links for location insights
+  const locationCitationLinks = [
+    {
+      title: "Sikkim Climate and Weather Data",
+      url: "https://www.climate-data.org/asia/india/sikkim/gangtok-4025/"
+    },
+    {
+      title: "Border Roads Organization Projects",
+      url: "https://bro.gov.in/content/projects"
+    },
+    {
+      title: "Himalayan Construction Challenges Study",
+      url: "https://www.researchgate.net/publication/mountainous-construction"
     }
   ];
 
@@ -542,7 +557,7 @@ This tender represents a **moderate-to-good opportunity** with manageable risks.
               <CardTitle className="text-xl font-semibold text-gray-900">Location Insights</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {locationInsights.map((insight, index) => (
                   <Card key={index} className="bg-gradient-to-br from-teal-50 to-blue-50 border-teal-200 rounded-xl hover:shadow-md transition-all duration-300">
                     <CardContent className="p-4">
@@ -553,6 +568,27 @@ This tender represents a **moderate-to-good opportunity** with manageable risks.
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+              
+              {/* Citations Section */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="text-sm text-gray-700">
+                  <span className="font-semibold text-gray-900">Citations - </span>
+                  <div className="mt-2 space-y-1">
+                    {locationCitationLinks.map((link, index) => (
+                      <div key={index}>
+                        <a 
+                          href={link.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-blue-600 hover:text-blue-800 underline text-xs flex items-center"
+                        >
+                          {link.title} <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
