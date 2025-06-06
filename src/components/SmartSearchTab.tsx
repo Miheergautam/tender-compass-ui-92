@@ -18,7 +18,7 @@ import {
   SlidersHorizontal,
   Save,
   Check,
-  Building2,
+  Ruler,
 } from "lucide-react";
 import CompatibilityScore from "./CompatibilityScore";
 import { Tender } from "../types/tender";
@@ -571,7 +571,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                         <span>{tender?.location}</span>
                       </div>
                       <div className="flex items-center text-sm text-gray-600">
-                        <MapPin className="w-4 h-4 mr-2" />
+                        <Ruler className="w-4 h-4 mr-2" />
                         <span>{tender?.metadata?.length}</span>
                       </div>
 
