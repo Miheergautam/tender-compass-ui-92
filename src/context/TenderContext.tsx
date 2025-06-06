@@ -44,23 +44,6 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   const fetchTenders = async () => {
-  //     try {
-  //       const response = await fetch("http://127.0.0.1:8000/tenders");
-  //       if (!response.ok) throw new Error("Failed to fetch tenders");
-  //       const data = await response.json();
-  //       setTenders(data);
-  //     } catch (err: any) {
-  //       setError(err.message || "Unknown error");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchTenders();
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,12 +63,13 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
 
         const enrichedTenders = tendersData.map((tender) => {
           const scoreObj = scoresData.find(
-            (score) => score.tender_ID === tender._id
+            (score) => score.tender_id === tender._id
           );
+
           return {
             ...tender,
-            score: scoreObj?.score ?? null,
-            score_analysis: scoreObj?.score_analysis ?? null,
+            score: scoreObj?.compatibility_score ?? null,
+            score_analysis: scoreObj?.compatibility_analysis ?? null,
           };
         });
 

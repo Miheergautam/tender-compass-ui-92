@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -537,20 +537,24 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1 pr-4">
                         <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">
-                          {tender.Bio.slice(0, 150)}...
+                          {tender?.bio.slice(0, 150)}...
                         </h3>
                         <p className="text-sm text-gray-600 mb-2">
-                          {tender.Organization}
+                          {tender?.organization}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-3">
                           <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                            {tender["Type"]}
+                            {tender?.metadata?.type}
                           </span>
                         </div>
                       </div>
 
                       <div className="flex-shrink-0">
-                        <CompatibilityScore score={63} showTooltip={false} />
+                        <CompatibilityScore
+                          score={tender?.score}
+                          showTooltip={false}
+                          id={tender?._id}
+                        />
                       </div>
                     </div>
 
@@ -558,22 +562,22 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                       <div className="flex items-center text-sm text-gray-600">
                         <IndianRupee className="w-4 h-4 mr-2" />
                         <span className="font-medium">
-                          {tender["Estimated Cost"]}
+                          {tender?.estimatedCost}
                         </span>
                       </div>
 
                       <div className="flex items-center text-sm text-gray-600">
                         <MapPin className="w-4 h-4 mr-2" />
-                        <span>{tender.Location}</span>
+                        <span>{tender?.location}</span>
                       </div>
                       <div className="flex items-center text-sm text-gray-600">
                         <MapPin className="w-4 h-4 mr-2" />
-                        <span>{tender["Length"]}</span>
+                        <span>{tender?.metadata?.length}</span>
                       </div>
 
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="w-4 h-4 mr-2" />
-                        <span>Deadline: {tender["Submission Date"]}</span>
+                        <span>Deadline: {tender?.submissionDate}</span>
                       </div>
                     </div>
                   </div>

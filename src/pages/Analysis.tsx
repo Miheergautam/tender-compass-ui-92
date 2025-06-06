@@ -29,6 +29,7 @@ const Analysis = () => {
   useEffect(() => {
     if (tender_id) {
       const foundTender = tenders.find((t) => t._id === tender_id);
+      console.log("Found tender:", foundTender);
       setTender(foundTender || null);
     }
   }, [tender_id, tenders]);
@@ -71,61 +72,75 @@ const Analysis = () => {
 
   // Tender bio data from placeholder
   const tenderBio = {
-    brief: tender["Bio"],
-    location: tender["Location"],
-    estimatedCost: tender["Estimated Cost"],
-    emd: tender["EMD"],
-    length: tender["Length"],
-    type: tender["Type"],
-    downloadDocuments: tender["Download Documents"],
-    organisation: tender["Organization"],
-    organisationId: tender["Organization Tender ID"],
-    website: tender["Website"],
-    submissionDeadline: tender["Submission Date"],
-    compatibilityScore: 67,
+    brief: tender?.bio || "No tender bio available.",
+    location: tender?.location || "No tender location available.",
+    estimatedCost: tender?.estimatedCost || "Not specified",
+    emd: tender?.emd || "Not specified",
+    length: tender?.metadata?.length || "Not specified",
+    type: tender?.metadata?.type || "Not specified",
+    downloadDocuments: tender?.downloadDocuments || "#",
+    organisation: tender?.organization || "Not specified",
+    organisationId: tender.organizationTenderId || "Not specified",
+    website: tender?.website || "Not specified",
+    submissionDeadline: tender?.submissionDate || "Not specified",
+    compatibilityScore: tender?.score || "Not available",
   };
 
   // Location insights data
   const locationInsights = [
     {
       title: "Terrain",
-      content: tender.metadata["Terrain"],
+      content: tender?.metadata?.terrain || "No data available",
     },
     {
       title: "Climate",
-      content: tender.metadata["Climate"],
+      content: tender?.metadata?.climate || "No data available",
     },
+
     {
       title: "Logistics",
-      content: tender.metadata["Logistics"],
+      content: tender?.metadata?.logistics || "No data available",
     },
     {
       title: "Safety",
-      content: tender.metadata["Safety"],
+      content: tender?.metadata?.safety || "No data available",
     },
     {
       title: "Soil Type",
-      content: tender.metadata["Soil Type"],
+      content: tender?.metadata?.soilType || "No data available",
     },
     {
       title: "Material Availability",
-      content: tender.metadata["Material Availability"],
+      content: tender?.metadata?.materialAvailability || "No data available",
+    },
+  ];
+
+  // Citation links for location insights
+  const locationCitationLinks = [
+    {
+      title: "bhuvan.nrsc.gov.in",
+      url: "https://bhuvan.nrsc.gov.in/home/index.php",
+    },
+    {
+      title: "gsi.gov.in",
+      url: "https://www.gsi.gov.in/webcenter/portal/OCBIS",
+    },
+    {
+      title: "geonames.org",
+      url: "https://www.geonames.org/servlet/geonames",
     },
   ];
 
   // Nature of work content
   const workCategories = {
-    "road-composition": tender.metadata["Road Composition"],
-
-    "roadside-drainage": tender.metadata["Roadside Drainage"],
-
-    "structures-work": tender.metadata["Structures Work"],
-
-    "protection-work": tender.metadata["Protection Work"],
+    roadComposition: tender?.metadata?.roadComposition || "Not Available",
+    roadsideDrainage: tender?.metadata?.roadsideDrainage || "Not Available",
+    structuresWork: tender?.metadata?.structuresWork || "Not Available",
+    protectionWork: tender?.metadata?.protectionWork || "Not Available",
   };
 
   // Payment weightage content
-  const paymentWeightageContent = tender.metadata["Payment Weightage"];
+  const paymentWeightageContent = tender?.metadata?.paymentWeightage;
 
   const getScoreColor = (score: number) => {
     if (score >= 80)
@@ -150,73 +165,12 @@ const Analysis = () => {
     };
   };
 
-  const scoreData = getScoreColor(tenderBio.compatibilityScore);
+  const scoreData = getScoreColor(tenderBio?.compatibilityScore);
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset =
-    circumference - (tenderBio.compatibilityScore / 100) * circumference;
+    circumference - (tenderBio?.compatibilityScore / 100) * circumference;
 
-  const compatibilityAnalysisContent = `### Executive Summary
-
-    **Overall Compatibility Score: 67/100** - This tender represents a moderate match for your organization's capabilities and strategic objectives.
-    
-    ### Strengths & Opportunities
-    
-    #### Technical Compatibility ✅
-    - **Road Construction Expertise**: Strong alignment with your company's core competencies in highway and infrastructure development
-    - **EPC Model Experience**: Your organization has demonstrated success in Engineering, Procurement, and Construction contracts
-    - **Mountainous Terrain Projects**: Previous experience with challenging topographical conditions provides competitive advantage
-    
-    #### Financial Viability ✅
-    - **Project Scale**: ₹223.69 Cr. contract value aligns with your typical project portfolio
-    - **EMD Requirement**: ₹4.46 Cr. EMD is within manageable limits for your financial capacity
-    - **Payment Structure**: Staged payment weightage provides healthy cash flow management opportunities
-    
-    ### Challenges & Risk Factors
-    
-    #### Logistical Complexity ⚠️
-    | Challenge | Impact Level | Mitigation Strategy |
-    |-----------|--------------|-------------------|
-    | **Remote Location** | High | Establish forward base camps in Gangtok |
-    | **Material Transport** | Very High | Pre-position critical materials before monsoon |
-    | **Equipment Mobilization** | High | Plan phased equipment deployment |
-    
-    #### Environmental & Operational Risks ⚠️
-    - **Weather Windows**: Limited working season (March-May, October-November)
-    - **Altitude Challenges**: Operations up to 4,000m require specialized equipment and procedures
-    - **Border Proximity**: Additional security clearances and compliance requirements
-    
-    ### Recommendation Matrix
-    
-    | Criteria | Score | Rationale |
-    |----------|-------|-----------|
-    | **Technical Fit** | 8/10 | Strong match with core competencies |
-    | **Financial Viability** | 7/10 | Appropriate scale, manageable EMD |
-    | **Risk Profile** | 5/10 | High logistical complexity, environmental challenges |
-    | **Strategic Value** | 7/10 | Enhances portfolio diversity, government relationship |
-    | **Resource Availability** | 6/10 | Requires specialized mountain construction resources |
-    
-    ### Strategic Recommendations
-    
-    #### Proceed with Bid Preparation ✅
-    **Rationale**: Despite logistical challenges, this project offers significant strategic value and aligns well with your technical capabilities.
-    
-    #### Key Success Factors
-    1. **Early Mobilization**: Begin material positioning 6 months before project start
-    2. **Local Partnerships**: Establish relationships with Sikkim-based suppliers and contractors
-    3. **Weather Planning**: Build detailed climate-responsive construction schedules
-    4. **Risk Mitigation**: Secure comprehensive insurance for high-altitude operations
-    
-    #### Bid Strategy Recommendations
-    - **Pricing**: Add 15-20% contingency for logistical complexities
-    - **Timeline**: Request extended completion period to account for weather constraints
-    - **Local Content**: Emphasize commitment to local employment and supplier engagement
-    - **Technology**: Propose advanced project management systems for remote monitoring
-    
-    ### Conclusion
-    
-    This tender represents a **moderate-to-good opportunity** with manageable risks. Your organization's technical expertise and financial capacity align well with project requirements. Success will depend on thorough planning for logistical challenges and effective risk mitigation strategies.
-    
-    **Recommendation**: **PROCEED** with bid preparation, incorporating suggested risk mitigation strategies.`;
+  const compatibilityAnalysisContent = tender?.score_analysis;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -450,7 +404,7 @@ const Analysis = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-[500px] gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {locationInsights.map((insight, index) => (
                   <Card
                     key={index}
@@ -460,7 +414,7 @@ const Analysis = () => {
                       <h4 className="font-semibold text-teal-700 mb-3 text-sm">
                         {insight.title}
                       </h4>
-                      <ScrollArea className="h-40">
+                      <ScrollArea className="h-24">
                         <MarkdownRenderer
                           content={insight.content}
                           className="text-xs"
@@ -470,9 +424,31 @@ const Analysis = () => {
                   </Card>
                 ))}
               </div>
+
+              {/* Citations Section */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="text-sm text-gray-700">
+                  <span className="font-semibold text-gray-900">
+                    Citations -{" "}
+                  </span>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {locationCitationLinks.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-1 px-3 py-1 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 text-xs font-medium transition"
+                      >
+                        <span>{link.title}</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
-
           {/* Nature of Work Section */}
           <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
             <CardHeader>
@@ -547,8 +523,11 @@ const Analysis = () => {
             </CardHeader>
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <ScrollArea className="h-96 p-6">
-                  <MarkdownRenderer content={compatibilityAnalysisContent} />
+                <ScrollArea className="max-h-96 p-6">
+                  <MarkdownRenderer
+                    content={compatibilityAnalysisContent}
+                    className="compat-analysis"
+                  />
                 </ScrollArea>
               </div>
             </CardContent>
