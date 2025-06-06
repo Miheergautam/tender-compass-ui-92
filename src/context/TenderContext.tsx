@@ -33,6 +33,9 @@ export const useTenderContext = () => {
   return context;
 };
 
+const TENDER_CACHE_KEY = "tender_data";
+const CACHE_TTL = 5 * 60 * 1000;
+
 export const TenderProvider = ({ children }: { children: ReactNode }) => {
   const [tenders, setTenders] = useState<Tender[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,10 +44,23 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchTenders = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/tenders");
-        if (!response.ok) throw new Error("Failed to fetch tenders");
-        const data = await response.json();
-        setTenders(data);
+        const cached = localStorage.getItem(TENDER_CACHE_KEY);
+        const timestamp = localStorage.getItem(`${TENDER_CACHE_KEY}_timestamp`);
+
+        if (cached && timestamp && Date.now() - parseInt(timestamp) < CACHE_TTL) {
+          // Use cached tenders
+          setTenders(JSON.parse(cached));
+        } else {
+          // Fetch from backend
+          const response = await fetch("http://127.0.0.1:8000/tenders");
+          if (!response.ok) throw new Error("Failed to fetch tenders");
+          const data = await response.json();
+          setTenders(data);
+
+          // Store in localStorage
+          localStorage.setItem(TENDER_CACHE_KEY, JSON.stringify(data));
+          localStorage.setItem(`${TENDER_CACHE_KEY}_timestamp`, Date.now().toString());
+        }
       } catch (err: any) {
         setError(err.message || "Unknown error");
       } finally {
