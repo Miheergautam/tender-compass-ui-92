@@ -654,6 +654,20 @@ This tender represents a **moderate-to-good opportunity** with manageable risks.
             </CardContent>
           </Card>
 
+          {/* Compatibility Analysis Section */}
+          <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-gray-900">Compatibility Analysis</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
+                <ScrollArea className="h-96 p-6">
+                  <MarkdownRenderer content={compatibilityAnalysisContent} />
+                </ScrollArea>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Site Images Gallery */}
           <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
             <CardHeader>
@@ -691,20 +705,6 @@ This tender represents a **moderate-to-good opportunity** with manageable risks.
                     </div>
                   </div>
                 ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Compatibility Analysis Section */}
-          <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-gray-900">Compatibility Analysis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <ScrollArea className="h-96 p-6">
-                  <MarkdownRenderer content={compatibilityAnalysisContent} />
-                </ScrollArea>
               </div>
             </CardContent>
           </Card>
