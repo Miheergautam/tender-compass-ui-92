@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -303,13 +304,13 @@ const Analysis = () => {
 
   // Compatibility analysis data
   const compatibilityBoxes = [
-    { text: "Experience in mountain road construction", shade: "green" },
+    { text: "Mountain road construction experience", shade: "green" },
     { text: "High altitude project capability", shade: "green" },
-    { text: "Drainage system expertise", shade: "green" },
+    { text: "Advanced drainage systems", shade: "green" },
     { text: "Remote logistics management", shade: "red" },
-    { text: "EPC contract experience", shade: "green" },
-    { text: "Government tender history", shade: "green" },
-    { text: "Equipment for harsh terrain", shade: "red" },
+    { text: "EPC contract expertise", shade: "green" },
+    { text: "Government tender portfolio", shade: "green" },
+    { text: "Specialized equipment access", shade: "red" },
     { text: "Local partnership network", shade: "red" }
   ];
 
@@ -606,111 +607,160 @@ const Analysis = () => {
             </CardContent>
           </Card>
 
-          {/* Compatibility Analysis Section */}
+          {/* Enhanced Compatibility Analysis Section */}
           <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-gray-900">Compatibility Analysis</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-center">
-                <div className="grid grid-cols-3 gap-4 max-w-lg w-full">
-                  {/* Top row */}
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[0].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[0].text}</p>
-                  </div>
-                  
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[1].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[1].text}</p>
-                  </div>
-                  
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[2].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[2].text}</p>
-                  </div>
+              <div className="flex flex-col lg:flex-row gap-8 items-center">
+                {/* Left side - 3x3 Grid Layout */}
+                <div className="flex justify-center flex-1">
+                  <div className="grid grid-cols-3 gap-6 max-w-lg w-full">
+                    {/* Top row */}
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[0].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[0].text}</p>
+                    </div>
+                    
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[1].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[1].text}</p>
+                    </div>
+                    
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[2].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[2].text}</p>
+                    </div>
 
-                  {/* Middle row */}
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[3].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[3].text}</p>
-                  </div>
-                  
-                  {/* Center circle */}
-                  <div className="aspect-square rounded-full bg-gradient-to-br from-teal-50 to-blue-50 border-4 border-teal-200 flex items-center justify-center relative group transition-all duration-300 hover:shadow-lg">
-                    <div className="w-20 h-20 relative">
-                      <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-gray-200" />
-                        <circle
-                          cx="50" cy="50" r="35"
-                          stroke="url(#scoreGradient)"
-                          strokeWidth="6"
-                          fill="transparent"
-                          strokeDasharray={circumference * 0.78}
-                          strokeDashoffset={strokeDashoffset * 0.78}
-                          className="transition-all duration-1000 ease-in-out"
-                          strokeLinecap="round"
-                        />
-                        <defs>
-                          <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" className="stop-color-teal-400" />
-                            <stop offset="100%" className="stop-color-blue-600" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                      
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <div className={`text-2xl font-bold ${scoreData.color}`}>
-                          {tenderBio.compatibilityScore}
+                    {/* Middle row */}
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[3].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[3].text}</p>
+                    </div>
+                    
+                    {/* Center circle */}
+                    <div className="aspect-square rounded-full bg-gradient-to-br from-teal-50 to-blue-50 border-4 border-teal-200 flex items-center justify-center relative group transition-all duration-300 hover:shadow-lg">
+                      <div className="w-20 h-20 relative">
+                        <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-gray-200" />
+                          <circle
+                            cx="50" cy="50" r="35"
+                            stroke="url(#scoreGradient)"
+                            strokeWidth="6"
+                            fill="transparent"
+                            strokeDasharray={circumference * 0.78}
+                            strokeDashoffset={strokeDashoffset * 0.78}
+                            className="transition-all duration-1000 ease-in-out"
+                            strokeLinecap="round"
+                          />
+                          <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" className="stop-color-teal-400" />
+                              <stop offset="100%" className="stop-color-blue-600" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <div className={`text-2xl font-bold ${scoreData.color}`}>
+                            {tenderBio.compatibilityScore}
+                          </div>
+                          <div className="text-xs text-gray-500 font-medium">out of 100</div>
                         </div>
-                        <div className="text-xs text-gray-500 font-medium">out of 100</div>
+                      </div>
+                    </div>
+                    
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[4].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[4].text}</p>
+                    </div>
+
+                    {/* Bottom row */}
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[5].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[5].text}</p>
+                    </div>
+                    
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[6].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[6].text}</p>
+                    </div>
+                    
+                    <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md border-2 ${
+                      compatibilityBoxes[7].shade === 'green' 
+                        ? 'bg-green-50 border-green-200 text-green-800' 
+                        : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                      <p className="text-sm font-medium leading-tight">{compatibilityBoxes[7].text}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right side - Analysis Summary */}
+                <div className="flex-1 space-y-6">
+                  <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6 border border-teal-200">
+                    <h3 className="text-lg font-semibold text-teal-700 mb-4">Analysis Summary</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-3 bg-white/60 rounded-lg">
+                        <span className="text-sm font-medium text-gray-700">Strengths</span>
+                        <span className="text-sm font-bold text-green-600">
+                          {compatibilityBoxes.filter(box => box.shade === 'green').length}/8
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-white/60 rounded-lg">
+                        <span className="text-sm font-medium text-gray-700">Areas for Improvement</span>
+                        <span className="text-sm font-bold text-red-600">
+                          {compatibilityBoxes.filter(box => box.shade === 'red').length}/8
+                        </span>
+                      </div>
+                      <div className="p-4 bg-white/80 rounded-lg border-l-4 border-teal-400">
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          <span className="font-semibold">Recommendation:</span> This tender shows good alignment with your core competencies. 
+                          Focus on strengthening logistics partnerships and equipment access for mountain construction projects.
+                        </p>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[4].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[4].text}</p>
-                  </div>
 
-                  {/* Bottom row */}
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[5].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[5].text}</p>
-                  </div>
-                  
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[6].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[6].text}</p>
-                  </div>
-                  
-                  <div className={`aspect-square rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 hover:shadow-md ${
-                    compatibilityBoxes[7].shade === 'green' 
-                      ? 'bg-green-50 border-2 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-2 border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium leading-tight">{compatibilityBoxes[7].text}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                      <h4 className="font-semibold text-green-700 text-sm mb-2">Key Strengths</h4>
+                      <ul className="text-xs text-green-600 space-y-1">
+                        <li>• Proven EPC experience</li>
+                        <li>• Mountain road expertise</li>
+                        <li>• Government tender track record</li>
+                      </ul>
+                    </div>
+                    <div className="bg-red-50 rounded-xl p-4 border border-red-200">
+                      <h4 className="font-semibold text-red-700 text-sm mb-2">Focus Areas</h4>
+                      <ul className="text-xs text-red-600 space-y-1">
+                        <li>• Remote site logistics</li>
+                        <li>• Local partnerships</li>
+                        <li>• Specialized equipment</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
