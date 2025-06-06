@@ -26,12 +26,20 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           .split("|")
           .map((h) => h.trim())
           .filter((h) => h !== "");
-        const rows = tableRows.slice(1).map((row) =>
-          row
+        const columnCount = headers.length;
+
+        const rows = tableRows.slice(1).map((row) => {
+          const cells = row
             .split("|")
             .map((cell) => cell.trim())
-            .filter((cell) => cell !== "")
-        );
+            .filter((cell) => cell !== "");
+
+          while (cells.length < columnCount) {
+            cells.push("");
+          }
+
+          return cells;
+        });
 
         elements.push(
           <div key={`table-${index}`} className="overflow-x-auto mb-6">
@@ -62,23 +70,21 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               <tbody>
                 {rows.map((row, i) => (
                   <tr key={i} className="transition-colors">
-                    {row.map((cell, j) => {
-                      return (
-                        <td
-                          key={j}
-                          className={`border border-gray-300 p-2 text-xs bg-white`}
-                        >
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: cell.replace(
-                                /\*\*(.*?)\*\*/g,
-                                "<strong>$1</strong>"
-                              ),
-                            }}
-                          />
-                        </td>
-                      );
-                    })}
+                    {row.map((cell, j) => (
+                      <td
+                        key={j}
+                        className="border border-gray-300 p-2 text-xs bg-white"
+                      >
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: cell.replace(
+                              /\*\*(.*?)\*\*/g,
+                              "<strong>$1</strong>"
+                            ),
+                          }}
+                        />
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

@@ -65,7 +65,7 @@ const Analysis = () => {
   }
 
   // Calculate days left
-  const submissionDate = new Date(tender["Submission Date"]);
+  const submissionDate = new Date(tender?.submissionDate);
   const today = new Date();
   const timeDiff = submissionDate.getTime() - today.getTime();
   const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -136,7 +136,7 @@ const Analysis = () => {
     "road-composition": tender?.metadata?.roadComposition || "Not Available",
     "roadside-drainage": tender?.metadata?.roadsideDrainage || "Not Available",
     "structures-work": tender?.metadata?.structuresWork || "Not Available",
-    "protection work": tender?.metadata?.protectionWork || "Not Available",
+    "protection-work": tender?.metadata?.protectionWork || "Not Available",
   };
 
   // Payment weightage content
