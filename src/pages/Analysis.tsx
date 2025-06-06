@@ -155,6 +155,69 @@ const Analysis = () => {
   const strokeDashoffset =
     circumference - (tenderBio.compatibilityScore / 100) * circumference;
 
+  const compatibilityAnalysisContent = `### Executive Summary
+
+    **Overall Compatibility Score: 67/100** - This tender represents a moderate match for your organization's capabilities and strategic objectives.
+    
+    ### Strengths & Opportunities
+    
+    #### Technical Compatibility ✅
+    - **Road Construction Expertise**: Strong alignment with your company's core competencies in highway and infrastructure development
+    - **EPC Model Experience**: Your organization has demonstrated success in Engineering, Procurement, and Construction contracts
+    - **Mountainous Terrain Projects**: Previous experience with challenging topographical conditions provides competitive advantage
+    
+    #### Financial Viability ✅
+    - **Project Scale**: ₹223.69 Cr. contract value aligns with your typical project portfolio
+    - **EMD Requirement**: ₹4.46 Cr. EMD is within manageable limits for your financial capacity
+    - **Payment Structure**: Staged payment weightage provides healthy cash flow management opportunities
+    
+    ### Challenges & Risk Factors
+    
+    #### Logistical Complexity ⚠️
+    | Challenge | Impact Level | Mitigation Strategy |
+    |-----------|--------------|-------------------|
+    | **Remote Location** | High | Establish forward base camps in Gangtok |
+    | **Material Transport** | Very High | Pre-position critical materials before monsoon |
+    | **Equipment Mobilization** | High | Plan phased equipment deployment |
+    
+    #### Environmental & Operational Risks ⚠️
+    - **Weather Windows**: Limited working season (March-May, October-November)
+    - **Altitude Challenges**: Operations up to 4,000m require specialized equipment and procedures
+    - **Border Proximity**: Additional security clearances and compliance requirements
+    
+    ### Recommendation Matrix
+    
+    | Criteria | Score | Rationale |
+    |----------|-------|-----------|
+    | **Technical Fit** | 8/10 | Strong match with core competencies |
+    | **Financial Viability** | 7/10 | Appropriate scale, manageable EMD |
+    | **Risk Profile** | 5/10 | High logistical complexity, environmental challenges |
+    | **Strategic Value** | 7/10 | Enhances portfolio diversity, government relationship |
+    | **Resource Availability** | 6/10 | Requires specialized mountain construction resources |
+    
+    ### Strategic Recommendations
+    
+    #### Proceed with Bid Preparation ✅
+    **Rationale**: Despite logistical challenges, this project offers significant strategic value and aligns well with your technical capabilities.
+    
+    #### Key Success Factors
+    1. **Early Mobilization**: Begin material positioning 6 months before project start
+    2. **Local Partnerships**: Establish relationships with Sikkim-based suppliers and contractors
+    3. **Weather Planning**: Build detailed climate-responsive construction schedules
+    4. **Risk Mitigation**: Secure comprehensive insurance for high-altitude operations
+    
+    #### Bid Strategy Recommendations
+    - **Pricing**: Add 15-20% contingency for logistical complexities
+    - **Timeline**: Request extended completion period to account for weather constraints
+    - **Local Content**: Emphasize commitment to local employment and supplier engagement
+    - **Technology**: Propose advanced project management systems for remote monitoring
+    
+    ### Conclusion
+    
+    This tender represents a **moderate-to-good opportunity** with manageable risks. Your organization's technical expertise and financial capacity align well with project requirements. Success will depend on thorough planning for logistical challenges and effective risk mitigation strategies.
+    
+    **Recommendation**: **PROCEED** with bid preparation, incorporating suggested risk mitigation strategies.`;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="p-6 lg:p-8">
@@ -470,6 +533,22 @@ const Analysis = () => {
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
                 <ScrollArea className="h-96 p-6">
                   <MarkdownRenderer content={paymentWeightageContent} />
+                </ScrollArea>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Compatibility Analysis Section */}
+          <Card className="shadow-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-gray-900">
+                Compatibility Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
+                <ScrollArea className="h-96 p-6">
+                  <MarkdownRenderer content={compatibilityAnalysisContent} />
                 </ScrollArea>
               </div>
             </CardContent>
