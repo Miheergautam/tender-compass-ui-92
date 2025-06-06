@@ -22,18 +22,9 @@ import { useTenderContext } from "@/context/TenderContext";
 
 const Analysis = () => {
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState<any>(null);
-
   const { tender_id } = useParams<{ tender_id: string }>();
   const { tenders, loading, error } = useTenderContext();
-
-  const [tender, setTender] = useState<any>({});
-
-  // Calculate days left
-  const submissionDate = new Date("2025-06-19");
-  const today = new Date();
-  const timeDiff = submissionDate.getTime() - today.getTime();
-  const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  const [tender, setTender] = useState<any>(null);
 
   useEffect(() => {
     if (tender_id) {
@@ -51,7 +42,7 @@ const Analysis = () => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-[40vh]">
@@ -61,7 +52,7 @@ const Analysis = () => {
       </div>
     );
   }
-  
+
   if (!tender) {
     return (
       <div className="flex justify-center items-center min-h-[40vh]">
@@ -71,7 +62,12 @@ const Analysis = () => {
       </div>
     );
   }
-  
+
+  // Calculate days left
+  const submissionDate = new Date(tender["Submission Date"]);
+  const today = new Date();
+  const timeDiff = submissionDate.getTime() - today.getTime();
+  const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
   // Tender bio data from placeholder
   const tenderBio = {
@@ -130,7 +126,6 @@ const Analysis = () => {
 
   // Payment weightage content
   const paymentWeightageContent = tender.metadata["Payment Weightage"];
-
 
   const getScoreColor = (score: number) => {
     if (score >= 80)
@@ -392,7 +387,7 @@ const Analysis = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-[500px] gap-4">
                 {locationInsights.map((insight, index) => (
                   <Card
                     key={index}
@@ -402,7 +397,7 @@ const Analysis = () => {
                       <h4 className="font-semibold text-teal-700 mb-3 text-sm">
                         {insight.title}
                       </h4>
-                      <ScrollArea className="h-24">
+                      <ScrollArea className="h-40">
                         <MarkdownRenderer
                           content={insight.content}
                           className="text-xs"
