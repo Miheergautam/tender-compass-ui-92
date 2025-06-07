@@ -9,6 +9,14 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   content,
   className = "",
 }) => {
+  if (!content || content.trim() === "") {
+    return (
+      <p className="text-gray-700 mb-2 leading-relaxed text-sm">
+        Not available
+      </p>
+    );
+  }
+
   const renderMarkdownContent = (content: string) => {
     const lines = content.split("\n");
     const elements: JSX.Element[] = [];
@@ -17,86 +25,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     let listItems: JSX.Element[] = [];
     let inList = false;
 
-    const processTable = (index: number) => {
-      const tableRows = currentTable.filter(
-        (row) => row.trim() !== "" && !row.includes("---")
-      );
-      if (tableRows.length > 1) {
-        const headers = tableRows[0]
-          .split("|")
-          .map((h) => h.trim())
-          .filter((h) => h !== "");
-        const columnCount = headers.length;
-
-        const rows = tableRows.slice(1).map((row) => {
-          const cells = row
-            .split("|")
-            .map((cell) => cell.trim())
-            .filter((cell) => cell !== "");
-
-          while (cells.length < columnCount) {
-            cells.push("");
-          }
-
-          return cells;
-        });
-
-        elements.push(
-          <div key={`table-${index}`} className="overflow-x-auto mb-6">
-            <table className="w-full border border-gray-300 text-sm border-collapse rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  {headers.map((header, i) => {
-                    let bgClass = "bg-white";
-                    if (className.includes("compat-analysis")) {
-                      bgClass =
-                        i === 0
-                          ? " text-red-800 bg-white"
-                          : i === 1
-                          ? " text-green-800 bg-white"
-                          : "bg-white";
-                    }
-                    return (
-                      <th
-                        key={i}
-                        className={`border border-gray-300 p-3 text-left font-semibold text-xs ${bgClass}`}
-                      >
-                        {header.replace(/\*\*/g, "")}
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, i) => (
-                  <tr key={i} className="transition-colors">
-                    {row.map((cell, j) => (
-                      <td
-                        key={j}
-                        className="border border-gray-300 p-2 text-xs bg-white"
-                      >
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: cell.replace(
-                              /\*\*(.*?)\*\*/g,
-                              "<strong>$1</strong>"
-                            ),
-                          }}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        );
-      }
-    };
-
     const processLine = (line: string, index: number) => {
       const trimmedLine = line.trim();
 
+      // Handle tables
       if (trimmedLine.startsWith("|") && trimmedLine.endsWith("|")) {
         if (!inTable) {
           if (inList) {
@@ -118,14 +50,80 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         return;
       }
 
+      // Process accumulated table
       if (inTable && currentTable.length > 0) {
-        processTable(index);
+        const tableRows = currentTable.filter(
+          (row) => row.trim() !== "" && !row.includes("---")
+        );
+
+        if (tableRows.length > 1) {
+          const headers = tableRows[0]
+            .split("|")
+            .slice(1, -1)
+            .map((h) => h.trim());
+          const rows = tableRows.slice(1).map((row) =>
+            row
+              .split("|")
+              .slice(1, -1)
+              .map((cell) => cell.trim())
+          );
+
+          elements.push(
+            <div
+              key={`table-${index}`}
+              className="overflow-x-auto mb-6 rounded-lg border border-gray-200 shadow-sm"
+            >
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-gradient-to-r from-teal-50 to-blue-50">
+                    {headers.map((header, i) => (
+                      <th
+                        key={i}
+                        className="border border-gray-300 p-3 text-left font-semibold text-gray-700 text-xs"
+                      >
+                        {header.replace(/\*\*/g, "") || <>&nbsp;</>}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, i) => (
+                    <tr key={i} className="hover:bg-gray-50 transition-colors">
+                      {row.map((cell, j) => (
+                        <td
+                          key={j}
+                          className="border border-gray-300 p-2 text-xs"
+                        >
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                cell === ""
+                                  ? "&nbsp;"
+                                  : cell.replace(
+                                      /\*\*(.*?)\*\*/g,
+                                      "<strong>$1</strong>"
+                                    ),
+                            }}
+                          />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        }
+
         currentTable = [];
         inTable = false;
       }
 
+      // Handle list items
       if (trimmedLine.startsWith("- ") || trimmedLine.startsWith("* ")) {
-        if (!inList) inList = true;
+        if (!inList) {
+          inList = true;
+        }
         const content = trimmedLine.replace(/^[-*]\s/, "");
         listItems.push(
           <li key={`li-${index}`} className="text-gray-700 text-sm">
@@ -142,6 +140,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         return;
       }
 
+      // Process accumulated list
       if (inList && listItems.length > 0) {
         elements.push(
           <ul
@@ -155,6 +154,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         inList = false;
       }
 
+      // Handle other content
       if (trimmedLine) {
         if (trimmedLine.startsWith("### ")) {
           elements.push(
@@ -214,6 +214,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
     lines.forEach(processLine);
 
+    // Final cleanup
     if (inList && listItems.length > 0) {
       elements.push(
         <ul
@@ -226,7 +227,67 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
 
     if (inTable && currentTable.length > 0) {
-      processTable(lines.length + 1);
+      const tableRows = currentTable.filter(
+        (row) => row.trim() !== "" && !row.includes("---")
+      );
+      if (tableRows.length > 1) {
+        const headers = tableRows[0]
+          .split("|")
+          .slice(1, -1)
+          .map((h) => h.trim());
+        const rows = tableRows.slice(1).map((row) =>
+          row
+            .split("|")
+            .slice(1, -1)
+            .map((cell) => cell.trim())
+        );
+
+        elements.push(
+          <div
+            key="final-table"
+            className="overflow-x-auto mb-6 rounded-lg border border-gray-200 shadow-sm"
+          >
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-gradient-to-r from-teal-50 to-blue-50">
+                  {headers.map((header, i) => (
+                    <th
+                      key={i}
+                      className="border border-gray-300 p-3 text-left font-semibold text-gray-700 text-xs"
+                    >
+                      {header.replace(/\*\*/g, "") || <>&nbsp;</>}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, i) => (
+                  <tr key={i} className="hover:bg-gray-50 transition-colors">
+                    {row.map((cell, j) => (
+                      <td
+                        key={j}
+                        className="border border-gray-300 p-2 text-xs"
+                      >
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              cell === ""
+                                ? "&nbsp;"
+                                : cell.replace(
+                                    /\*\*(.*?)\*\*/g,
+                                    "<strong>$1</strong>"
+                                  ),
+                          }}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
     }
 
     return elements;

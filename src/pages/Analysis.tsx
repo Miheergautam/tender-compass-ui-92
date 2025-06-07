@@ -16,9 +16,11 @@ import {
   ExternalLink,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import CompatibilityMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
 import { useParams } from "react-router-dom";
 
 import { useTenderContext } from "@/context/TenderContext";
+import FlagTableMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
 
 const Analysis = () => {
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ const Analysis = () => {
     organisationId: tender.organizationTenderId || "Not specified",
     website: tender?.website || "Not specified",
     submissionDeadline: tender?.submissionDate || "Not specified",
-    compatibilityScore: tender?.score || "Not available",
+    compatibilityScore: tender?.score || "--",
   };
 
   // Location insights data
@@ -524,9 +526,8 @@ const Analysis = () => {
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
                 <ScrollArea className="max-h-96 p-6">
-                  <MarkdownRenderer
-                    content={compatibilityAnalysisContent}
-                    className="compat-analysis"
+                  <FlagTableMarkdownRenderer
+                    content={compatibilityAnalysisContent || ``}
                   />
                 </ScrollArea>
               </div>

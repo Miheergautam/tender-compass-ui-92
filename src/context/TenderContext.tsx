@@ -19,7 +19,7 @@ export type Tender = {
   length: string;
   type: string;
   zip_file_id: string;
-  metadata: Record<string, string>; // You can replace this with a stricter type if needed
+  metadata: Record<string | null, string | null>;
   score: number | null;
   score_analysis: string | null;
   estimatedCost: number | null;
