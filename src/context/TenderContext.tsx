@@ -19,7 +19,7 @@ export type Tender = {
   length: string;
   type: string;
   zip_file_id: string;
-  metadata: Record<string | null, string | null>;
+  metadata: Record<string, string | null>;
   score: number | null;
   score_analysis: string | null;
   estimatedCost: number | null;
@@ -40,6 +40,26 @@ export const useTenderContext = () => {
   }
   return context;
 };
+
+function toCamelCase(str: string): string {
+  return str
+    .replace(/[^a-zA-Z0-9 ]/g, "") // remove non-alphanumerics
+    .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+      index === 0 ? match.toLowerCase() : match.trim().toUpperCase()
+    );
+}
+
+function normalizeKeys(
+  obj: Record<string | null, string | null>
+): Record<string, string | null> {
+  const result: Record<string, string | null> = {};
+  for (const key in obj) {
+    if (!key) continue;
+    const newKey = toCamelCase(key);
+    result[newKey] = obj[key];
+  }
+  return result;
+}
 
 export const TenderProvider = ({ children }: { children: ReactNode }) => {
   const [tenders, setTenders] = useState<Tender[]>([]);
@@ -70,6 +90,7 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
 
           return {
             ...tender,
+            metadata: normalizeKeys(tender.metadata),
             score: scoreObj?.compatibility_score ?? null,
             score_analysis: scoreObj?.compatibility_analysis ?? null,
           };
