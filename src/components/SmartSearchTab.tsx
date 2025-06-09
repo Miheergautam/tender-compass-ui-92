@@ -44,292 +44,39 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
   const [amountLowerLimit, setAmountLowerLimit] = useState("");
   const [amountUpperLimit, setAmountUpperLimit] = useState("");
   const [sortBy, setSortBy] = useState("score");
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [savedTenders, setSavedTenders] = useState<Set<string>>(new Set());
 
   const navigate = useNavigate();
 
   const { tenders, loading, error } = useTenderContext();
 
-  const FILTERS_STORAGE_KEY = "tender_filters";
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-48">
+        <p className="text-gray-600 text-sm">Loading tenders...</p>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    const filters = {
-      searchTerm,
-      selectedOrganisation,
-      selectedOrgType,
-      selectedContType,
-      selectedOwnership,
-      selectedState,
-      amountLowerLimit,
-      amountUpperLimit,
-      sortBy,
-    };
-
-    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
-  }, [
-    searchTerm,
-    selectedOrganisation,
-    selectedOrgType,
-    selectedContType,
-    selectedOwnership,
-    selectedState,
-    amountLowerLimit,
-    amountUpperLimit,
-    sortBy,
-  ]);
-
-  useEffect(() => {
-    const savedFilters = localStorage.getItem(FILTERS_STORAGE_KEY);
-    if (savedFilters) {
-      try {
-        const parsed = JSON.parse(savedFilters);
-
-        setSearchTerm(parsed.searchTerm || "");
-        setSelectedOrganisation(parsed.selectedOrganisation || "all");
-        setSelectedOrgType(parsed.selectedOrgType || "all");
-        setSelectedContType(parsed.selectedContType || "all");
-        setSelectedOwnership(parsed.selectedOwnership || "all");
-        setSelectedState(parsed.selectedState || "all");
-        setAmountLowerLimit(parsed.amountLowerLimit || "");
-        setAmountUpperLimit(parsed.amountUpperLimit || "");
-        setSortBy(parsed.sortBy || "score");
-      } catch (err) {
-        console.error("Failed to parse saved filters:", err);
-      }
-    }
-  }, []);
-
-  // 20 mock tenders with realistic variations
-  const mockTenders: Tender[] = [
-    {
-      id: "1",
-      name: "Development, Operations And Maintenance Of Innovative Urban Ropeway Transport Network In Shimla Project (Phase 2)",
-      organisation: "Himachal Pradesh PWD",
-      amount: 3500,
-      compatibilityScore: 95,
-      location: "Shimla, HP",
-      deadline: "02-06-2025",
-      category: "Development",
-      workTypes: ["Transport", "Infrastructure", "Urban Development"],
-    },
-    {
-      id: "2",
-      name: "Construction Of New 4 Lane Highway With Paved Shoulder From Dareota Village To Kalar Bala Village",
-      organisation: "NHAI",
-      amount: 622,
-      compatibilityScore: 88,
-      location: "Himachal Pradesh",
-      deadline: "12-06-2025",
-      category: "Highway",
-      workTypes: ["Road Construction", "Highway", "Pavement"],
-    },
-    {
-      id: "3",
-      name: "Metro Rail Extension Project Phase 3 with Advanced Signaling and Safety Systems",
-      organisation: "DMRC",
-      amount: 2800,
-      compatibilityScore: 92,
-      location: "Delhi NCR",
-      deadline: "15-08-2025",
-      category: "Metro",
-      workTypes: ["Metro", "Rail", "Signaling", "Safety"],
-    },
-    {
-      id: "4",
-      name: "Smart City Infrastructure Development with IoT Integration in Tier-2 Cities",
-      organisation: "Smart City Mission",
-      amount: 1200,
-      compatibilityScore: 85,
-      location: "Bhopal, MP",
-      deadline: "20-07-2025",
-      category: "Smart City",
-      workTypes: ["IoT", "Smart Infrastructure", "Technology"],
-    },
-    {
-      id: "5",
-      name: "Construction of Multi-Modal Transport Hub with Integrated Facilities",
-      organisation: "Karnataka PWD",
-      amount: 890,
-      compatibilityScore: 78,
-      location: "Bangalore, KA",
-      deadline: "10-09-2025",
-      category: "Transport",
-      workTypes: ["Transport Hub", "Multi-Modal", "Integration"],
-    },
-    {
-      id: "6",
-      name: "Solar Power Plant Installation and Grid Integration for Rural Electrification",
-      organisation: "MNRE",
-      amount: 567,
-      compatibilityScore: 82,
-      location: "Rajasthan",
-      deadline: "05-08-2025",
-      category: "Renewable Energy",
-      workTypes: ["Solar", "Grid Integration", "Rural Development"],
-    },
-    {
-      id: "7",
-      name: "Water Treatment Plant Modernization with Advanced Filtration Technology",
-      organisation: "Water Board",
-      amount: 445,
-      compatibilityScore: 76,
-      location: "Chennai, TN",
-      deadline: "25-09-2025",
-      category: "Water Management",
-      workTypes: ["Water Treatment", "Filtration", "Modernization"],
-    },
-    {
-      id: "8",
-      name: "Coastal Road Development Project with Anti-Erosion Measures",
-      organisation: "Maharashtra PWD",
-      amount: 1560,
-      compatibilityScore: 89,
-      location: "Mumbai, MH",
-      deadline: "12-11-2025",
-      category: "Infrastructure",
-      workTypes: ["Coastal Engineering", "Road", "Erosion Control"],
-    },
-    {
-      id: "9",
-      name: "Airport Terminal Expansion with Sustainable Architecture and Green Features",
-      organisation: "AAI",
-      amount: 2100,
-      compatibilityScore: 84,
-      location: "Kochi, KL",
-      deadline: "18-10-2025",
-      category: "Aviation",
-      workTypes: ["Airport", "Terminal", "Green Building"],
-    },
-    {
-      id: "10",
-      name: "Industrial Waste Management Facility with Recycling Plant Setup",
-      organisation: "Pollution Control Board",
-      amount: 680,
-      compatibilityScore: 71,
-      location: "Gurgaon, HR",
-      deadline: "08-07-2025",
-      category: "Environment",
-      workTypes: ["Waste Management", "Recycling", "Industrial"],
-    },
-    {
-      id: "11",
-      name: "Healthcare Infrastructure Development in Rural Areas with Telemedicine",
-      organisation: "Ministry of Health",
-      amount: 520,
-      compatibilityScore: 73,
-      location: "Patna, BR",
-      deadline: "14-11-2025",
-      category: "Healthcare",
-      workTypes: ["Healthcare", "Rural Development", "Telemedicine"],
-    },
-    {
-      id: "12",
-      name: "Educational Complex Construction with Research and Innovation Centers",
-      organisation: "UGC",
-      amount: 980,
-      compatibilityScore: 80,
-      location: "Hyderabad, TG",
-      deadline: "22-01-2026",
-      category: "Education",
-      workTypes: ["Education", "Research", "Innovation"],
-    },
-    {
-      id: "13",
-      name: "Port Development and Container Handling Automation Project",
-      organisation: "Port Trust",
-      amount: 3200,
-      compatibilityScore: 91,
-      location: "Visakhapatnam, AP",
-      deadline: "28-11-2025",
-      category: "Port",
-      workTypes: ["Port Development", "Automation", "Container Handling"],
-    },
-    {
-      id: "14",
-      name: "Sports Complex Development with Olympic Standard Facilities",
-      organisation: "Sports Authority",
-      amount: 750,
-      compatibilityScore: 65,
-      location: "Pune, MH",
-      deadline: "18-07-2025",
-      category: "Sports",
-      workTypes: ["Sports", "Complex", "Olympic Standards"],
-    },
-    {
-      id: "15",
-      name: "Rural Road Connectivity Enhancement Under PMGSY Phase 4",
-      organisation: "NRRDA",
-      amount: 420,
-      compatibilityScore: 77,
-      location: "Odisha",
-      deadline: "30-06-2025",
-      category: "Rural Development",
-      workTypes: ["Rural Roads", "Connectivity", "PMGSY"],
-    },
-    {
-      id: "16",
-      name: "Flyover Construction with Pedestrian and Cycling Infrastructure",
-      organisation: "Delhi PWD",
-      amount: 850,
-      compatibilityScore: 83,
-      location: "New Delhi",
-      deadline: "15-10-2025",
-      category: "Infrastructure",
-      workTypes: ["Flyover", "Pedestrian", "Cycling"],
-    },
-    {
-      id: "17",
-      name: "Digital Infrastructure Setup for Government Buildings and Offices",
-      organisation: "NIC",
-      amount: 340,
-      compatibilityScore: 69,
-      location: "Ahmedabad, GJ",
-      deadline: "25-08-2025",
-      category: "Digital",
-      workTypes: ["Digital Infrastructure", "Government", "Technology"],
-    },
-    {
-      id: "18",
-      name: "Integrated Township Development with Sustainable Housing Solutions",
-      organisation: "HUDCO",
-      amount: 2600,
-      compatibilityScore: 86,
-      location: "Lucknow, UP",
-      deadline: "06-03-2026",
-      category: "Housing",
-      workTypes: ["Township", "Sustainable Housing", "Development"],
-    },
-    {
-      id: "19",
-      name: "Railway Station Modernization with Passenger Amenity Enhancement",
-      organisation: "Indian Railways",
-      amount: 1200,
-      compatibilityScore: 79,
-      location: "Kolkata, WB",
-      deadline: "20-12-2025",
-      category: "Railway",
-      workTypes: ["Railway", "Modernization", "Passenger Amenities"],
-    },
-    {
-      id: "20",
-      name: "Flood Control and Drainage System Improvement in Urban Areas",
-      organisation: "WRD",
-      amount: 960,
-      compatibilityScore: 74,
-      location: "Guwahati, AS",
-      deadline: "10-08-2025",
-      category: "Water Management",
-      workTypes: ["Flood Control", "Drainage", "Urban Planning"],
-    },
-  ];
+  if (error || !tenders) {
+    return (
+      <div className="flex justify-center items-center h-48">
+        <p className="text-red-600 text-sm">
+          Failed to load tenders. Please try again.
+        </p>
+      </div>
+    );
+  }
 
   const organisations = Array.from(
     new Set(tenders.map((t) => t.organization))
   ).filter((org) => org);
+
   const contractTypes = Array.from(
     new Set(tenders.map((t) => t.metadata?.type))
   ).filter((type) => type);
+
   const states = Array.from(
     new Set(
       tenders.map((t) => {
@@ -340,14 +87,14 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
     )
   ).filter((state) => state);
 
-  const organisationTypes = [
-    "Government",
-    "PSU",
-    "Private",
-    "Autonomous Body",
-    "Corporation",
-    "EPC Contract",
-  ];
+  // const organisationTypes = [
+  //   "Government",
+  //   "PSU",
+  //   "Private",
+  //   "Autonomous Body",
+  //   "Corporation",
+  //   "EPC Contract",
+  // ];
   const ownershipTypes = [
     "Central",
     "State",
@@ -485,8 +232,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-shrink-0 p-6 space-y-6">
+    <div className="h-full flex flex-col px-4 sm:px-6 lg:px-8">
+      <div className="flex-shrink-0 py-6 space-y-6">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Smart Search</h2>
@@ -494,7 +242,6 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
               Discover and analyze relevant tenders
             </p>
           </div>
-
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
@@ -505,6 +252,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
           </Button>
         </div>
 
+        {/* Search Input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -515,9 +263,11 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
           />
         </div>
 
+        {/* Filters */}
         {showFilters && (
           <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Organisation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Organisation
@@ -540,6 +290,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
+              {/* Contract Type */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Contract Type
@@ -562,6 +313,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
+              {/* Ownership */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Ownership
@@ -584,6 +336,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
+              {/* State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   State
@@ -603,6 +356,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
+              {/* Amount Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Amount Range (₹ Cr.)
@@ -625,6 +379,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </div>
               </div>
 
+              {/* Sort By */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Sort By
@@ -641,21 +396,18 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Results
-                </label>
-                <div className="text-sm text-gray-600 bg-white rounded-lg p-2 border">
-                  {filteredAndSortedTenders.length} of {mockTenders.length}{" "}
-                  tenders
-                </div>
+              {/* Showing X of Y */}
+              <div className="mt-4 text-sm text-gray-500 font-medium text-center sm:text-right sm:col-span-3">
+                Showing {filteredAndSortedTenders.length} of {tenders.length}{" "}
+                tenders
               </div>
             </div>
           </Card>
         )}
       </div>
 
-      <div className="flex-1 px-6 pb-6 overflow-hidden">
+      {/* Tenders List */}
+      <div className="flex-1 pb-6 overflow-hidden">
         <div className="h-full overflow-y-auto space-y-4 pr-2">
           {filteredAndSortedTenders.map((tender) => (
             <Card
@@ -679,7 +431,6 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                           </span>
                         </div>
                       </div>
-
                       <div className="flex-shrink-0">
                         <CompatibilityScore
                           score={tender?.score}
@@ -689,14 +440,13 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <IndianRupee className="w-4 h-4 mr-2" />
                         <span className="font-medium">
                           {tender?.estimatedCost}
                         </span>
                       </div>
-
                       <div className="flex items-center text-sm text-gray-600">
                         <MapPin className="w-4 h-4 mr-2" />
                         <span>{tender?.location}</span>
@@ -705,7 +455,6 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                         <Ruler className="w-4 h-4 mr-2" />
                         <span>{tender?.metadata?.length}</span>
                       </div>
-
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="w-4 h-4 mr-2" />
                         <span>Deadline: {tender?.submissionDate}</span>
