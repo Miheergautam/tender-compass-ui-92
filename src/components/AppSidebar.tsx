@@ -13,6 +13,8 @@ import {
   Hammer,
 } from "lucide-react";
 
+import { useToast } from "../hooks/use-toast";
+
 interface AppSidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -24,6 +26,8 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
   setActiveTab,
   onLogout,
 }) => {
+  const { toast } = useToast();
+
   const sidebarItems = [
     { icon: BarChart3, label: "Dashboard", key: "dashboard" },
     { icon: Search, label: "Smart Search", key: "smart-search" },
@@ -92,13 +96,22 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
         <button
           onClick={async () => {
             try {
-              await fetch("/auth/logout", {
+              await fetch("http://localhost:8000/api/auth/logout", {
                 method: "GET",
-                credentials: "include",
+                // credentials: "include",
+              });
+              toast({
+                title: "Logout Successful",
+                description: "You have been logged out successfully.",
               });
               onLogout();
             } catch (error) {
               console.error("Logout failed", error);
+              toast({
+                title: "Logout Failed",
+                description: "There was an error logging you out.",
+                variant: "destructive",
+              });
             }
           }}
           className="w-full flex items-center px-6 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 rounded-xl"

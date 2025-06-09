@@ -10,27 +10,30 @@ import Analysis from "./pages/Analysis";
 import NotFound from "./pages/NotFound";
 
 import { TenderProvider } from "./context/TenderContext";
+import { UserProvider } from "./context/UserContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <TenderProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/analysis/:tender_id" element={<Analysis />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TenderProvider>
-    </TooltipProvider>
+    <BrowserRouter>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <TenderProvider>
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Index />} />
+              <Route path="/analysis/:tender_id" element={<Analysis />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </UserProvider>
+        </TenderProvider>
+      </TooltipProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 

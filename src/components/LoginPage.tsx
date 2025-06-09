@@ -1,4 +1,4 @@
-// Final refined LoginPage.tsx with original visuals preserved and fixes applied
+// LoginPage.tsx
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, User, Eye, EyeOff, Phone, Hammer } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff, Hammer } from "lucide-react";
+
+import { useToast } from "../hooks/use-toast";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -29,18 +31,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("login");
 
-  const clearErrors = () => {
-    setErrors({});
-    setServerError(null);
-  };
+  const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    clearErrors();
 
     if (!loginForm.email.includes("@")) {
       setErrors({ email: "Please enter a valid email address" });
@@ -57,7 +54,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.message || "Login failed. Please try again.");
+        toast({
+          title: "Login failed",
+          description: data.message || "Please try again.",
+          variant: "destructive",
+        });
         setIsLoading(false);
         return;
       }
@@ -65,9 +66,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       localStorage.setItem("token", data.token || "dummy-token");
       localStorage.setItem("isAuthenticated", "true");
       setIsLoading(false);
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
       onLogin();
     } catch {
-      setServerError("Network error. Please try again later.");
+      toast({
+        title: "Network error",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
       setIsLoading(false);
     }
   };
@@ -75,11 +84,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    clearErrors();
 
     if (signupForm.password !== signupForm.confirmPassword) {
       setErrors({ confirmPassword: "Passwords do not match" });
       setIsLoading(false);
+      toast({
+        title: "Signup failed",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -98,7 +111,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.message || "Signup failed. Please try again.");
+        toast({
+          title: "Signup failed",
+          description: data.message || "Please try again.",
+          variant: "destructive",
+        });
         setIsLoading(false);
         return;
       }
@@ -106,9 +123,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       localStorage.setItem("token", data.token || "dummy-token");
       localStorage.setItem("isAuthenticated", "true");
       setIsLoading(false);
+      toast({
+        title: "Account created",
+        description: "Your account has been successfully created.",
+      });
       onLogin();
     } catch {
-      setServerError("Network error. Please try again later.");
+      toast({
+        title: "Network error",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
       setIsLoading(false);
     }
   };
@@ -132,7 +157,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             value={activeTab}
             onValueChange={(val) => {
               setActiveTab(val);
-              clearErrors();
             }}
             className="w-full"
           >
@@ -144,12 +168,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 Sign Up
               </TabsTrigger>
             </TabsList>
-
-            {serverError && (
-              <p className="text-red-600 text-center mb-4 font-semibold">
-                {serverError}
-              </p>
-            )}
 
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-5">
@@ -211,13 +229,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   </div>
                 </div>
 
-                {/* Forgot */}
-                {/* <div className="text-right text-sm">
-                  <a href="#" className="text-teal-600 hover:text-teal-700">
-                    Forgot password?
-                  </a>
-                </div> */}
-
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -225,33 +236,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 >
                   {isLoading ? "Signing In..." : "Sign In"}
                 </Button>
-
-                {/* Divider */}
-                {/* <div className="relative my-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-200"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">
-                      Or continue with
-                    </span>
-                  </div>
-                </div> */}
-
-                {/* <div className="grid grid-cols-2 gap-3"> */}
-                {/*
-                  <Button variant="outline" className="rounded-xl border-2">
-                    <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M22.56 12.25c0-.78..." />
-                    </svg>
-                    Google
-                  </Button>
-                  <Button variant="outline" className="rounded-xl border-2">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Mobile No.
-                  </Button>
-                  */}
-                {/* </div> */}
               </form>
             </TabsContent>
 
