@@ -33,14 +33,6 @@ type TenderContextType = {
 
 const TenderContext = createContext<TenderContextType | undefined>(undefined);
 
-export const useTenderContext = () => {
-  const context = useContext(TenderContext);
-  if (!context) {
-    throw new Error("useTenderContext must be used within a TenderProvider");
-  }
-  return context;
-};
-
 function toCamelCase(str: string): string {
   return str
     .replace(/[^a-zA-Z0-9 ]/g, "") // remove non-alphanumerics
@@ -112,4 +104,12 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </TenderContext.Provider>
   );
+};
+
+export const useTenderContext = () => {
+  const context = useContext(TenderContext);
+  if (!context) {
+    throw new Error("useTenderContext must be used within a TenderProvider");
+  }
+  return context;
 };

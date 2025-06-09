@@ -169,6 +169,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         errors.email ? "border-red-400" : "border-gray-200"
                       }`}
                       placeholder="Enter your email"
+                      autoComplete="email"
                       required
                     />
                     {errors.email && (
@@ -193,6 +194,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       }
                       className="pl-11 pr-11 rounded-xl border-2 border-gray-200 focus:border-teal-400"
                       placeholder="Enter your password"
+                      autoComplete="current-password"
                       required
                     />
                     <button
@@ -269,6 +271,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       }
                       className="pl-11 rounded-xl border-2 border-gray-200 focus:border-teal-400"
                       placeholder="Enter your full name"
+                      autoComplete="name"
                       required
                     />
                   </div>
@@ -288,6 +291,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       }
                       className="pl-11 rounded-xl border-2 border-gray-200 focus:border-teal-400"
                       placeholder="Enter your email"
+                      autoComplete="email"
                       required
                     />
                   </div>
@@ -310,6 +314,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       }
                       className="pl-11 rounded-xl border-2 border-gray-200 focus:border-teal-400"
                       placeholder="Create a password"
+                      autoComplete="new-password"
                       required
                     />
                   </div>
@@ -324,6 +329,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       id="confirm-password"
                       type="password"
                       value={signupForm.confirmPassword}
+                      autoComplete="new-password"
                       onChange={(e) =>
                         setSignupForm({
                           ...signupForm,

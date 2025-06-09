@@ -475,12 +475,12 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                     <Button
                       variant="outline"
                       className={`border-teal-200 rounded-lg transition-all duration-200 ${
-                        savedTenders.has(tender.id)
+                        savedTenders.has(tender._id)
                           ? "bg-green-50 text-green-700 border-green-200"
                           : "text-teal-700 hover:bg-teal-50"
                       }`}
                     >
-                      {savedTenders.has(tender.id) ? (
+                      {savedTenders.has(tender._id) ? (
                         <>
                           <Check className="w-4 h-4 mr-2" />
                           Saved
