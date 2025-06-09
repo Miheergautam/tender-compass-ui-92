@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, Phone, Hammer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Toast } from "@radix-ui/react-toast";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -43,8 +44,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
+      const res = await fetch(`http://localhost:8000/api/auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginForm),
       });
@@ -134,6 +136,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             value={activeTab}
             onValueChange={(val) => {
               setActiveTab(val);
+              clearErrors();
             }}
             className="w-full"
           >
