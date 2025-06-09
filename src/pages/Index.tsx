@@ -11,8 +11,7 @@ import FeedbackTab from "../components/FeedbackTab";
 import LanguageNotificationsTab from "../components/LanguageNotificationsTab";
 import ChatWidget from "../components/ChatWidget";
 import { useUser } from "@/context/userContext";
-import { Tender } from "../types/tender";
-import { verify } from "crypto";
+import { Tender } from "../context/tenderContext";
 
 const Index = () => {
   const navigate = useNavigate();

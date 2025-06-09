@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, Phone, Hammer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Toast } from "@radix-ui/react-toast";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -135,7 +134,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             value={activeTab}
             onValueChange={(val) => {
               setActiveTab(val);
-              clearErrors();
             }}
             className="w-full"
           >
