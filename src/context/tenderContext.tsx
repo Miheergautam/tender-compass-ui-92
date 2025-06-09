@@ -6,6 +6,8 @@ import React, {
   ReactNode,
 } from "react";
 
+import { toCamelCase } from "@/helpers";
+
 export type Tender = {
   _id: string;
   bio: string;
@@ -31,16 +33,6 @@ type TenderContextType = {
   error: string | null;
 };
 
-const TenderContext = createContext<TenderContextType | undefined>(undefined);
-
-function toCamelCase(str: string): string {
-  return str
-    .replace(/[^a-zA-Z0-9 ]/g, "") // remove non-alphanumerics
-    .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
-      index === 0 ? match.toLowerCase() : match.trim().toUpperCase()
-    );
-}
-
 function normalizeKeys(
   obj: Record<string | null, string | null>
 ): Record<string, string | null> {
@@ -52,6 +44,8 @@ function normalizeKeys(
   }
   return result;
 }
+
+const TenderContext = createContext<TenderContextType | undefined>(undefined);
 
 export const TenderProvider = ({ children }: { children: ReactNode }) => {
   const [tenders, setTenders] = useState<Tender[]>([]);

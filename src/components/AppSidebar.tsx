@@ -94,26 +94,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
 
       <div className="p-4 border-t border-gray-200">
         <button
-          onClick={async () => {
-            try {
-              await fetch("http://localhost:8000/api/auth/logout", {
-                method: "GET",
-                // credentials: "include",
-              });
-              toast({
-                title: "Logout Successful",
-                description: "You have been logged out successfully.",
-              });
-              onLogout();
-            } catch (error) {
-              console.error("Logout failed", error);
-              toast({
-                title: "Logout Failed",
-                description: "There was an error logging you out.",
-                variant: "destructive",
-              });
-            }
-          }}
+          onClick={onLogout}
           className="w-full flex items-center px-6 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 rounded-xl"
         >
           <LogOut className="w-5 h-5 mr-3" />

@@ -24,7 +24,7 @@ import CompatibilityScore from "./CompatibilityScore";
 import { Tender } from "../types/tender";
 import { useNavigate } from "react-router-dom";
 
-import { useTenderContext } from "@/context/TenderContext";
+import { useTenderContext } from "@/context/tenderContext";
 
 interface SmartSearchTabProps {
   onAnalyze: (id: string) => void;
@@ -314,7 +314,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
               </div>
 
               {/* Ownership */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Ownership
                 </label>
@@ -334,7 +334,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               {/* State */}
               <div>

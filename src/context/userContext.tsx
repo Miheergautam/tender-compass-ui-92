@@ -1,13 +1,12 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
   useEffect,
   ReactNode,
 } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast"; // adjust path if needed
-
+import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "@/components/ui/use-toast";
 type User = {
   _id: string;
   name: string;
@@ -19,6 +18,7 @@ interface UserContextType {
   setUser: (user: User) => void;
   clearUser: () => void;
   logout: () => Promise<void>;
+  verifyUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +26,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const setUser = (user: User) => {
     setUserState(user);
@@ -42,24 +43,63 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         credentials: "include",
       });
 
-      if (!res.ok) throw new Error(`Logout failed: ${res.status}`);
-
+      if (!res.ok) {
+        throw new Error("Logout failed");
+      }
       clearUser();
+      toast({
+        title: "Logout Successful",
+        description: "You have been logged out successfully.",
+      });
       navigate("/");
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error("Logout error:", error);
       toast({
         title: "Logout failed",
-        description: "Please try again.",
+        description: "There was an error logging you out.",
         variant: "destructive",
       });
     }
   };
 
+  const verifyUser = async () => {
+    const publicUrls = ["/", "/login"];
+    if (publicUrls.includes(pathname)) return;
+
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/verify", {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error("Error verifying user");
+      }
+      const data = await res.json();
+      if (!data.authenticated) {
+        clearUser();
+        toast({
+          title: "Authentication required",
+          description: "Please log in to continue.",
+        });
+        navigate("/login");
+        return;
+      }
+    } catch (err) {
+      toast({
+        title: "Error verifying user",
+        description: "Please try again later.",
+      });
+      navigate("/login");
+    }
+  };
+
   useEffect(() => {
+    const publicUrls = ["/", "/login"];
+    if (publicUrls.includes(pathname)) return;
+
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/auth/me", {
+        const res = await fetch("http://localhost:8000/api/auth/verify", {
           credentials: "include",
         });
 
@@ -99,10 +139,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchUser();
-  }, []);
+  }, [pathname]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, clearUser, logout }}>
+    <UserContext.Provider
+      value={{ user, setUser, clearUser, logout, verifyUser }}
+    >
       {children}
     </UserContext.Provider>
   );

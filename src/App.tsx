@@ -9,31 +9,33 @@ import Login from "./pages/Login";
 import Analysis from "./pages/Analysis";
 import NotFound from "./pages/NotFound";
 
-import { TenderProvider } from "./context/TenderContext";
-import { UserProvider } from "./context/UserContext";
+import { UserProvider } from "./context/userContext";
+import { TenderProvider } from "./context/tenderContext";
+import { CompanyProfileProvider } from "./context/companyProfileContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <TenderProvider>
-          <UserProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Index />} />
-              <Route path="/analysis/:tender_id" element={<Analysis />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </UserProvider>
-        </TenderProvider>
-      </TooltipProvider>
-    </BrowserRouter>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <UserProvider>
+          <CompanyProfileProvider>
+            <TenderProvider>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/dashboard" element={<Index />} />
+                <Route path="/analysis/:tender_id" element={<Analysis />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </TenderProvider>
+          </CompanyProfileProvider>
+        </UserProvider>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 

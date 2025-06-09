@@ -19,7 +19,7 @@ import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CompatibilityMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
 import { useParams } from "react-router-dom";
 
-import { useTenderContext } from "@/context/TenderContext";
+import { useTenderContext } from "@/context/tenderContext";
 import FlagTableMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
 
 const Analysis = () => {
