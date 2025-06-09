@@ -5,6 +5,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    console.log("Logged in! 2");
+
     navigate("/dashboard");
   };
 

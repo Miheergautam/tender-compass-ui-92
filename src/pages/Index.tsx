@@ -17,19 +17,36 @@ const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [savedTenders, setSavedTenders] = useState<Tender[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simple auth state
 
   useEffect(() => {
-    // Check if user is authenticated (you can implement proper auth logic here)
-    const authStatus = localStorage.getItem('isAuthenticated');
-    if (!authStatus) {
-      navigate('/login');
-    }
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/auth/verify", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!res.ok) {
+          throw new Error("Not authenticated");
+        }
+        const data = await res.json();
+        if (!data.authenticated) {
+          navigate("/login");
+        }
+      } catch (err) {
+        navigate("/login");
+      }
+    };
+  
+    checkAuth();
   }, [navigate]);
+  
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    navigate('/');
+  const handleLogout = async () => {
+    await fetch("http://localhost:8000/api/auth/logout", {
+      method: "GET",
+      credentials: "include",
+    });
+    navigate("/");
   };
 
   const handleAnalyze = () => {
