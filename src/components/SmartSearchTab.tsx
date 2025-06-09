@@ -38,6 +38,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOrganisation, setSelectedOrganisation] = useState("all");
   const [selectedOrgType, setSelectedOrgType] = useState("all");
+  const [selectedContType, setSelectedContType] = useState("all");
   const [selectedOwnership, setSelectedOwnership] = useState("all");
   const [selectedState, setSelectedState] = useState("all");
   const [amountLowerLimit, setAmountLowerLimit] = useState("");
@@ -49,6 +50,55 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
   const navigate = useNavigate();
 
   const { tenders, loading, error } = useTenderContext();
+
+  const FILTERS_STORAGE_KEY = "tender_filters";
+
+  useEffect(() => {
+    const filters = {
+      searchTerm,
+      selectedOrganisation,
+      selectedOrgType,
+      selectedContType,
+      selectedOwnership,
+      selectedState,
+      amountLowerLimit,
+      amountUpperLimit,
+      sortBy,
+    };
+
+    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
+  }, [
+    searchTerm,
+    selectedOrganisation,
+    selectedOrgType,
+    selectedContType,
+    selectedOwnership,
+    selectedState,
+    amountLowerLimit,
+    amountUpperLimit,
+    sortBy,
+  ]);
+
+  useEffect(() => {
+    const savedFilters = localStorage.getItem(FILTERS_STORAGE_KEY);
+    if (savedFilters) {
+      try {
+        const parsed = JSON.parse(savedFilters);
+
+        setSearchTerm(parsed.searchTerm || "");
+        setSelectedOrganisation(parsed.selectedOrganisation || "all");
+        setSelectedOrgType(parsed.selectedOrgType || "all");
+        setSelectedContType(parsed.selectedContType || "all");
+        setSelectedOwnership(parsed.selectedOwnership || "all");
+        setSelectedState(parsed.selectedState || "all");
+        setAmountLowerLimit(parsed.amountLowerLimit || "");
+        setAmountUpperLimit(parsed.amountUpperLimit || "");
+        setSortBy(parsed.sortBy || "score");
+      } catch (err) {
+        console.error("Failed to parse saved filters:", err);
+      }
+    }
+  }, []);
 
   // 20 mock tenders with realistic variations
   const mockTenders: Tender[] = [
@@ -275,14 +325,28 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
   ];
 
   const organisations = Array.from(
-    new Set(mockTenders.map((t) => t.organisation))
-  );
+    new Set(tenders.map((t) => t.organization))
+  ).filter((org) => org);
+  const contractTypes = Array.from(
+    new Set(tenders.map((t) => t.metadata?.type))
+  ).filter((type) => type);
+  const states = Array.from(
+    new Set(
+      tenders.map((t) => {
+        const location = t.location || "";
+        const parts = location.split(",");
+        return parts.length === 2 ? parts[1].trim() : parts[0].trim();
+      })
+    )
+  ).filter((state) => state);
+
   const organisationTypes = [
     "Government",
     "PSU",
     "Private",
     "Autonomous Body",
     "Corporation",
+    "EPC Contract",
   ];
   const ownershipTypes = [
     "Central",
@@ -291,62 +355,94 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
     "Private",
     "Joint Venture",
   ];
-  const states = [
-    "Himachal Pradesh",
-    "Delhi",
-    "Maharashtra",
-    "Karnataka",
-    "Tamil Nadu",
-    "Rajasthan",
-    "Kerala",
-    "Haryana",
-    "Uttar Pradesh",
-    "West Bengal",
-    "Telangana",
-    "Andhra Pradesh",
-    "Gujarat",
-    "Bihar",
-    "Odisha",
-    "Assam",
-    "Madhya Pradesh",
-  ];
+  // const states = [
+  //   "Himachal Pradesh",
+  //   "Delhi",
+  //   "Maharashtra",
+  //   "Karnataka",
+  //   "Tamil Nadu",
+  //   "Rajasthan",
+  //   "Kerala",
+  //   "Haryana",
+  //   "Uttar Pradesh",
+  //   "West Bengal",
+  //   "Telangana",
+  //   "Andhra Pradesh",
+  //   "Gujarat",
+  //   "Bihar",
+  //   "Odisha",
+  //   "Assam",
+  //   "Madhya Pradesh",
+  //   "Sikkim",
+  // ];
+
+  function parseEstimatedCost(costStr) {
+    const match = costStr.match(/([\d,.]+)\s*Cr\.?/i);
+    if (!match) return NaN;
+    return parseFloat(match[1].replace(/,/g, ""));
+  }
 
   const filteredAndSortedTenders = useMemo(() => {
-    let filtered = mockTenders.filter((tender) => {
+    const filtered = tenders.filter((tender) => {
       const matchesSearch =
-        tender.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tender.organisation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tender.bio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tender.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
         tender.location.toLowerCase().includes(searchTerm.toLowerCase());
+
       const matchesOrg =
         selectedOrganisation === "all" ||
-        tender.organisation === selectedOrganisation;
+        tender.organization.toLowerCase() ===
+          selectedOrganisation.toLowerCase();
 
       // Amount filtering with lower and upper limits
       let matchesAmount = true;
+      const estimatedCostCr = parseEstimatedCost(tender.estimatedCost);
+
       if (amountLowerLimit && !isNaN(Number(amountLowerLimit))) {
         matchesAmount =
-          matchesAmount && tender.amount >= Number(amountLowerLimit);
-      }
-      if (amountUpperLimit && !isNaN(Number(amountUpperLimit))) {
-        matchesAmount =
-          matchesAmount && tender.amount <= Number(amountUpperLimit);
+          matchesAmount && estimatedCostCr >= Number(amountLowerLimit);
       }
 
-      return matchesSearch && matchesOrg && matchesAmount;
+      if (amountUpperLimit && !isNaN(Number(amountUpperLimit))) {
+        matchesAmount =
+          matchesAmount && estimatedCostCr <= Number(amountUpperLimit);
+      }
+
+      // State filter
+      const matchesState =
+        selectedState === "all" ||
+        (tender.location &&
+          tender.location.toLowerCase() === selectedState.toLowerCase());
+
+      // Organization type filter
+      const matchesContType =
+        selectedContType === "all" ||
+        (tender.metadata?.type &&
+          tender.metadata.type.toLowerCase() ===
+            selectedContType.toLowerCase());
+
+      return (
+        matchesSearch &&
+        matchesOrg &&
+        matchesAmount &&
+        matchesState &&
+        matchesContType
+      );
     });
 
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "score":
-          return b.compatibilityScore - a.compatibilityScore;
+          return b.score - a.score;
         case "amount":
-          return b.amount - a.amount;
+          return b.estimatedCost - a.estimatedCost;
         case "date":
           return (
-            new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+            new Date(a.submissionDate).getTime() -
+            new Date(b.submissionDate).getTime()
           );
         default:
-          return b.compatibilityScore - a.compatibilityScore;
+          return b.score - a.score;
       }
     });
 
@@ -357,6 +453,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
     amountLowerLimit,
     amountUpperLimit,
     sortBy,
+    tenders,
+    selectedState,
+    selectedContType,
   ]);
 
   const formatAmount = (amount: number) => {
@@ -416,71 +515,98 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
           />
         </div>
 
-        {/* {showFilters && (
+        {showFilters && (
           <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Organisation</label>
-                <Select value={selectedOrganisation} onValueChange={setSelectedOrganisation}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Organisation
+                </label>
+                <Select
+                  value={selectedOrganisation}
+                  onValueChange={setSelectedOrganisation}
+                >
                   <SelectTrigger className="rounded-lg">
                     <SelectValue placeholder="All Organisations" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Organisations</SelectItem>
-                    {organisations.map(org => (
-                      <SelectItem key={org} value={org}>{org}</SelectItem>
+                    {organisations.map((org) => (
+                      <SelectItem key={org} value={org}>
+                        {org}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Organisation Type</label>
-                <Select value={selectedOrgType} onValueChange={setSelectedOrgType}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contract Type
+                </label>
+                <Select
+                  value={selectedContType}
+                  onValueChange={setSelectedContType}
+                >
                   <SelectTrigger className="rounded-lg">
                     <SelectValue placeholder="All Types" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Types</SelectItem>
-                    {organisationTypes.map(type => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    {contractTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Ownership</label>
-                <Select value={selectedOwnership} onValueChange={setSelectedOwnership}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ownership
+                </label>
+                <Select
+                  value={selectedOwnership}
+                  onValueChange={setSelectedOwnership}
+                >
                   <SelectTrigger className="rounded-lg">
                     <SelectValue placeholder="All Ownership" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Ownership</SelectItem>
-                    {ownershipTypes.map(ownership => (
-                      <SelectItem key={ownership} value={ownership}>{ownership}</SelectItem>
+                    {ownershipTypes.map((ownership) => (
+                      <SelectItem key={ownership} value={ownership}>
+                        {ownership}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  State
+                </label>
                 <Select value={selectedState} onValueChange={setSelectedState}>
                   <SelectTrigger className="rounded-lg">
                     <SelectValue placeholder="All States" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All States</SelectItem>
-                    {states.map(state => (
-                      <SelectItem key={state} value={state}>{state}</SelectItem>
+                    {states.map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Amount Range (₹ Cr.)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Amount Range (₹ Cr.)
+                </label>
                 <div className="flex gap-2">
                   <Input
                     placeholder="Min"
@@ -500,7 +626,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sort By
+                </label>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="rounded-lg">
                     <SelectValue />
@@ -514,19 +642,22 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Results</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Results
+                </label>
                 <div className="text-sm text-gray-600 bg-white rounded-lg p-2 border">
-                  {filteredAndSortedTenders.length} of {mockTenders.length} tenders
+                  {filteredAndSortedTenders.length} of {mockTenders.length}{" "}
+                  tenders
                 </div>
               </div>
             </div>
           </Card>
-        )} */}
+        )}
       </div>
 
       <div className="flex-1 px-6 pb-6 overflow-hidden">
         <div className="h-full overflow-y-auto space-y-4 pr-2">
-          {tenders.map((tender) => (
+          {filteredAndSortedTenders.map((tender) => (
             <Card
               key={tender._id}
               className="group hover:shadow-lg transition-all duration-200 border-0 rounded-xl bg-white shadow-md"
