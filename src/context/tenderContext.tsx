@@ -20,10 +20,10 @@ export type Tender = {
   downloadDocuments: string;
   length: string;
   type: string;
-  zip_file_id: string;
+  zipFileId: string;
   metadata: Record<string, string | null>;
-  score: number | null;
-  score_analysis: string | null;
+  compatibilityScore: number | null;
+  compatibilityAnalysis: string | null;
   estimatedCost: number | null;
 };
 
@@ -56,8 +56,12 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       try {
         const [tendersRes, scoresRes] = await Promise.all([
-          fetch("http://127.0.0.1:8000/api/tenders"),
-          fetch("http://127.0.0.1:8000/api/compatibility"),
+          fetch("http://localhost:8000/api/tenders", {
+            credentials: "include",
+          }),
+          fetch("http://localhost:8000/api/compatibility", {
+            credentials: "include",
+          }),
         ]);
 
         if (!tendersRes.ok || !scoresRes.ok) {
@@ -75,10 +79,10 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
           );
 
           return {
-            ...tender,
+            ...normalizeKeys(tender),
             metadata: normalizeKeys(tender.metadata),
-            score: scoreObj?.compatibility_score ?? null,
-            score_analysis: scoreObj?.compatibility_analysis ?? null,
+            compatibilityScore: scoreObj?.compatibility_score ?? null,
+            compatibilityAnalysis: scoreObj?.compatibility_analysis ?? null,
           };
         });
 

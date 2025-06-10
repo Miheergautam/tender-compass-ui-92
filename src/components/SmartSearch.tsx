@@ -18,7 +18,6 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import CompatibilityScore from "./CompatibilityScore";
-
 interface Tender {
   id: string;
   name: string;

@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
+import DualRangeSlider from "@/components/DualSlider";
 import {
   Select,
   SelectContent,
@@ -18,13 +18,12 @@ import {
   SlidersHorizontal,
   Save,
   Check,
-  Ruler,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import CompatibilityScore from "./CompatibilityScore";
-import { Tender } from "../types/tender";
-import { useNavigate } from "react-router-dom";
-
-import { useTenderContext } from "@/context/tenderContext";
+import { Tender } from "../context/tenderContext";
+import { useTenderContext } from "../context/tenderContext";
 
 interface SmartSearchTabProps {
   onAnalyze: (id: string) => void;
@@ -37,19 +36,93 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOrganisation, setSelectedOrganisation] = useState("all");
-  const [selectedOrgType, setSelectedOrgType] = useState("all");
-  const [selectedContType, setSelectedContType] = useState("all");
-  const [selectedOwnership, setSelectedOwnership] = useState("all");
   const [selectedState, setSelectedState] = useState("all");
-  const [amountLowerLimit, setAmountLowerLimit] = useState("");
-  const [amountUpperLimit, setAmountUpperLimit] = useState("");
+  const [amountRange, setAmountRange] = useState([10, 2000]);
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(false);
   const [savedTenders, setSavedTenders] = useState<Set<string>>(new Set());
-
-  const navigate = useNavigate();
+  const [todayTendersOnly, setTodayTendersOnly] = useState(false);
+  const [selectedWorkType, setSelectedWorkType] = useState("EPC");
+  const [currentPage, setCurrentPage] = useState(1);
+  const tendersPerPage = 10;
 
   const { tenders, loading, error } = useTenderContext();
+
+  function parseEstimatedCost(costStr) {
+    const match = costStr.match(/([\d,.]+)\s*Cr\.?/i);
+    if (!match) return NaN;
+    return parseFloat(match[1].replace(/,/g, ""));
+  }
+
+  const filteredAndSortedTenders = useMemo(() => {
+    if (!tenders || tenders.length === 0) {
+      return [];
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const filtered = tenders.filter((tender) => {
+      const matchesSearch =
+        !searchTerm ||
+        searchTerm.trim() === "" ||
+        tender.bio?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tender.organization?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tender.location?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesOrg =
+        selectedOrganisation === "all" ||
+        tender.organization === selectedOrganisation;
+
+      const matchesAmount =
+        !amountRange ||
+        amountRange.length !== 2 ||
+        (parseEstimatedCost(tender.estimatedCost) >= amountRange[0] &&
+          parseEstimatedCost(tender.estimatedCost) <= amountRange[1]);
+
+      const matchesToday = !todayTendersOnly || tender.submissionDate === today;
+
+      const matchesWorkType =
+        selectedWorkType.toLowerCase() === "all" ||
+        selectedWorkType.toLowerCase() === "others" ||
+        tender.metadata?.type
+          ?.toLowerCase()
+          ?.includes(selectedWorkType.toLowerCase());
+
+      return (
+        matchesSearch &&
+        matchesOrg &&
+        matchesAmount &&
+        matchesToday &&
+        matchesWorkType
+      );
+    });
+
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "score":
+          return b.compatibilityScore - a.compatibilityScore;
+        case "amount":
+          return b.estimatedCost - a.estimatedCost;
+        case "date":
+          return (
+            new Date(a.submissionDate).getTime() -
+            new Date(b.submissionDate).getTime()
+          );
+        default:
+          return b.compatibilityScore - a.compatibilityScore;
+      }
+    });
+
+    return filtered;
+  }, [
+    searchTerm,
+    selectedOrganisation,
+    amountRange,
+    sortBy,
+    todayTendersOnly,
+    selectedWorkType,
+    tenders,
+  ]);
 
   if (loading) {
     return (
@@ -69,13 +142,11 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
     );
   }
 
+  const workTypes = ["Item-rate", "EPC", "HAM", "BOT", "Others"];
+
   const organisations = Array.from(
     new Set(tenders.map((t) => t.organization))
   ).filter((org) => org);
-
-  const contractTypes = Array.from(
-    new Set(tenders.map((t) => t.metadata?.type))
-  ).filter((type) => type);
 
   const states = Array.from(
     new Set(
@@ -87,123 +158,14 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
     )
   ).filter((state) => state);
 
-  // const organisationTypes = [
-  //   "Government",
-  //   "PSU",
-  //   "Private",
-  //   "Autonomous Body",
-  //   "Corporation",
-  //   "EPC Contract",
-  // ];
-  const ownershipTypes = [
-    "Central",
-    "State",
-    "Municipal",
-    "Private",
-    "Joint Venture",
-  ];
-  // const states = [
-  //   "Himachal Pradesh",
-  //   "Delhi",
-  //   "Maharashtra",
-  //   "Karnataka",
-  //   "Tamil Nadu",
-  //   "Rajasthan",
-  //   "Kerala",
-  //   "Haryana",
-  //   "Uttar Pradesh",
-  //   "West Bengal",
-  //   "Telangana",
-  //   "Andhra Pradesh",
-  //   "Gujarat",
-  //   "Bihar",
-  //   "Odisha",
-  //   "Assam",
-  //   "Madhya Pradesh",
-  //   "Sikkim",
-  // ];
-
-  function parseEstimatedCost(costStr) {
-    const match = costStr.match(/([\d,.]+)\s*Cr\.?/i);
-    if (!match) return NaN;
-    return parseFloat(match[1].replace(/,/g, ""));
-  }
-
-  const filteredAndSortedTenders = useMemo(() => {
-    const filtered = tenders.filter((tender) => {
-      const matchesSearch =
-        tender.bio.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tender.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tender.location.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesOrg =
-        selectedOrganisation === "all" ||
-        tender.organization.toLowerCase() ===
-          selectedOrganisation.toLowerCase();
-
-      // Amount filtering with lower and upper limits
-      let matchesAmount = true;
-      const estimatedCostCr = parseEstimatedCost(tender.estimatedCost);
-
-      if (amountLowerLimit && !isNaN(Number(amountLowerLimit))) {
-        matchesAmount =
-          matchesAmount && estimatedCostCr >= Number(amountLowerLimit);
-      }
-
-      if (amountUpperLimit && !isNaN(Number(amountUpperLimit))) {
-        matchesAmount =
-          matchesAmount && estimatedCostCr <= Number(amountUpperLimit);
-      }
-
-      // State filter
-      const matchesState =
-        selectedState === "all" ||
-        (tender.location &&
-          tender.location.toLowerCase() === selectedState.toLowerCase());
-
-      // Organization type filter
-      const matchesContType =
-        selectedContType === "all" ||
-        (tender.metadata?.type &&
-          tender.metadata.type.toLowerCase() ===
-            selectedContType.toLowerCase());
-
-      return (
-        matchesSearch &&
-        matchesOrg &&
-        matchesAmount &&
-        matchesState &&
-        matchesContType
-      );
-    });
-
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case "score":
-          return b.score - a.score;
-        case "amount":
-          return b.estimatedCost - a.estimatedCost;
-        case "date":
-          return (
-            new Date(a.submissionDate).getTime() -
-            new Date(b.submissionDate).getTime()
-          );
-        default:
-          return b.score - a.score;
-      }
-    });
-
-    return filtered;
-  }, [
-    searchTerm,
-    selectedOrganisation,
-    amountLowerLimit,
-    amountUpperLimit,
-    sortBy,
-    tenders,
-    selectedState,
-    selectedContType,
-  ]);
+  const totalPages = Math.ceil(
+    filteredAndSortedTenders.length / tendersPerPage
+  );
+  const startIndex = (currentPage - 1) * tendersPerPage;
+  const currentTenders = filteredAndSortedTenders.slice(
+    startIndex,
+    startIndex + tendersPerPage
+  );
 
   const formatAmount = (amount: number) => {
     if (amount >= 100) {
@@ -219,22 +181,32 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
       savedDate: new Date().toISOString().split("T")[0],
     };
     onSaveTender(tenderWithSaveDate);
-    setSavedTenders((prev) => new Set([...prev, tender.id]));
+    setSavedTenders((prev) => new Set([...prev, tender._id]));
 
-    // Remove from saved state after 2 seconds to allow re-saving
     setTimeout(() => {
       setSavedTenders((prev) => {
         const newSet = new Set(prev);
-        newSet.delete(tender.id);
+        newSet.delete(tender._id);
         return newSet;
       });
     }, 2000);
   };
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
-    <div className="h-full flex flex-col px-4 sm:px-6 lg:px-8">
-      <div className="flex-shrink-0 py-6 space-y-6">
-        {/* Header */}
+    <div className="h-full flex flex-col">
+      <div className="flex-shrink-0 p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Smart Search</h2>
@@ -242,17 +214,49 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
               Discover and analyze relevant tenders
             </p>
           </div>
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2"
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            Filters
-          </Button>
+
+          <div className="flex items-center gap-3">
+            <Button
+              variant={todayTendersOnly ? "default" : "outline"}
+              onClick={() => setTodayTendersOnly(!todayTendersOnly)}
+              className={`flex items-center gap-2 ${
+                todayTendersOnly
+                  ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white"
+                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              Today Tenders
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+            </Button>
+          </div>
         </div>
 
-        {/* Search Input */}
+        {/* Work Type Selection */}
+        <div className="flex gap-0 p-1 bg-gray-100 rounded-lg">
+          {workTypes.map((type) => (
+            <Button
+              key={type}
+              variant="ghost"
+              onClick={() => setSelectedWorkType(type)}
+              className={`flex-1 rounded-md transition-all duration-200 ${
+                selectedWorkType === type
+                  ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white shadow-sm"
+                  : "text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {type}
+            </Button>
+          ))}
+        </div>
+
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -263,11 +267,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
           />
         </div>
 
-        {/* Filters */}
         {showFilters && (
           <Card className="p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Organisation */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Organisation
@@ -290,53 +292,6 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
-              {/* Contract Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Contract Type
-                </label>
-                <Select
-                  value={selectedContType}
-                  onValueChange={setSelectedContType}
-                >
-                  <SelectTrigger className="rounded-lg">
-                    <SelectValue placeholder="All Types" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    {contractTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Ownership */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ownership
-                </label>
-                <Select
-                  value={selectedOwnership}
-                  onValueChange={setSelectedOwnership}
-                >
-                  <SelectTrigger className="rounded-lg">
-                    <SelectValue placeholder="All Ownership" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Ownership</SelectItem>
-                    {ownershipTypes.map((ownership) => (
-                      <SelectItem key={ownership} value={ownership}>
-                        {ownership}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div> */}
-
-              {/* State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   State
@@ -356,30 +311,6 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
-              {/* Amount Range */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Amount Range (₹ Cr.)
-                </label>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Min"
-                    value={amountLowerLimit}
-                    onChange={(e) => setAmountLowerLimit(e.target.value)}
-                    className="rounded-lg"
-                    type="number"
-                  />
-                  <Input
-                    placeholder="Max"
-                    value={amountUpperLimit}
-                    onChange={(e) => setAmountUpperLimit(e.target.value)}
-                    className="rounded-lg"
-                    type="number"
-                  />
-                </div>
-              </div>
-
-              {/* Sort By */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Sort By
@@ -396,20 +327,29 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                 </Select>
               </div>
 
-              {/* Showing X of Y */}
-              <div className="mt-4 text-sm text-gray-500 font-medium text-center sm:text-right sm:col-span-3">
-                Showing {filteredAndSortedTenders.length} of {tenders.length}{" "}
-                tenders
+              <div className="md:col-span-2 lg:col-span-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Amount Range: ₹{amountRange[0]} Cr - ₹{amountRange[1]} Cr
+                </label>
+                <div className="px-2">
+                  <DualRangeSlider
+                    value={amountRange}
+                    onValueChange={setAmountRange}
+                    max={2000}
+                    min={10}
+                    step={10}
+                    className="w-full"
+                  />
+                </div>
               </div>
             </div>
           </Card>
         )}
       </div>
 
-      {/* Tenders List */}
-      <div className="flex-1 pb-6 overflow-hidden">
+      <div className="flex-1 px-6 pb-6 overflow-hidden">
         <div className="h-full overflow-y-auto space-y-4 pr-2">
-          {filteredAndSortedTenders.map((tender) => (
+          {currentTenders.map((tender) => (
             <Card
               key={tender._id}
               className="group hover:shadow-lg transition-all duration-200 border-0 rounded-xl bg-white shadow-md"
@@ -420,59 +360,63 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1 pr-4">
                         <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">
-                          {tender?.bio.slice(0, 150)}...
+                          {tender.bio}
                         </h3>
                         <p className="text-sm text-gray-600 mb-2">
-                          {tender?.organization}
+                          {tender.organization}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-3">
-                          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                            {tender?.metadata?.type}
+                          {/* {tender.workTypes
+                            .slice(0, 3)
+                            .map((workType, index) => ( */}
+                          <span
+                            // key={index}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                          >
+                            {tender.type}
                           </span>
+                          {/* ))} */}
                         </div>
                       </div>
+
                       <div className="flex-shrink-0">
                         <CompatibilityScore
-                          score={tender?.score}
+                          score={tender.compatibilityScore}
                           showTooltip={false}
-                          id={tender?._id}
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <IndianRupee className="w-4 h-4 mr-2" />
                         <span className="font-medium">
-                          {tender?.estimatedCost}
+                          {formatAmount(tender.estimatedCost)}
                         </span>
                       </div>
+
                       <div className="flex items-center text-sm text-gray-600">
                         <MapPin className="w-4 h-4 mr-2" />
-                        <span>{tender?.location}</span>
+                        <span>{tender.location}</span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Ruler className="w-4 h-4 mr-2" />
-                        <span>{tender?.metadata?.length}</span>
-                      </div>
+
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="w-4 h-4 mr-2" />
-                        <span>Deadline: {tender?.submissionDate}</span>
+                        <span>Deadline: {tender.submissionDate}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Button
-                      onClick={() => {
-                        navigate(`../analysis/${tender._id}`);
-                      }}
+                      onClick={() => onAnalyze(tender._id)}
                       className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white rounded-lg transition-all duration-200"
                     >
                       Analyse
                     </Button>
 
                     <Button
+                      onClick={() => handleSaveTender(tender)}
                       variant="outline"
                       className={`border-teal-200 rounded-lg transition-all duration-200 ${
                         savedTenders.has(tender._id)
@@ -498,7 +442,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
             </Card>
           ))}
 
-          {filteredAndSortedTenders.length === 0 && (
+          {currentTenders.length === 0 && (
             <div className="text-center py-12">
               <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -510,6 +454,37 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {filteredAndSortedTenders.length > 0 && (
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Previous
+              </Button>
+
+              <span className="text-sm text-gray-600 px-3">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <Button
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-2"
+              >
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

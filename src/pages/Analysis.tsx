@@ -16,22 +16,20 @@ import {
   ExternalLink,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
-import CompatibilityMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
 import { useParams } from "react-router-dom";
 
-import { useTenderContext } from "@/context/tenderContext";
-import FlagTableMarkdownRenderer from "@/components/FlagTableMarkdownRenderer";
+import { useTenderContext, Tender } from "@/context/tenderContext";
+import CompatibilityAnalysisRenderer from "@/components/CompatibilityAnalysisRenderer";
 
 const Analysis = () => {
   const navigate = useNavigate();
   const { tender_id } = useParams<{ tender_id: string }>();
   const { tenders, loading, error } = useTenderContext();
-  const [tender, setTender] = useState<any>(null);
+  const [tender, setTender] = useState<Tender>(null);
 
   useEffect(() => {
     if (tender_id) {
       const foundTender = tenders.find((t) => t._id === tender_id);
-      console.log("Found tender:", foundTender);
       setTender(foundTender || null);
     }
   }, [tender_id, tenders]);
@@ -85,7 +83,7 @@ const Analysis = () => {
     organisationId: tender.organizationTenderId || "Not specified",
     website: tender?.website || "Not specified",
     submissionDeadline: tender?.submissionDate || "Not specified",
-    compatibilityScore: tender?.score || "--",
+    compatibilityScore: tender?.compatibilityScore || null,
   };
 
   // Location insights data
@@ -172,7 +170,7 @@ const Analysis = () => {
   const strokeDashoffset =
     circumference - (tenderBio?.compatibilityScore / 100) * circumference;
 
-  const compatibilityAnalysisContent = tender?.score_analysis;
+  const compatibilityAnalysisContent = tender?.compatibilityAnalysis;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -526,7 +524,7 @@ const Analysis = () => {
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
                 <ScrollArea className="max-h-96 p-6">
-                  <FlagTableMarkdownRenderer
+                  <CompatibilityAnalysisRenderer
                     content={compatibilityAnalysisContent || ``}
                   />
                 </ScrollArea>

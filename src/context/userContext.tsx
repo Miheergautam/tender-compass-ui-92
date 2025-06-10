@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
+
 type User = {
   _id: string;
   name: string;
@@ -18,13 +19,16 @@ interface UserContextType {
   setUser: (user: User) => void;
   clearUser: () => void;
   logout: () => Promise<void>;
-  verifyUser: () => Promise<void>;
+  isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -34,6 +38,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const clearUser = () => {
     setUserState(null);
+    setIsAuthenticated(false);
   };
 
   const logout = async () => {
@@ -62,42 +67,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const verifyUser = async () => {
-    const publicUrls = ["/", "/login"];
-    if (publicUrls.includes(pathname)) return;
-
-    try {
-      const res = await fetch("http://localhost:8000/api/auth/verify", {
-        method: "GET",
-        credentials: "include",
-      });
-      if (!res.ok) {
-        throw new Error("Error verifying user");
-      }
-      const data = await res.json();
-      if (!data.authenticated) {
-        clearUser();
-        toast({
-          title: "Authentication required",
-          description: "Please log in to continue.",
-        });
-        navigate("/login");
-        return;
-      }
-    } catch (err) {
-      toast({
-        title: "Error verifying user",
-        description: "Please try again later.",
-      });
-      navigate("/login");
-    }
-  };
-
   useEffect(() => {
     const publicUrls = ["/", "/login"];
-    if (publicUrls.includes(pathname)) return;
 
+    // Always check authentication on mount, but don't show loading for public URLs
     const fetchUser = async () => {
+      // Only show loading state for protected routes
+      if (!publicUrls.includes(pathname)) {
+        setIsLoading(true);
+      }
+
       try {
         const res = await fetch("http://localhost:8000/api/auth/verify", {
           credentials: "include",
@@ -105,11 +84,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         if (res.status === 401) {
           clearUser();
-          toast({
-            title: "Session expired",
-            description: "Please log in again.",
-            variant: "destructive",
-          });
+          // Only show session expired message on protected routes
+          if (!publicUrls.includes(pathname)) {
+            toast({
+              title: "Session expired",
+              description: "Please log in again.",
+              variant: "destructive",
+            });
+          }
           return;
         }
 
@@ -124,17 +106,29 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         const data = await res.json();
 
-        setUser({
-          _id: data._id,
-          name: data.name,
-          email: data.email,
-        });
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+          setUser({
+            _id: data._id,
+            name: data.name,
+            email: data.email,
+          });
+        } else {
+          clearUser();
+        }
       } catch (err) {
-        toast({
-          title: "Unexpected error loading user",
-          description: "Please try again later or login again.",
-          variant: "destructive",
-        });
+        console.error("Auth verification error:", err);
+        clearUser();
+        // Only show error message on protected routes
+        if (!publicUrls.includes(pathname)) {
+          toast({
+            title: "Unexpected error loading user",
+            description: "Please try again later or login again.",
+            variant: "destructive",
+          });
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -143,7 +137,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, clearUser, logout, verifyUser }}
+      value={{ user, setUser, clearUser, logout, isAuthenticated, isLoading }}
     >
       {children}
     </UserContext.Provider>

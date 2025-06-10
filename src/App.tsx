@@ -12,31 +12,48 @@ import NotFound from "./pages/NotFound";
 import { UserProvider } from "./context/userContext";
 import { TenderProvider } from "./context/tenderContext";
 import { CompanyProfileProvider } from "./context/companyProfileContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <UserProvider>
-          <CompanyProfileProvider>
-            <TenderProvider>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Index />} />
-                <Route path="/analysis/:tender_id" element={<Analysis />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </TenderProvider>
-          </CompanyProfileProvider>
-        </UserProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <UserProvider>
+            <CompanyProfileProvider>
+              <TenderProvider>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/analysis/:tender_id"
+                    element={
+                      <ProtectedRoute>
+                        <Analysis />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </TenderProvider>
+            </CompanyProfileProvider>
+          </UserProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

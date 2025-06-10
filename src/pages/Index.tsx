@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppSidebar from "../components/AppSidebar";
 import Dashboard from "../components/Dashboard";
@@ -11,25 +11,17 @@ import FeedbackTab from "../components/FeedbackTab";
 import LanguageNotificationsTab from "../components/LanguageNotificationsTab";
 import ChatWidget from "../components/ChatWidget";
 import { useUser } from "@/context/userContext";
-import { Tender } from "../types/tender";
-import { verify } from "crypto";
+import { Tender } from "@/context/tenderContext";
 
 const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [savedTenders, setSavedTenders] = useState<Tender[]>([]);
 
-  const { logout, verifyUser } = useUser();
+  const { logout } = useUser();
 
-  useEffect(() => {
-    async function checkUserVerification() {
-      await verifyUser();
-    }
-    checkUserVerification();
-  }, [verifyUser]);
-
-  const handleAnalyze = () => {
-    navigate("/analysis");
+  const handleAnalyze = (id: string) => {
+    navigate(`/analysis/${id}`);
   };
 
   const handleSaveTender = (tender: Tender) => {

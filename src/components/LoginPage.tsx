@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,13 +13,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, Phone, Hammer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Toast } from "@radix-ui/react-toast";
+import { useUser } from "@/context/userContext";
 
 interface LoginPageProps {
   onLogin: () => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+  const { isAuthenticated, isLoading: isAuthLoading } = useUser();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [signupForm, setSignupForm] = useState({
@@ -32,6 +36,25 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [activeTab, setActiveTab] = useState("login");
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (isAuthLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Don't render login form if already authenticated (prevents flash)
+  if (isAuthenticated) {
+    return null;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
