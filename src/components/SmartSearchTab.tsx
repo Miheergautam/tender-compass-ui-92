@@ -373,7 +373,9 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1 pr-4">
                         <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">
-                          {tender?.bio}
+                          {tender?.bio?.length > 250
+                            ? `${tender.bio.slice(0, 250)}...`
+                            : tender?.bio}
                         </h3>
                         <p className="text-sm text-gray-600 mb-2">
                           {tender?.organization}
