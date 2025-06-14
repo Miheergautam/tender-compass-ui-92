@@ -24,7 +24,7 @@ export type Tender = {
   metadata: Record<string, string | null>;
   compatibilityScore: number | null;
   compatibilityAnalysis: string | null;
-  estimatedCost: number | null;
+  estimatedCost: string | null;
 };
 
 type TenderContextType = {
@@ -34,7 +34,7 @@ type TenderContextType = {
 };
 
 function normalizeKeys(
-  obj: Record<string | null, string | null>
+  obj: Record<string | null, string | null> | Tender
 ): Record<string, string | null> {
   const result: Record<string, string | null> = {};
   for (const key in obj) {
@@ -44,6 +44,46 @@ function normalizeKeys(
   }
   return result;
 }
+
+const defaultTender = {
+  _id: null,
+  id: null,
+  zipFileId: null,
+  organization: "",
+  organizationTenderId: "",
+  estimatedCost: "",
+  emd: "",
+  bio: "",
+  submissionDate: "",
+  website: "",
+  location: "",
+  compatibilityScore: null,
+  compatibilityAnalysis: null,
+
+  metadata: {
+    length: "",
+    type: "",
+    terrain: "",
+    climate: "",
+    logistics: "",
+    safety: "",
+    soilType: "",
+    materialAvailability: "",
+    currentSite: "",
+    roadsideDrainage: "",
+    structuresWork: "",
+    protectionWork: "",
+    roadComposition: "",
+    paymentWeightage: "",
+    locationImages: [],
+    gradeSeperators: "",
+    drainage: "",
+    structures: "",
+    facilities: "",
+    protection: "",
+    otherWorks: "",
+  },
+};
 
 const TenderContext = createContext<TenderContextType | undefined>(undefined);
 
@@ -73,18 +113,29 @@ export const TenderProvider = ({ children }: { children: ReactNode }) => {
           scoresRes.json(),
         ]);
 
-        const enrichedTenders = tendersData.map((tender) => {
+        const enrichedTenders = tendersData.map((tender: Tender) => {
           const scoreObj = scoresData.find(
             (score) => score.tender_id === tender._id
           );
 
-          return {
+          const normalizedTender = {
             ...normalizeKeys(tender),
             metadata: normalizeKeys(tender.metadata),
             compatibilityScore: scoreObj?.compatibility_score ?? null,
             compatibilityAnalysis: scoreObj?.compatibility_analysis ?? null,
           };
+
+          return {
+            ...defaultTender,
+            ...normalizedTender,
+            metadata: {
+              ...defaultTender.metadata,
+              ...(normalizedTender.metadata || {}),
+            },
+          };
         });
+
+        setTenders(enrichedTenders);
 
         setTenders(enrichedTenders);
       } catch (err: any) {

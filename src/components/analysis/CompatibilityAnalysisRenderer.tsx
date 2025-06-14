@@ -9,9 +9,10 @@ const CompatibilityAnalysisRenderer: React.FC<
 > = ({ content }) => {
   if (!content || content.trim() === "") {
     return (
-      <p className="text-gray-700 mb-2 leading-relaxed text-sm">
-        Not available
-      </p>
+      // <p className="text-gray-700 mb-2 leading-relaxed text-sm">
+      //   Not available
+      // </p>
+      ""
     );
   }
 

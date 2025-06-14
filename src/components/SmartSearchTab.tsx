@@ -48,7 +48,7 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
 
   const { tenders, loading, error } = useTenderContext();
 
-  function parseEstimatedCost(costStr) {
+  function parseEstimatedCost(costStr: string) {
     const match = costStr.match(/([\d,.]+)\s*Cr\.?/i);
     if (!match) return NaN;
     return parseFloat(match[1].replace(/,/g, ""));
@@ -73,17 +73,26 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
         selectedOrganisation === "all" ||
         tender.organization === selectedOrganisation;
 
-      const matchesAmount =
-        !amountRange ||
-        amountRange.length !== 2 ||
-        (parseEstimatedCost(tender.estimatedCost) >= amountRange[0] &&
-          parseEstimatedCost(tender.estimatedCost) <= amountRange[1]);
+      let matchesAmount = false;
+
+      if (!tender.estimatedCost) {
+        matchesAmount = true;
+      } else {
+        matchesAmount =
+          !amountRange ||
+          amountRange.length !== 2 ||
+          (parseEstimatedCost(tender.estimatedCost) >= amountRange[0] &&
+            parseEstimatedCost(tender.estimatedCost) <= amountRange[1]);
+      }
 
       const matchesToday = !todayTendersOnly || tender.submissionDate === today;
 
       const matchesWorkType =
         selectedWorkType.toLowerCase() === "all" ||
-        selectedWorkType.toLowerCase() === "others" ||
+        (selectedWorkType.toLowerCase() === "others" &&
+          !["item-rate", "epc", "epc contract", "ham", "bot"].includes(
+            tender.metadata?.type?.toLowerCase()
+          )) ||
         tender.metadata?.type
           ?.toLowerCase()
           ?.includes(selectedWorkType.toLowerCase());
@@ -102,7 +111,11 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
         case "score":
           return b.compatibilityScore - a.compatibilityScore;
         case "amount":
-          return b.estimatedCost - a.estimatedCost;
+          if (!a.estimatedCost || !b.estimatedCost) return 0;
+          return (
+            parseEstimatedCost(b.estimatedCost) -
+            parseEstimatedCost(a.estimatedCost)
+          );
         case "date":
           return (
             new Date(a.submissionDate).getTime() -
@@ -380,10 +393,16 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                       </div>
 
                       <div className="flex-shrink-0">
-                        <CompatibilityScore
-                          score={tender?.compatibilityScore}
-                          showTooltip={false}
-                        />
+                        {tender?.compatibilityAnalysis ? (
+                          <CompatibilityScore
+                            score={tender?.compatibilityScore}
+                            showTooltip={false}
+                          />
+                        ) : (
+                          <p className="text-sm text-gray-500 italic mt-auto">
+                            Score not available
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -391,9 +410,11 @@ const SmartSearchTab: React.FC<SmartSearchTabProps> = ({
                       <div className="flex items-center text-sm text-gray-600">
                         <IndianRupee className="w-4 h-4 mr-2" />
                         <span className="font-medium">
-                          {formatAmount(
-                            parseEstimatedCost(tender?.estimatedCost)
-                          )}
+                          {tender?.estimatedCost
+                            ? formatAmount(
+                                parseEstimatedCost(tender?.estimatedCost)
+                              )
+                            : ""}
                         </span>
                       </div>
 
