@@ -33,6 +33,7 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("saved-date");
+  const [selectedWorkType, setSelectedWorkType] = useState("EPC");
 
   // New Sikkim tender card to be displayed first
   const sikkimTender: Tender = {
@@ -393,6 +394,8 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({
     }
   };
 
+  const workTypes = ["Item-rate", "EPC", "HAM", "BOT", "Others"];
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex-shrink-0 p-6 space-y-6">
@@ -401,6 +404,24 @@ const MyTendersTab: React.FC<MyTendersTabProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">My Tenders</h2>
             <p className="text-gray-600">{allTenders.length} saved tenders</p>
           </div>
+        </div>
+
+        {/* Work Type Selection */}
+        <div className="flex gap-0 p-1 bg-gray-100 rounded-lg">
+          {workTypes.map((type) => (
+            <Button
+              key={type}
+              variant="ghost"
+              onClick={() => setSelectedWorkType(type)}
+              className={`flex-1 rounded-md transition-all duration-200 ${
+                selectedWorkType === type
+                  ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white shadow-sm"
+                  : "text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {type}
+            </Button>
+          ))}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">

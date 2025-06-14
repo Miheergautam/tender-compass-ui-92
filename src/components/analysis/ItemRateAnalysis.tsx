@@ -107,7 +107,7 @@ const ItemRateAnalysis = ({ tenderData }: { tenderData: Tender }) => {
             </CardHeader>
             <CardContent>
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <ScrollArea className="h-96 p-6">
+                <ScrollArea className="h-auto p-6">
                   <BOQRenderer content={boqContent} />
                 </ScrollArea>
               </div>
